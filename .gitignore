@@ -1,0 +1,7 @@
+.history
+.vscode
+.angular
+node_modules
+dist
+public/*
+!public/.gitkeep

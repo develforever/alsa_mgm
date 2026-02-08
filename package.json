@@ -1,0 +1,44 @@
+{
+  "scripts": {
+    "n:build": "tsc",
+    "n:start": "node dist/server.js",
+    "n:lint": "eslint 'src/**/*.ts'",
+    "ng": "ng",
+    "ng:start": "ng serve",
+    "ng:build": "ng build",
+    "ng:watch": "ng build --watch --configuration development",
+    "ng:test": "ng test",
+    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --exec 'ts-node' src/backend/server.ts",
+    "start:frontend": "npm run ng:watch",
+    "dev": "concurrently --kill-others -n \"BACKEND,FRONTEND\" -c \"bgBlue,bgGreen\" \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "dependencies": {
+    "@angular/common": "^21.1.0",
+    "@angular/compiler": "^21.1.0",
+    "@angular/core": "^21.1.0",
+    "@angular/forms": "^21.1.0",
+    "@angular/platform-browser": "^21.1.0",
+    "@angular/router": "^21.1.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.1.3",
+    "@angular/cli": "^21.1.3",
+    "@angular/compiler-cli": "^21.1.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.2.2",
+    "concurrently": "^9.2.1",
+    "dotenv": "^17.2.4",
+    "eslint": "^10.0.0",
+    "express": "^5.2.1",
+    "install": "^0.13.0",
+    "jsdom": "^27.1.0",
+    "nodemon": "^3.1.11",
+    "npm": "^11.9.0",
+    "prettier": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
+  }
+}
