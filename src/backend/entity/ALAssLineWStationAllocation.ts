@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    JoinColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn
+} from "typeorm";
 import { ALAssLine } from "./ALAssLine";
 import { ALWStation } from "./ALWStation";
 
@@ -15,6 +24,15 @@ export class ALAssLineWStationAllocation {
 
     @Column({ type: "smallint" }) // Ważne: SMALLINT z diagramu
     Sort!: number;
+
+    @CreateDateColumn({ name: "CreatedAt" })
+    createdAt!: Date;
+
+    @UpdateDateColumn({ name: "UpdatedAt" })
+    updatedAt!: Date;
+
+    @DeleteDateColumn({ name: "DeletedAt" })
+    deletedAt?: Date;
 
     @ManyToOne(() => ALAssLine, (line) => line.allocations)
     @JoinColumn({ name: "ALAssLineID" })

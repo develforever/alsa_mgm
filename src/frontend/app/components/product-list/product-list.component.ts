@@ -1,20 +1,52 @@
-
-import { Component, OnInit, inject } from '@angular/core';
+// frontend/src/app/components/product-list/product-list.component.ts
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DataService } from '../../services/data.service';
+import { Product } from '../../models/types';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div style="padding: 20px;">
-      <h3>Lista Produktów</h3>
-      <p>Ten widok jest chroniony przez AuthGuard.</p>
-      </div>
-  `
+  imports: [CommonModule, FormsModule],
+  templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent implements OnInit {
+  private dataService = inject(DataService);
+  
+  products = signal<Product[]>([]);
+  newProductName = '';
+
   ngOnInit() {
-    console.log('Widok listy produktów załadowany pomyślnie!');
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.dataService.getProducts().subscribe(data => this.products.set(data));
+  }
+
+  addProduct() {
+    if (!this.newProductName.trim()) return;
+    
+    // Na 6+: Dodajemy nowy produkt i odświeżamy listę
+    const productData = { Name: this.newProductName, Active: 1 };
+    this.dataService.addProduct(productData).subscribe(() => {
+      this.newProductName = '';
+      this.loadProducts();
+    });
+  }
+
+  toggleActive(product: Product) {
+    const updated = { ...product, Active: product.Active === 1 ? 0 : 1 };
+    this.dataService.updateProduct(product.ProductID, updated).subscribe(() => {
+      this.loadProducts();
+    });
+  }
+
+  deleteProduct(product: Product) {
+    this.dataService.deleteProduct(product.ProductID).subscribe(() => {
+      this.loadProducts();
+    });
   }
 }

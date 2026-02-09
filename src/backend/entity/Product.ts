@@ -1,7 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import {
+    Entity, 
+    PrimaryGeneratedColumn,
+    Column, 
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn
+} from "typeorm";
 import { ALAssLine } from "./ALAssLine";
 
-@Entity("Product") 
+@Entity("Product")
 export class Product {
     @PrimaryGeneratedColumn({ name: "ProductID" })
     ProductID!: number;
@@ -11,6 +19,15 @@ export class Product {
 
     @Column({ type: "tinyint", width: 1, default: 1 })
     Active!: number;
+
+    @CreateDateColumn({ name: "CreatedAt" })
+    createdAt!: Date;
+
+    @UpdateDateColumn({ name: "UpdatedAt" })
+    updatedAt!: Date;
+
+    @DeleteDateColumn({ name: "DeletedAt" })
+    deletedAt?: Date;
 
     @OneToMany(() => ALAssLine, (line) => line.product)
     assemblyLines!: ALAssLine[];

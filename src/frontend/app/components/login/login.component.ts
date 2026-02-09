@@ -24,6 +24,6 @@ export class LoginComponent {
 
   onLogin() {
     this.authService.login();
-    this.router.navigate(['/allocations']);
+    this.router.navigate(['/products']);
   }
 }

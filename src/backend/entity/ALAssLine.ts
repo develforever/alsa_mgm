@@ -1,4 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    JoinColumn,
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn
+} from "typeorm";
 import { Product } from "./Product";
 import { ALAssLineWStationAllocation } from "./ALAssLineWStationAllocation";
 
@@ -26,6 +36,15 @@ export class ALAssLine {
 
     @Column({ type: "tinyint" })
     Status: ALAssLineStatus;
+
+    @CreateDateColumn({ name: "CreatedAt" })
+    createdAt!: Date;
+
+    @UpdateDateColumn({ name: "UpdatedAt" })
+    updatedAt!: Date;
+
+    @DeleteDateColumn({ name: "DeletedAt" })
+    deletedAt?: Date;
 
     @OneToMany(() => ALAssLineWStationAllocation, (alloc) => alloc.assemblyLine)
     allocations: ALAssLineWStationAllocation[];

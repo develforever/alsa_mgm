@@ -7,6 +7,9 @@ import path from "path/win32";
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import productRoutes from "./routes/productRoutes";
+import lineRoutes from "./routes/lineRoutes";
+import workstationRoutes from "./routes/workstationRoutes";
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
@@ -19,6 +22,9 @@ app.use('/api', authMiddleware);
 
 // Routes
 app.use('/', appRoutes);
+app.use('/api', productRoutes);
+app.use('/api', lineRoutes);
+app.use('/api', workstationRoutes);
 
 const publicPath = path.join(__dirname, '../../public/browser');
 

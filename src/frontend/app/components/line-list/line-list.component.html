@@ -1,0 +1,40 @@
+<div class="line-manager">
+  <h3>Assembly Lines</h3>
+
+  <div class="add-line-form">
+    <input [(ngModel)]="newLine.Name" placeholder="Line name">
+
+    <select [(ngModel)]="newLine.ProductID">
+      <option [ngValue]="null">-- Select Product --</option>
+      <option *ngFor="let p of products()" [value]="p.ProductID">{{p.Name}}</option>
+    </select>
+
+    <button (click)="addLine()">Add Line</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Line Name</th>
+        <th>Product</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let line of lines()">
+        <td>{{ line.Name }}</td>
+        <td>{{ line.product?.Name }}</td>
+        <td>
+          <span [ngClass]="'status-' + line.Status">
+            {{ line.Status === 1 ? 'Active' : (line.Status === 2 ? 'Locked' : 'Closed') }}
+          </span>
+        </td>
+        <td>
+          <button (click)="editLine(line)">Edit</button>
+          <button (click)="deleteLine(line)">Delete Line</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

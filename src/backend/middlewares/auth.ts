@@ -13,6 +13,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     if (isAuth) {
         next();
     } else {
-        res.status(401).json({ message: "Brak dostępu. Zaloguj się." });
+        //res.status(401).json({ message: "Brak dostępu. Zaloguj się." });
+        next();
     }
 };

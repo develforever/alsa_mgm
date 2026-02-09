@@ -8,8 +8,14 @@ export interface ALAssLine {
   ALAssLineID: number;
   ProductID: number;
   Name: string;
-  Status: number;
-  product?: Product; // Relacja dociągnięta przez TypeORM
+  Status: LineStatus;
+  product?: Product; 
+}
+
+export enum LineStatus {
+  Active = 1,
+  Locked = 2,
+  Closed = 3
 }
 
 export interface ALWStation {
