@@ -1,28 +1,27 @@
+// frontend/src/app/services/auth.service.ts
+import { Injectable, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { tap, map, catchError, of, Observable } from 'rxjs';
 
-import { Injectable, signal } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Signal przechowujący status zalogowania
+  private http = inject(HttpClient);
   private _isLoggedIn = signal<boolean>(false);
   isLoggedIn = this._isLoggedIn.asReadonly();
 
-  login() {
-    // Tutaj docelowo byłaby logika z GitHub API lub prosty POST do backendu
-    this._isLoggedIn.set(true);
-    localStorage.setItem('isLoggedIn', 'true');
+
+  checkAuth(): Observable<boolean> {
+    return this.http.get<{ isAuthenticated: boolean }>('/api/auth/status').pipe(
+      map(res => res.isAuthenticated),
+      tap(status => this._isLoggedIn.set(status)),
+      catchError(() => {
+        this._isLoggedIn.set(false);
+        return of(false);
+      })
+    );
   }
 
-  logout() {
-    this._isLoggedIn.set(false);
-    localStorage.removeItem('isLoggedIn');
-  }
-
-  checkAuth(): boolean {
-    const status = localStorage.getItem('isLoggedIn') === 'true';
-    this._isLoggedIn.set(status);
-    return status;
+  loginWithGithub() {
+    window.location.href = 'http://localhost:3000/api/auth/github';
   }
 }

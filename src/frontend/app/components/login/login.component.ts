@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
       <h2>Panel Zarządzania Transmar</h2>
       <p>Zaloguj się, aby uzyskać dostęp do zarządzania liniami</p>
       <button (click)="onLogin()" style="padding: 10px 20px; cursor: pointer;">
-        Zaloguj przez GitHub (Symulacja)
+        Zaloguj z GitHub
       </button>
     </div>
   `
@@ -23,7 +23,6 @@ export class LoginComponent {
   private router = inject(Router);
 
   onLogin() {
-    this.authService.login();
-    this.router.navigate(['/products']);
+    this.authService.loginWithGithub();
   }
 }
