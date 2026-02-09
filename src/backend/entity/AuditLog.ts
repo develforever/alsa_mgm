@@ -1,4 +1,4 @@
-// backend/src/entities/AuditLog.ts
+
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
 
 @Entity("AuditLog")
@@ -7,19 +7,19 @@ export class AuditLog {
     id!: number;
 
     @Column()
-    action!: string; // np. "CREATE", "UPDATE", "SOFT-DELETE"
+    action!: string; 
 
     @Column()
-    entityName!: string; // np. "Product", "ALAssLine"
+    entityName!: string; 
 
     @Column({ nullable: true })
     entityId!: string;
 
     @Column({ type: "json", nullable: true })
-    details!: any; // Przechowamy tu stan obiektu przed/po zmianie
+    details!: any; 
 
     @Column({ nullable: true })
-    userEmail!: string; // Kto to zrobił (z GitHuba)
+    userEmail!: string; 
 
     @CreateDateColumn()
     timestamp!: Date;

@@ -22,7 +22,7 @@ export class ALAssLineWStationAllocation {
     @Column()
     ALWStationID!: number;
 
-    @Column({ type: "smallint" }) // Ważne: SMALLINT z diagramu
+    @Column({ type: "smallint" }) 
     Sort!: number;
 
     @CreateDateColumn({ name: "CreatedAt" })

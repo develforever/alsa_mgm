@@ -44,7 +44,6 @@ app.get('/api/auth/logout', (req, res, next) => {
   });
 });
 
-// Routes
 app.use('/', appRoutes);
 app.use('/api', productRoutes);
 app.use('/api', lineRoutes);

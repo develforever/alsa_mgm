@@ -1,4 +1,4 @@
-// frontend/src/app/components/product-list/product-list.component.ts
+
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,7 +29,6 @@ export class ProductListComponent implements OnInit {
   addProduct() {
     if (!this.newProductName.trim()) return;
     
-    // Na 6+: Dodajemy nowy produkt i odświeżamy listę
     const productData = { Name: this.newProductName, Active: 1 };
     this.dataService.addProduct(productData).subscribe(() => {
       this.newProductName = '';

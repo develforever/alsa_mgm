@@ -17,9 +17,8 @@ export class LineListComponent implements OnInit {
   private dataService = inject(DataService);
 
   lines = signal<ALAssLine[]>([]);
-  products = signal<Product[]>([]); // Potrzebne do dropdowna
-  
-  // Model dla nowej linii
+  products = signal<Product[]>([]); 
+
   newLine = { Name: '', ProductID: null as number | null, Status: 1 };
 
   ngOnInit() {
@@ -35,14 +34,13 @@ export class LineListComponent implements OnInit {
     if (this.newLine.Name && this.newLine.ProductID) {
       this.dataService.addLine(this.newLine as any).subscribe(() => {
         this.loadData();
-        this.newLine = { Name: '', ProductID: null, Status: 1 }; // Reset
+        this.newLine = { Name: '', ProductID: null, Status: 1 }; 
       });
     }
   }
 
   editLine(line: ALAssLine) { 
-    // Tutaj można otworzyć modal lub inny komponent do edycji
-    // Po edycji, wywołać updateLine z nowymi danymi
+   // TODO
   }
 
   deleteLine(line: ALAssLine) {

@@ -1,4 +1,4 @@
-// frontend/src/app/services/auth.service.ts
+
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap, map, catchError, of, Observable } from 'rxjs';
@@ -28,8 +28,8 @@ export class AuthService {
   logout() {
     this.http.get('/api/auth/logout').subscribe({
       next: () => {
-        this._isLoggedIn.set(false); // Resetujemy Signal
-        window.location.href = '/login'; // Przekierowanie na stronę logowania
+        this._isLoggedIn.set(false); 
+        window.location.href = '/login'; 
       },
       error: (err) => console.error('Logout failed', err)
     });

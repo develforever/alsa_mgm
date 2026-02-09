@@ -1,4 +1,4 @@
-// frontend/src/app/components/allocation-view/allocation-view.component.ts
+
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,20 +15,16 @@ import { Allocation, ALAssLine, ALWStation } from '../../models/types';
 export class AllocationViewComponent implements OnInit {
   private dataService = inject(DataService);
 
-  // Dane z API
   allocations = signal<Allocation[]>([]);
   lines = signal<ALAssLine[]>([]);
   stations = signal<ALWStation[]>([]);
 
-  // Formularz nowej alokacji
   selectedLineId: number | null = null;
   selectedStationId: number | null = null;
 
-  // Filtrowanie i masowe usuwanie
   filterText = signal('');
   selectedIds = new Set<number>();
 
-  // Reaktywne filtrowanie tabeli (na Frontendzie dla szybkości)
   filteredData = computed(() => {
     const term = this.filterText().toLowerCase();
     return this.allocations().filter(a =>
@@ -51,7 +47,7 @@ export class AllocationViewComponent implements OnInit {
       this.dataService.allocateWorkstation(this.selectedLineId, this.selectedStationId)
         .subscribe(() => {
           this.loadAll();
-          this.selectedStationId = null; // Reset stacji dla wygody
+          this.selectedStationId = null; 
         });
     }
   }

@@ -1,4 +1,4 @@
-// backend/src/entities/subscribers/AuditSubscriber.ts
+
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent, SoftRemoveEvent } from "typeorm";
 import { AuditLog } from "../../entity/AuditLog";
 

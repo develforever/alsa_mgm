@@ -6,7 +6,7 @@ const stationRepo = AppDataSource.getRepository(ALWStation);
 
 export const workstationController = {
     getAll: async (req: Request, res: Response) => {
-        const stations = await stationRepo.find(); // Automatycznie pominie soft-deleted
+        const stations = await stationRepo.find(); 
         res.json(stations);
     },
 

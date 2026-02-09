@@ -13,21 +13,19 @@ const seed = async () => {
         const lineRepo = AppDataSource.getRepository(ALAssLine);
         const stationRepo = AppDataSource.getRepository(ALWStation);
 
-        // 1. Produkty (Active: 1)
         console.log("📦 Dodaję produkty...");
         const p1 = productRepo.create({ Name: "8DAB - Control Unit", Active: 1 });
         const p2 = productRepo.create({ Name: "8DJH - Power Module", Active: 1 });
         const p3 = productRepo.create({ Name: "SIMOSEC - Switchgear", Active: 1 });
         await productRepo.save([p1, p2, p3]);
 
-        // 2. Linie montażowe (Status: 1-Active, 2-Locked)
+
         console.log("🛤️ Dodaję linie montażowe...");
         const l1 = lineRepo.create({ Name: "Convey line A1", ProductID: p1.ProductID, Status: 1 });
         const l2 = lineRepo.create({ Name: "Manual bench M2", ProductID: p1.ProductID, Status: 1 });
         const l3 = lineRepo.create({ Name: "Automation Line X", ProductID: p2.ProductID, Status: 2 });
         await lineRepo.save([l1, l2, l3]);
 
-        // 3. Stacje robocze (Workstations)
         console.log("🛠️ Dodaję stacje robocze...");
         await stationRepo.save([
             { Name: "Laser welding", ShortName: "LW", PCName: "PC-TRANS-01", AutoStart: 1 },

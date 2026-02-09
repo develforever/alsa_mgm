@@ -12,7 +12,6 @@ import {
 import { Product } from "./Product";
 import { ALAssLineWStationAllocation } from "./ALAssLineWStationAllocation";
 
-// 1=Active, 2=Locked, 3=Closed
 export enum ALAssLineStatus {
     Active = 1,
     Locked = 2,
