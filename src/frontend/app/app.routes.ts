@@ -37,5 +37,5 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     
-    { path: '', redirectTo: '/allocations', pathMatch: 'full' }
+    { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
