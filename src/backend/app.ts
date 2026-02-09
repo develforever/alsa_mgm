@@ -22,7 +22,7 @@ app.use(passport.session());
 
 app.get('/api/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-app.get('/api/auth/github/callback', 
+app.get('/api/auth/github/callback',
   passport.authenticate('github', { failureRedirect: `${config.BASE_URL}/login` }),
   (req, res) => {
     // Po udanym logowaniu przekieruj na frontend
@@ -31,9 +31,19 @@ app.get('/api/auth/github/callback',
 );
 
 app.get('/api/auth/status', (req, res) => {
-    res.json({ isAuthenticated: req.isAuthenticated(), user: req.user });
+  res.json({ isAuthenticated: req.isAuthenticated(), user: req.user });
 });
-    
+
+app.get('/api/auth/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) { return next(err); }
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.json({ message: 'Logged out successfully' });
+    });
+  });
+});
+
 app.use('/api', authMiddleware);
 
 // Routes
@@ -48,8 +58,8 @@ const publicPath = path.join(__dirname, '../../public/browser');
 app.use(express.static(publicPath));
 
 app.get('/{*any}', (req, res) => {
-    
-    res.sendFile('index.html', { root: publicPath });
+
+  res.sendFile('index.html', { root: publicPath });
 });
 
 app.use(errorHandler);

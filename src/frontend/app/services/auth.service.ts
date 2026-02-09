@@ -22,6 +22,16 @@ export class AuthService {
   }
 
   loginWithGithub() {
-    window.location.href = 'http://localhost:3000/api/auth/github';
+    window.location.href = `/api/auth/github`;
+  }
+
+  logout() {
+    this.http.get('/api/auth/logout').subscribe({
+      next: () => {
+        this._isLoggedIn.set(false); // Resetujemy Signal
+        window.location.href = '/login'; // Przekierowanie na stronę logowania
+      },
+      error: (err) => console.error('Logout failed', err)
+    });
   }
 }

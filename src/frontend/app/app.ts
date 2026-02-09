@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    CommonModule, 
+    CommonModule,
     RouterLink,
     RouterLinkActive
   ],
@@ -15,9 +16,11 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('frontend');
+  authService = inject(AuthService);
 
-  logout() {
-    localStorage.removeItem('isLoggedIn');
-    window.location.reload();
+  onLogout() {
+    if (confirm('Czy na pewno chcesz się wylogować?')) {
+      this.authService.logout();
+    }
   }
 }
