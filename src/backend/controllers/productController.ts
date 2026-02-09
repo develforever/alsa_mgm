@@ -17,6 +17,7 @@ export const productController = {
 
         const newProduct = productRepo.create({ Name, Active: Active ?? 1 });
         
+        
         await productRepo.save(newProduct, {
             data: { userEmail: req.user?.userEmail}
         });

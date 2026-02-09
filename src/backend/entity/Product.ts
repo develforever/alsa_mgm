@@ -8,9 +8,10 @@ import {
     DeleteDateColumn
 } from "typeorm";
 import { ALAssLine } from "./ALAssLine";
+import { BaseAuditEntity } from "./BaseAuditEntity";
 
 @Entity("Product")
-export class Product {
+export class Product extends BaseAuditEntity {
     @PrimaryGeneratedColumn({ name: "ProductID" })
     ProductID!: number;
 

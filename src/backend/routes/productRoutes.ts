@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import { productController } from '../controllers/productController';
+import { requireAuth } from '../middlewares/auth';
 
 const router = Router();
 
-router.get("/products", productController.getAll);
-router.post("/products", productController.create);
-router.put("/products/:id", productController.update);
-router.delete("/products/:id", productController.delete);
+router.get("/products", [requireAuth, productController.getAll]);
+router.post("/products", [requireAuth, productController.create]);
+router.put("/products/:id", [requireAuth, productController.update]);
+router.delete("/products/:id", [requireAuth, productController.delete]);
+
 
 export default router;
