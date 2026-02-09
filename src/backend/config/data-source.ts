@@ -4,6 +4,8 @@ import { Product } from "../entity/Product"
 import { ALAssLine } from "../entity/ALAssLine"
 import { ALWStation } from "../entity/ALWStation"
 import { ALAssLineWStationAllocation } from "../entity/ALAssLineWStationAllocation"
+import { AuditLog } from "../entity/AuditLog"
+import { AuditSubscriber } from "../entities/subscribers/AuditSubscriber"
 
 
 export const AppDataSource = new DataSource({
@@ -15,7 +17,7 @@ export const AppDataSource = new DataSource({
     database: "transmar_task",
     synchronize: true,
     logging: false,
-    entities: [Product, ALAssLine, ALWStation, ALAssLineWStationAllocation],
+    entities: [Product, ALAssLine, ALWStation, ALAssLineWStationAllocation, AuditLog],
+    subscribers: [AuditSubscriber],
     migrations: [],
-    subscribers: [],
 })

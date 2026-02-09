@@ -5,6 +5,7 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { AllocationViewComponent } from './components/allocation-view/allocation-view.component';
 import { LineListComponent } from './components/line-list/line-list.component';
 import { WorkstationListComponent } from './components/workstation-list/workstation-list.component';
+import { AuditLogComponent } from './components/audit-log/audit-log.component';
 
 
 export const routes: Routes = [
@@ -27,6 +28,12 @@ export const routes: Routes = [
     {
         path: 'workstations',
         component: WorkstationListComponent,
+        canActivate: [authGuard]
+    },
+
+    {
+        path: 'audit-logs',
+        component: AuditLogComponent,
         canActivate: [authGuard]
     },
     

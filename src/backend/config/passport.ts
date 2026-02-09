@@ -19,6 +19,9 @@ passport.use('github', new GitHubStrategy({
 },
   (accessToken: string, refreshToken: string, profile: any, done: any) => {
 
+    const email = profile.emails && profile.emails[0] ? profile.emails[0].value : profile.username;
+    profile.userEmail = email; 
+
     return done(null, profile);
   }
 ));

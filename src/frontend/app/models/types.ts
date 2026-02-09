@@ -34,3 +34,13 @@ export interface Allocation {
   assemblyLine?: ALAssLine;
   workstation?: ALWStation;
 }
+
+export interface AuditLog {
+  id: number;
+  action:string;
+  entityName: string;
+  entityId: number;
+  details: string;
+  userEmail: string;
+  timestamp: string;
+}

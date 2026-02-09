@@ -16,7 +16,10 @@ export const productController = {
         if (!Name) return res.status(400).json({ message: "Name is required" });
 
         const newProduct = productRepo.create({ Name, Active: Active ?? 1 });
-        await productRepo.save(newProduct);
+        
+        await productRepo.save(newProduct, {
+            data: { userEmail: req.user?.userEmail}
+        });
         res.status(201).json(newProduct);
     },
 

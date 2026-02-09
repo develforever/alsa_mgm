@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product, ALAssLine, ALWStation, Allocation } from '../models/types';
+import { Product, ALAssLine, ALWStation, Allocation, AuditLog } from '../models/types';
 
 
 @Injectable({
@@ -81,5 +81,9 @@ export class DataService {
   removeAllocations(ids: number[]): Observable<any> {
     // Wiele sposobów na DELETE z body, najbezpieczniejszy to POST na dedykowany endpoint
     return this.http.post(`${this.apiUrl}/allocations/delete-multiple`, { ids });
+  }
+
+  getAuditLogs() {
+    return this.http.get<AuditLog[]>('/api/audit-logs');
   }
 }

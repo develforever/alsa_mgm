@@ -2,7 +2,6 @@ import "reflect-metadata";
 import express from 'express';
 import { errorHandler } from './middlewares/errorHandler';
 import appRoutes from './routes/appRoutes';
-import { authMiddleware } from "./middlewares/auth";
 import productRoutes from "./routes/productRoutes";
 import lineRoutes from "./routes/lineRoutes";
 import workstationRoutes from "./routes/workstationRoutes";
@@ -12,6 +11,7 @@ import passport from "passport";
 import session from "express-session";
 import './config/passport';
 import config from "./config/config";
+import auditRoutes from "./routes/auditRoutes";
 
 const app = express();
 
@@ -44,14 +44,13 @@ app.get('/api/auth/logout', (req, res, next) => {
   });
 });
 
-app.use('/api', authMiddleware);
-
 // Routes
 app.use('/', appRoutes);
 app.use('/api', productRoutes);
 app.use('/api', lineRoutes);
 app.use('/api', workstationRoutes);
 app.use('/api', allocationRoutes);
+app.use('/api', auditRoutes);
 
 const publicPath = path.join(__dirname, '../../public/browser');
 
