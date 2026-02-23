@@ -1,22 +1,51 @@
-
 <main class="main">
   <div class="content">
     <div class="left-side">
-      <nav style="padding: 10px; background: #eee;" *ngIf="authService.isLoggedIn()">
-        <a routerLink="/allocations" routerLinkActive="active" style="margin-right: 10px;">Alokacje</a>
-        <a routerLink="/products" routerLinkActive="active" style="margin-right: 10px;">Produkty</a>
-        <a routerLink="/lines" routerLinkActive="active" style="margin-right: 10px;">Linie montażowe</a>
-        <a routerLink="/workstations" routerLinkActive="active" style="margin-right: 10px;">Stanowiska</a>
-        <a routerLink="/audit-logs" routerLinkActive="active" style="margin-right: 10px;">Logi audytu</a>
+      <nav
+        style="padding: 10px; background: #eee"
+        *ngIf="authService.isLoggedIn()"
+      >
+        <a
+          routerLink="/allocations"
+          routerLinkActive="active"
+          style="margin-right: 10px"
+          >Alokacje</a
+        >
+        <a
+          routerLink="/products"
+          routerLinkActive="active"
+          style="margin-right: 10px"
+          >Produkty</a
+        >
+        <a
+          routerLink="/lines"
+          routerLinkActive="active"
+          style="margin-right: 10px"
+          >Linie montażowe</a
+        >
+        <a
+          routerLink="/workstations"
+          routerLinkActive="active"
+          style="margin-right: 10px"
+          >Stanowiska</a
+        >
+        <a
+          routerLink="/audit-logs"
+          routerLinkActive="active"
+          style="margin-right: 10px"
+          >Logi audytu</a
+        >
+        @if (authService.isLoggedIn()) {
         <button (click)="onLogout()">Wyloguj</button>
+        } @else {
+        <a routerLink="/login">Zaloguj się</a>
+        }
       </nav>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
-    <div class="right-side">
-
-    </div>
+    <div class="right-side">{{ currentTitle() }}</div>
+  </div>
+  <div class="full-width">
+    <router-outlet />
   </div>
 </main>
-
-
-<router-outlet />
