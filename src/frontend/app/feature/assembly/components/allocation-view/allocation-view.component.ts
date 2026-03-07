@@ -6,7 +6,7 @@ import { DataService } from '../../../../services/data.service';
 import { Allocation, ALAssLine, ALWStation } from '../../../../../../shared/models/types';
 
 @Component({
-  selector: 'app-allocation-view',
+  selector: 'assembly-allocation-view',
   imports: [CommonModule, FormsModule],
   templateUrl: './allocation-view.component.html',
   styleUrls: ['./allocation-view.component.scss']

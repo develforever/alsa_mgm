@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-line-list',
+  selector: 'assembly-line-list',
   templateUrl: './line-list.component.html',
   imports: [
     CommonModule,

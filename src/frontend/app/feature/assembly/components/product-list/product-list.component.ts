@@ -6,7 +6,7 @@ import { DataService } from '../../../../services/data.service';
 import { Product } from '../../../../../../shared/models/types';
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'assembly-product-list',
   imports: [CommonModule, FormsModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'

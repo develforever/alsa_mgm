@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuditLog } from '../../../../../../shared/models/types';
 
 @Component({
-  selector: 'app-audit-log',
+  selector: 'home-audit-log-component',
   templateUrl: './audit-log.component.html',
   imports: [
     CommonModule,

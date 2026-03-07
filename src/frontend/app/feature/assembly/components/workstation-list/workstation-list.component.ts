@@ -6,7 +6,7 @@ import { DataService } from '../../../../services/data.service';
 import { ALWStation } from '../../../../../../shared/models/types';
 
 @Component({
-  selector: 'app-workstation-list',
+  selector: 'assembly-workstation-list',
   imports: [CommonModule, FormsModule],
   templateUrl: './workstation-list.component.html',
 })

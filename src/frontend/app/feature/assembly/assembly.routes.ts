@@ -18,21 +18,13 @@ export function getRoute(): Route {
                 label: 'Assembly',
                 link: '/assembly',
                 icon: 'precision_manufacturing',
+                menuItems: [
+                    { label: 'Produkty', icon: 'precision_manufacturing', link: '/assembly/products' },
+                    { label: 'Alokacje', icon: 'swap_horiz', link: '/assembly/allocations' },
+                    { label: 'Linie montażowe', icon: 'line_weight', link: '/assembly/lines' },
+                    { label: 'Stanowiska', icon: 'computer', link: '/assembly/workstations' }
+                ]
             },
-            menuItems: [
-                {
-                    label: 'Assembly',
-                    icon: 'precision_manufacturing',
-                    link: '/assembly',
-                    menuItems: [
-                        { label: 'Produkty', icon: 'precision_manufacturing', link: '/assembly/products' },
-                        { label: 'Alokacje', icon: 'swap_horiz', link: '/assembly/allocations' },
-                        { label: 'Linie montażowe', icon: 'line_weight', link: '/assembly/lines' },
-                        { label: 'Stanowiska', icon: 'computer', link: '/assembly/workstations' }
-                    ]
-                },
-
-            ]
         },
         children: [
             {

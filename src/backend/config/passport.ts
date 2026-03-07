@@ -6,7 +6,7 @@ const clientID = config.GITHUB_CLIENT_ID;
 const clientSecret = config.GITHUB_CLIENT_SECRET;
 
 if (!clientID || !clientSecret) {
-    console.error("❌ BŁĄD: Brak GITHUB_CLIENT_ID lub GITHUB_CLIENT_SECRET w pliku .env");
+  console.error("❌ BŁĄD: Brak GITHUB_CLIENT_ID lub GITHUB_CLIENT_SECRET w pliku .env");
 }
 
 passport.serializeUser((user: any, done) => done(null, user));
@@ -20,7 +20,10 @@ passport.use('github', new GitHubStrategy({
   (accessToken: string, refreshToken: string, profile: any, done: any) => {
 
     const email = profile.emails && profile.emails[0] ? profile.emails[0].value : profile.username;
-    profile.userEmail = email; 
+    profile.userEmail = email;
+    profile.userAvatar = profile.photos && profile.photos[0] ? profile.photos[0].value : '';
+    profile.accessToken = accessToken;
+    profile.refreshToken = refreshToken;
 
     return done(null, profile);
   }

@@ -11,10 +11,10 @@ import {
 import { AuthService } from "./services/auth.service";
 import { Title } from "@angular/platform-browser";
 import { filter, map } from "rxjs/operators";
-import { toSignal } from "@angular/core/rxjs-interop";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { AppTopMenu } from "./ui/TopMenu";
 
 @Component({
   selector: "app-root",
@@ -30,7 +30,8 @@ import { MatButtonModule } from '@angular/material/button';
     RouterLinkActive,
     MatMenuModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    AppTopMenu
   ],
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
@@ -40,37 +41,7 @@ export class App {
   private titleService = inject(Title);
   protected router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-
   protected readonly currentTitle = signal("");
-
-  private route = inject(ActivatedRoute);
-
-  dynamicMenu = toSignal(
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => {
-
-        const fullMenu: any[] = [];
-        let currentRoute = this.route.root;
-
-        while (currentRoute) {
-
-          const items = currentRoute.snapshot.data['menuItems'];
-
-          const parentItems = currentRoute.parent?.snapshot.data['menuItems'];
-
-          if (items && Array.isArray(items) && items !== parentItems) {
-            fullMenu.push(...items);
-          }
-
-          currentRoute = currentRoute.firstChild!;
-        }
-
-        return fullMenu;
-      })
-    ),
-    { initialValue: [] }
-  );
 
   constructor() {
 

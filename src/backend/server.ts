@@ -1,5 +1,7 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({
+  path: '.env'
+});
 import config from './config/config';
 import app from './app';
 

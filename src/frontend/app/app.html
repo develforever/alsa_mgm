@@ -1,46 +1,17 @@
 <main class="main">
   <div class="content">
     <div class="left-side">
-      <nav style="padding: 10px; background: #eee">
-
-        <a mat-button class="menu-item" routerLink="/">
-          <mat-icon>home</mat-icon>
-          Home
-        </a>
-
-        @for (item of dynamicMenu(); track item.label) {
-        @if (item.menuItems && item.menuItems.length > 0) {
-        <button mat-button [matMenuTriggerFor]="subMenu" class="menu-item">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          {{ item.label }}
-          <mat-icon>expand_more</mat-icon>
-        </button>
-
-        <mat-menu #subMenu="matMenu">
-          @for (subItem of item.menuItems; track subItem.label) {
-          <a mat-menu-item [routerLink]="subItem.link">
-            <mat-icon>{{ subItem.icon }}</mat-icon>
-            <span>{{ subItem.label }}</span>
-          </a>
-          }
-        </mat-menu>
-        } @else {
-        <a mat-button [routerLink]="item.link" class="menu-item" routerLinkActive="active">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          {{ item.label }}
-        </a>
-        }
-        }
-
-      </nav>
+      <app-top-menu></app-top-menu>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
+
       {{ currentTitle() }}
+
       @if (authService.isLoggedIn()) {
-      <button (click)="onLogout()">Wyloguj</button>
+      <button mat-button (click)="onLogout()">Wyloguj</button>
       } @else if(router.url !== '/login') {
-      <a routerLink="/login">Zaloguj się</a>
+      <a mat-button routerLink="/login">Zaloguj się</a>
       }
     </div>
   </div>
