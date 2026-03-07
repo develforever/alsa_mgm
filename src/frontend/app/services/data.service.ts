@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product, ALAssLine, ALWStation, Allocation, AuditLog } from '../models/types';
+import { Product, ALAssLine, ALWStation, Allocation, AuditLog } from '../../../shared/models/types';
 
 
 @Injectable({
@@ -10,7 +10,7 @@ import { Product, ALAssLine, ALWStation, Allocation, AuditLog } from '../models/
 })
 export class DataService {
   private http = inject(HttpClient);
-  private apiUrl = '/api'; 
+  private apiUrl = '/api';
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/products`);

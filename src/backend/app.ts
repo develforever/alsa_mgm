@@ -12,7 +12,6 @@ import session from "express-session";
 import './config/passport';
 import config from "./config/config";
 import auditRoutes from "./routes/auditRoutes";
-import { AppDataSource } from "./config/data-source";
 
 const app = express();
 
@@ -26,7 +25,7 @@ app.get('/api/auth/github', passport.authenticate('github', { scope: ['user:emai
 app.get('/api/auth/github/callback',
   passport.authenticate('github', { failureRedirect: `${config.BASE_URL}/login` }),
   (req, res) => {
-    res.redirect(`${config.BASE_URL}/allocations`);
+    res.redirect(`${config.BASE_URL}/?auth_code=${req.query.code}`);
   }
 );
 

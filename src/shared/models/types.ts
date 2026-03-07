@@ -9,7 +9,7 @@ export interface ALAssLine {
   ProductID: number;
   Name: string;
   Status: LineStatus;
-  product?: Product; 
+  product?: Product;
 }
 
 export enum LineStatus {
@@ -37,10 +37,15 @@ export interface Allocation {
 
 export interface AuditLog {
   id: number;
-  action:string;
+  action: string;
   entityName: string;
   entityId: number;
   details: string;
   userEmail: string;
   timestamp: string;
+}
+
+export interface User {
+  id: number;
+  email: string;
 }

@@ -2,8 +2,8 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-import { ALWStation } from '../../models/types';
+import { DataService } from '../../../../services/data.service';
+import { ALWStation } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-workstation-list',

@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { DataService } from '../../../../services/data.service';
 import { CommonModule } from '@angular/common';
-import { AuditLog } from '../../models/types';
+import { AuditLog } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-audit-log',

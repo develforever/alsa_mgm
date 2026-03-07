@@ -28,8 +28,8 @@ export class AuthService {
   logout() {
     this.http.get('/api/auth/logout').subscribe({
       next: () => {
-        this._isLoggedIn.set(false); 
-        window.location.href = '/login'; 
+        this._isLoggedIn.set(false);
+        window.location.href = '/login';
       },
       error: (err) => console.error('Logout failed', err)
     });

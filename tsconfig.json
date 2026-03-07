@@ -1,17 +1,17 @@
 {
+  "files": [],
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "module": "esnext",
     "skipLibCheck": true,
-    "strictPropertyInitialization": false,
-    "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "esModuleInterop": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "references": [
+    {
+      "path": "./tsconfig.ng.json"
+    },
+    {
+      "path": "./src/backend/tsconfig.backend.json"
+    }
+  ]
 }

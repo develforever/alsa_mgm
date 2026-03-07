@@ -1,7 +1,7 @@
 
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule],
   template: `
     <div style="text-align: center; margin-top: 50px;">
-      <h2>Panel Zarządzania Transmar</h2>
+      <h2>Panel Zarządzania</h2>
       <p>Zaloguj się, aby uzyskać dostęp do zarządzania liniami</p>
       <button (click)="onLogin()" style="padding: 10px 20px; cursor: pointer;">
         Zaloguj z GitHub

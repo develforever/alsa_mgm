@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "n:build": "tsc",
+    "n:build": "tsc -p ./src/backend/tsconfig.backend.json",
     "n:start": "node dist/server.js",
     "n:lint": "eslint 'src/**/*.ts'",
     "ng": "ng",
@@ -8,16 +8,18 @@
     "ng:build": "ng build",
     "ng:watch": "ng build --watch --configuration development",
     "ng:test": "ng test",
-    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --exec 'ts-node' src/backend/server.ts",
+    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --watch 'src/shared/**/*.ts' --exec 'ts-node --project src/backend/tsconfig.backend.json' src/backend/server.ts",
     "start:frontend": "npm run ng:watch",
     "dev": "concurrently --kill-others -n \"BACKEND,FRONTEND,DOCKER\" -c \"bgBlue,bgGreen,bgRed\" \"npm run start:backend\" \"npm run start:frontend\" \"docker compose up\"",
     "seed": "ts-node src/backend/seed.ts"
   },
   "dependencies": {
+    "@angular/cdk": "~21.2.1",
     "@angular/common": "^21.1.3",
     "@angular/compiler": "^21.1.0",
     "@angular/core": "^21.1.3",
     "@angular/forms": "^21.1.0",
+    "@angular/material": "~21.2.1",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
     "@types/express-session": "^1.18.2",
@@ -36,6 +38,7 @@
     "@angular/build": "^21.1.3",
     "@angular/cli": "^21.1.3",
     "@angular/compiler-cli": "^21.1.0",
+    "@angular/material": "^21.2.1",
     "@types/express": "^5.0.6",
     "@types/node": "^25.2.2",
     "concurrently": "^9.2.1",

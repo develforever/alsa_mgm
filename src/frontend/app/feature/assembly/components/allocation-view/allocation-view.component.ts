@@ -2,8 +2,8 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-import { Allocation, ALAssLine, ALWStation } from '../../models/types';
+import { DataService } from '../../../../services/data.service';
+import { Allocation, ALAssLine, ALWStation } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-allocation-view',
@@ -47,7 +47,7 @@ export class AllocationViewComponent implements OnInit {
       this.dataService.allocateWorkstation(this.selectedLineId, this.selectedStationId)
         .subscribe(() => {
           this.loadAll();
-          this.selectedStationId = null; 
+          this.selectedStationId = null;
         });
     }
   }

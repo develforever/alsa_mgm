@@ -2,8 +2,8 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-import { Product } from '../../models/types';
+import { DataService } from '../../../../services/data.service';
+import { Product } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-product-list',
@@ -14,7 +14,7 @@ import { Product } from '../../models/types';
 })
 export class ProductListComponent implements OnInit {
   private dataService = inject(DataService);
-  
+
   products = signal<Product[]>([]);
   newProductName = '';
 
@@ -28,7 +28,7 @@ export class ProductListComponent implements OnInit {
 
   addProduct() {
     if (!this.newProductName.trim()) return;
-    
+
     const productData = { Name: this.newProductName, Active: 1 };
     this.dataService.addProduct(productData).subscribe(() => {
       this.newProductName = '';
