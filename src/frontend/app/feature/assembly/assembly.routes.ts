@@ -1,33 +1,37 @@
-import { RouterOutlet, Routes } from "@angular/router";
+
 import { authGuard } from "../../guards/auth.guard";
 import { ProductListComponent } from "./components/product-list/product-list.component";
 import { AllocationViewComponent } from "./components/allocation-view/allocation-view.component";
 import { LineListComponent } from "./components/line-list/line-list.component";
 import { WorkstationListComponent } from "./components/workstation-list/workstation-list.component";
-import { Component } from "@angular/core";
+import { MainAssemblyComponent } from "./main.component";
+import { Route } from "@angular/router";
 
-const routes: Routes = [
-    {
-        path: '',
+export function getRoute(): Route {
+    return {
+        path: 'assembly',
+        title: "Assembly Management",
         canActivate: [authGuard],
-        loadComponent: () => {
-            @Component({
-                standalone: true,
-                template: `
-                    <router-outlet></router-outlet> 
-                `,
-                imports: [RouterOutlet],
-                styles: [`h1 { color: blue; }`]
-            })
-            class InlineComponent { }
-            return InlineComponent;
-        },
+        component: MainAssemblyComponent,
         data: {
+            manuItem: {
+                label: 'Assembly',
+                link: '/assembly',
+                icon: 'precision_manufacturing',
+            },
             menuItems: [
-                { label: 'Produkty', icon: 'precision_manufacturing', link: '/assembly/products' },
-                { label: 'Alokacje', icon: 'swap_horiz', link: '/assembly/allocations' },
-                { label: 'Linie montażowe', icon: 'line_weight', link: '/assembly/lines' },
-                { label: 'Stanowiska', icon: 'computer', link: '/assembly/workstations' }
+                {
+                    label: 'Assembly',
+                    icon: 'precision_manufacturing',
+                    link: '/assembly',
+                    menuItems: [
+                        { label: 'Produkty', icon: 'precision_manufacturing', link: '/assembly/products' },
+                        { label: 'Alokacje', icon: 'swap_horiz', link: '/assembly/allocations' },
+                        { label: 'Linie montażowe', icon: 'line_weight', link: '/assembly/lines' },
+                        { label: 'Stanowiska', icon: 'computer', link: '/assembly/workstations' }
+                    ]
+                },
+
             ]
         },
         children: [
@@ -56,12 +60,5 @@ const routes: Routes = [
                 title: "Stanowiska",
             },
         ]
-    }
-];
-
-export function getRoute() {
-    return {
-        path: 'assembly',
-        children: routes
     };
 }

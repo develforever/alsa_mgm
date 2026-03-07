@@ -7,7 +7,6 @@ import { Allocation, ALAssLine, ALWStation } from '../../../../../../shared/mode
 
 @Component({
   selector: 'app-allocation-view',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './allocation-view.component.html',
   styleUrls: ['./allocation-view.component.scss']

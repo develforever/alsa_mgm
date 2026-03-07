@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-line-list',
-  standalone: true,
   templateUrl: './line-list.component.html',
   imports: [
     CommonModule,

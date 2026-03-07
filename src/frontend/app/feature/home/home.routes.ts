@@ -1,44 +1,51 @@
-import { Routes, CanActivateFn, RouterOutlet } from "@angular/router";
+import { CanActivateFn, Route } from "@angular/router";
 import { authGuard } from "../../guards/auth.guard";
 import { LoginComponent } from "./components/login/login.component";
 import { AuditLogComponent } from "./components/audit-log/audit-log.component";
-import { Component, inject } from "@angular/core";
+import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { HomeComponent } from "./components/home/home.component";
+import { AppStoreService } from "../../services/store.service";
+import { MainHomeComponent } from "./components/main.component";
 
 
 export const codeRedirectGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
-    const code = route.queryParamMap.get('auth_code');
+    const appStore = inject(AppStoreService);
+    const code = route.queryParamMap.get('auth_code') ?? appStore.code();
+
+    console.log(`${route.title} ${code}`);
 
     if (code) {
-        return router.createUrlTree(['/dashboard'], { queryParamsHandling: 'preserve' });
+        appStore.setCode(code);
+        //return router.createUrlTree(['/dashboard'], { queryParamsHandling: 'preserve' });
     } else {
-        return router.createUrlTree(['/login'], { queryParamsHandling: 'preserve' });
+        if (state.url.includes('/login')) {
+            //    return true;
+        }
+        //return router.createUrlTree(['/login'], { queryParamsHandling: 'preserve' });
     }
+
+    return true;
 };
 
-const routes: Routes = [
 
-    {
+export function getRoute(): Route {
+    return {
         path: '',
         canActivate: [codeRedirectGuard],
-        loadComponent: () => {
-            @Component({
-                standalone: true,
-                template: `<router-outlet></router-outlet> `,
-                imports: [RouterOutlet],
-                styles: [`h1 { color: blue; }`]
-            })
-            class InlineComponent { }
-            return InlineComponent;
-        },
+        component: MainHomeComponent,
         data: {
             menuItems: [
-                { label: 'Assembly', icon: 'precision_manufacturing', link: './assembly' },
+
             ]
         },
         children: [
+            {
+                path: '',
+                component: HomeComponent,
+            },
             {
                 path: "login",
                 component: LoginComponent,
@@ -58,12 +65,5 @@ const routes: Routes = [
                 component: DashboardComponent,
             },
         ]
-    }
-];
-
-export function getRoute() {
-    return {
-        path: '',
-        children: routes
     };
 }

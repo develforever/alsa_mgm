@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [CommonModule],
   template: `
     <div style="text-align: center; margin-top: 50px;">

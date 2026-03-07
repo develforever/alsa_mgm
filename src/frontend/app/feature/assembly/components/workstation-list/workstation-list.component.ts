@@ -7,7 +7,6 @@ import { ALWStation } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-workstation-list',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './workstation-list.component.html',
 })

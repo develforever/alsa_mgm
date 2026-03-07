@@ -10,10 +10,11 @@ import {
 } from "@angular/router";
 import { AuthService } from "./services/auth.service";
 import { Title } from "@angular/platform-browser";
-import { filter, map, mergeMap } from "rxjs/operators";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { filter, map } from "rxjs/operators";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: "app-root",
@@ -22,14 +23,22 @@ import { MatIconModule } from "@angular/material/icon";
     class: "app",
   },
   standalone: true,
-  imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, MatSlideToggleModule, MatIconModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
 })
 export class App {
   authService = inject(AuthService);
   private titleService = inject(Title);
-  private router = inject(Router);
+  protected router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
   protected readonly currentTitle = signal("");
@@ -40,14 +49,20 @@ export class App {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => {
+
         const fullMenu: any[] = [];
         let currentRoute = this.route.root;
 
         while (currentRoute) {
+
           const items = currentRoute.snapshot.data['menuItems'];
-          if (items && Array.isArray(items)) {
+
+          const parentItems = currentRoute.parent?.snapshot.data['menuItems'];
+
+          if (items && Array.isArray(items) && items !== parentItems) {
             fullMenu.push(...items);
           }
+
           currentRoute = currentRoute.firstChild!;
         }
 
@@ -67,16 +82,26 @@ export class App {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        map(() => this.activatedRoute),
-        map((route) => {
-          while (route.firstChild) route = route.firstChild;
-          return route;
-        }),
-        mergeMap((route) => route.title),
+        map(() => {
+          const titles: string[] = [];
+          let currentRoute: ActivatedRoute | null = this.activatedRoute.root;
+
+          while (currentRoute) {
+            const title = currentRoute.snapshot.title;
+            const parentTitle = currentRoute.parent?.snapshot.title;
+
+            if (title && parentTitle != title) {
+              titles.push(title);
+            }
+            currentRoute = currentRoute.firstChild;
+          }
+
+          return titles.reverse().join(' <');
+        })
       )
-      .subscribe((title) => {
-        if (title) {
-          this.currentTitle.set(title);
+      .subscribe((fullTitle) => {
+        if (fullTitle) {
+          this.currentTitle.set(fullTitle);
         }
       });
   }

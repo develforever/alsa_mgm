@@ -5,7 +5,6 @@ import { AuditLog } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-audit-log',
-  standalone: true,
   templateUrl: './audit-log.component.html',
   imports: [
     CommonModule,

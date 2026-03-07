@@ -7,7 +7,6 @@ import { Product } from '../../../../../../shared/models/types';
 
 @Component({
   selector: 'app-product-list',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
