@@ -2,24 +2,38 @@ import { CanActivateFn } from "@angular/router";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { AppStoreService } from "../services/store.service";
+import { AuthService } from "../services/auth.service";
+import { catchError, map, of } from "rxjs";
 
 
 export const codeRedirectGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
     const appStore = inject(AppStoreService);
-    const code = route.queryParamMap.get('auth_code');
+    const authService = inject(AuthService);
+    const codeFromUrl = route.queryParamMap.get('auth_code');
 
-    if (appStore.code()) {
-        return true;
-    }
+    return authService.checkAuth().pipe(
+        map((isAuthenticated) => {
+            if (codeFromUrl) {
+                appStore.setCode(codeFromUrl);
+                return router.createUrlTree(['/dashboard']);
+            }
+            if (isAuthenticated || appStore.code()) {
+                if (state.url.includes('/login')) {
+                    return router.createUrlTree(['/dashboard']);
+                }
+                if (state.url.includes('/login')) {
+                    return router.createUrlTree(['/dashboard']);
+                }
+                return true;
+            }
 
-    if (code) {
-        appStore.setCode(code);
-        return router.createUrlTree(['/dashboard']);
-    } else {
-        if (state.url.includes('/login')) {
-            return true;
-        }
-        return router.createUrlTree(['/login']);
-    }
+            if (state.url.includes('/login')) {
+                return true;
+            }
+
+            return router.createUrlTree(['/login']);
+        }),
+        catchError(() => of(router.createUrlTree(['/login'])))
+    );
 };

@@ -21,7 +21,8 @@ export function getRoute(): Route {
             {
                 path: "login",
                 component: LoginComponent,
-                title: "Logowanie do systemu"
+                title: "Logowanie do systemu",
+                canActivate: [codeRedirectGuard],
             },
             {
                 path: "audit-logs",

@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product, ALAssLine, ALWStation, Allocation, AuditLog } from '../../../shared/models/types';
+import { ApiResponse } from '../../../shared/api/ApiResponse';
 
 
 @Injectable({
@@ -79,7 +80,12 @@ export class DataService {
     return this.http.post(`${this.apiUrl}/allocations/delete-multiple`, { ids });
   }
 
-  getAuditLogs() {
-    return this.http.get<AuditLog[]>('/api/audit-logs');
+  getAuditLogs(pageIndex: number, pageSize: number): Observable<ApiResponse<AuditLog[]>> {
+    return this.http.get<ApiResponse<AuditLog[]>>('/api/audit-logs', {
+      params: {
+        pageIndex: pageIndex.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 }
