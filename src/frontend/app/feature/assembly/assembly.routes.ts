@@ -19,6 +19,7 @@ export function getRoute(): Route {
                 link: '/assembly',
                 icon: 'precision_manufacturing',
                 menuItems: [
+                    { label: 'Dashboard', icon: 'dashboard', link: '/assembly' },
                     { label: 'Produkty', icon: 'precision_manufacturing', link: '/assembly/products' },
                     { label: 'Alokacje', icon: 'swap_horiz', link: '/assembly/allocations' },
                     { label: 'Linie montażowe', icon: 'line_weight', link: '/assembly/lines' },

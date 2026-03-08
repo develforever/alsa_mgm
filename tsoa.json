@@ -17,5 +17,13 @@
   "routes": {
     "routesDir": "src/shared/generated",
     "middleware": "express"
+  },
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": [
+        "src/shared/*"
+      ]
+    }
   }
 }

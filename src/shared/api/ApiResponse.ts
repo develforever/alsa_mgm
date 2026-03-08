@@ -1,4 +1,7 @@
 
+export interface ApiResponseInfo {
+    message: string;
+}
 
 export interface ApiResponseSingle<T> {
     data: T;
@@ -17,4 +20,4 @@ export interface ApiError {
     stack?: string;
 }
 
-export type ApiResponse<T> = ApiResponseSingle<T> | ApiResponseList<T> | ApiError;
+export type ApiResponse<T> = ApiResponseSingle<T> | ApiResponseList<T> | ApiResponseInfo | ApiError;

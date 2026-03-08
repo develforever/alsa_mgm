@@ -23,9 +23,12 @@ export class DataAllocationService extends AbstractDataService {
         });
     }
 
-
     removeAllocations(ids: number[]): Observable<ApiResponse<any>> {
 
-        return this.http.post<ApiResponse<any>>(`${this.apiUrl}/allocations/delete-multiple`, { ids });
+        return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/allocations`, {
+            params: {
+                ids: ids.join(",")
+            }
+        });
     }
 }

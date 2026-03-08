@@ -1,16 +1,16 @@
 import { AppDataSource } from "../../config/data-source";
 import { ALAssLineWStationAllocation } from "../../entity/ALAssLineWStationAllocation";
-import { ApiResponse } from "../../../shared/api/ApiResponse";
+import { ApiResponse, ApiResponseInfo } from "../../../shared/api/ApiResponse";
 
 const allocationRepo = AppDataSource.getRepository(ALAssLineWStationAllocation);
 
-import { Controller, Get, Route, Query, Tags, Post, Body } from "tsoa";
+import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Path } from "tsoa";
 
-@Route("api/allocation")
+@Route("api/allocations")
 @Tags("Allocations")
 export class AllocationController extends Controller {
 
-    @Get("list")
+    @Get("")
     public async getAllocations(
         @Query() page: number = 0,
         @Query() size: number = 10
@@ -28,9 +28,9 @@ export class AllocationController extends Controller {
         };
     }
 
-    @Post("create")
+    @Post("")
     public async createAllocation(
-        @Body() body: ALAssLineWStationAllocation
+        @Body() body: { ALAssLineID: number, ALWStationID: number }
     ): Promise<ApiResponse<ALAssLineWStationAllocation>> {
         const { ALAssLineID, ALWStationID } = body;
         const repo = AppDataSource.getRepository(ALAssLineWStationAllocation);
@@ -61,6 +61,50 @@ export class AllocationController extends Controller {
                 code: 500,
                 stack: `${error.stack}`,
             };
+        }
+    }
+
+    @Patch("{id}")
+    public async update(
+        @Path() id: number,
+        @Body() body: { ALAssLineID: number, ALWStationID: number, Sort: number }
+    ): Promise<ApiResponse<ALAssLineWStationAllocation>> {
+
+        await allocationRepo.update(id, body);
+        const updatedAlloc = await allocationRepo.findOneBy({ ALAssLineWStationAllocationID: id });
+        if (!updatedAlloc) {
+            return {
+                message: "Allocation not found",
+                code: 404
+            };
+        }
+        return {
+            data: updatedAlloc,
+        };
+
+    }
+
+    @Delete("{id}")
+    public async delete(
+        @Path() id: number
+    ): Promise<ApiResponseInfo> {
+
+        await allocationRepo.softDelete(id);
+
+        return {
+            message: "Allocation deleted"
+        }
+    }
+
+    @Delete("")
+    public async deleteAll(
+        @Query() ids: number[]
+    ): Promise<ApiResponseInfo> {
+
+        await allocationRepo.softDelete(ids);
+
+        return {
+            message: "Allocations deleted"
         }
     }
 }

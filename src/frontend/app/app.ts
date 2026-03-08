@@ -41,7 +41,7 @@ export class App {
   private titleService = inject(Title);
   protected router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  protected readonly currentTitle = signal("");
+  protected readonly currentTitle = signal<string[]>([]);
 
   constructor() {
 
@@ -67,7 +67,7 @@ export class App {
             currentRoute = currentRoute.firstChild;
           }
 
-          return titles.reverse().join(' <');
+          return titles.reverse();
         })
       )
       .subscribe((fullTitle) => {

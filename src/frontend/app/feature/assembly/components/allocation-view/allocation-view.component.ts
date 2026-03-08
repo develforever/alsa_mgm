@@ -59,6 +59,7 @@ export class AllocationViewComponent implements OnInit {
         .subscribe(() => {
           this.loadAll();
           this.selectedStationId = null;
+          this.selectedLineId = null;
         });
     }
   }

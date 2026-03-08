@@ -7,113 +7,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"AuditLog": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"action": {
-						"type": "string"
-					},
-					"entityName": {
-						"type": "string"
-					},
-					"entityId": {
-						"type": "string"
-					},
-					"details": {},
-					"userEmail": {
-						"type": "string"
-					},
-					"timestamp": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"action",
-					"entityName",
-					"entityId",
-					"details",
-					"userEmail",
-					"timestamp"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiError": {
-				"properties": {
-					"message": {
-						"type": "string"
-					},
-					"code": {
-						"type": "number",
-						"format": "double"
-					},
-					"stack": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message",
-					"code"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_AuditLog_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/AuditLog"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_AuditLog_": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/AuditLog"
-						},
-						"type": "array"
-					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					}
-				},
-				"required": [
-					"data",
-					"total"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponse_AuditLog_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_AuditLog_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_AuditLog_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
-			},
 			"ALAssLine": {
 				"properties": {
 					"ALAssLineID": {
@@ -320,6 +213,470 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"ApiError": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"code": {
+						"type": "number",
+						"format": "double"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_ALWStation-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ALWStation"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_ALWStation-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/ALWStation"
+							},
+							"type": "array"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseInfo": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_ALWStation-Array_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_ALWStation-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_ALWStation-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_ALWStation_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ALWStation"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_ALWStation_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ALWStation"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_ALWStation_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_ALWStation_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_ALWStation_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_Product-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_Product-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/Product"
+							},
+							"type": "array"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_Product-Array_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_Product-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_Product-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_Product_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/Product"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_Product_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_Product_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_Product_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_Product_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_ALAssLine-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ALAssLine"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_ALAssLine-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/ALAssLine"
+							},
+							"type": "array"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_ALAssLine-Array_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_ALAssLine-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_ALAssLine-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_ALAssLine_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ALAssLine"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_ALAssLine_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ALAssLine"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_ALAssLine_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_ALAssLine_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_ALAssLine_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"AuditLog": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"action": {
+						"type": "string"
+					},
+					"entityName": {
+						"type": "string"
+					},
+					"entityId": {
+						"type": "string"
+					},
+					"details": {},
+					"userEmail": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"action",
+					"entityName",
+					"entityId",
+					"details",
+					"userEmail",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_AuditLog_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/AuditLog"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_AuditLog_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/AuditLog"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_AuditLog_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_AuditLog_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_AuditLog_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
 			"ApiResponseSingle_ALAssLineWStationAllocation_": {
 				"properties": {
 					"data": {
@@ -367,6 +724,9 @@
 						"$ref": "#/components/schemas/ApiResponseList_ALAssLineWStationAllocation_"
 					},
 					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
 						"$ref": "#/components/schemas/ApiError"
 					}
 				]
@@ -379,6 +739,507 @@
 		"contact": {}
 	},
 	"paths": {
+		"/api/workstations": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALWStation-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workstations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALWStation_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workstations"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"PCName": {
+										"type": "string"
+									},
+									"ShortName": {
+										"type": "string"
+									},
+									"Name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"PCName",
+									"ShortName",
+									"Name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workstations/{id}": {
+			"patch": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALWStation_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workstations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"PCName": {
+										"type": "string"
+									},
+									"ShortName": {
+										"type": "string"
+									},
+									"Name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"PCName",
+									"ShortName",
+									"Name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseInfo"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workstations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/products": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_Product-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_Product_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"Active": {
+										"type": "number",
+										"format": "double"
+									},
+									"Name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"Active",
+									"Name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/products/{id}": {
+			"patch": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_Product_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"Active": {
+										"type": "number",
+										"format": "double"
+									},
+									"Name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"Active",
+									"Name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseInfo"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/lines": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALAssLine-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Lines"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALAssLine_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Lines"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ALAssLine"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/lines/{id}": {
+			"patch": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALAssLine_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Lines"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ALAssLine"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Lines"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/api/auth/github": {
 			"get": {
 				"operationId": "AuthGithub",
@@ -518,7 +1379,7 @@
 				]
 			}
 		},
-		"/api/allocation/list": {
+		"/api/allocations": {
 			"get": {
 				"operationId": "GetAllocations",
 				"responses": {
@@ -559,9 +1420,7 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/allocation/create": {
+			},
 			"post": {
 				"operationId": "CreateAllocation",
 				"responses": {
@@ -586,11 +1445,149 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ALAssLineWStationAllocation"
+								"properties": {
+									"ALWStationID": {
+										"type": "number",
+										"format": "double"
+									},
+									"ALAssLineID": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"ALWStationID",
+									"ALAssLineID"
+								],
+								"type": "object"
 							}
 						}
 					}
 				}
+			},
+			"delete": {
+				"operationId": "DeleteAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseInfo"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Allocations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "ids",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "number",
+								"format": "double"
+							}
+						}
+					}
+				]
+			}
+		},
+		"/api/allocations/{id}": {
+			"patch": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ALAssLineWStationAllocation_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Allocations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"Sort": {
+										"type": "number",
+										"format": "double"
+									},
+									"ALWStationID": {
+										"type": "number",
+										"format": "double"
+									},
+									"ALAssLineID": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"Sort",
+									"ALWStationID",
+									"ALAssLineID"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseInfo"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Allocations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		}
 	},

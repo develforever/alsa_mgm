@@ -7,6 +7,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { catchError, Observable, of, startWith, switchMap } from 'rxjs';
 import { ApiResponse, ApiResponseList, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export interface TableFetchOptions {
     page: number;
@@ -24,6 +26,7 @@ export type TableFetchFn<T> = (options: TableFetchOptions) => Observable<ApiResp
         MatTableModule,
         MatPaginatorModule,
         MatProgressSpinnerModule,
+        MatCheckboxModule,
     ],
 })
 export class AppUiDataTableComponent<T> implements AfterViewInit {
@@ -31,6 +34,7 @@ export class AppUiDataTableComponent<T> implements AfterViewInit {
     @Input() displayedColumns: string[] = [];
     @Input({ required: true }) fetchFn!: TableFetchFn<T>;
 
+    selection = new SelectionModel<T>(true, []);
     private cdr = inject(ChangeDetectorRef);
     dataSource = new MatTableDataSource<T>([]);
     isLoading = true;
@@ -73,5 +77,20 @@ export class AppUiDataTableComponent<T> implements AfterViewInit {
             this.isLoading = false;
             this.cdr.detectChanges();
         });
+    }
+
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dataSource.data.length;
+        return numSelected === numRows;
+    }
+
+
+    toggleAllRows() {
+        if (this.isAllSelected()) {
+            this.selection.clear();
+            return;
+        }
+        this.selection.select(...this.dataSource.data);
     }
 }

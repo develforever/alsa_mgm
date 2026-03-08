@@ -9,7 +9,7 @@
     "ng:build": "ng build",
     "ng:watch": "ng build --watch --configuration development",
     "ng:test": "ng test",
-    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --watch 'src/shared/**/*.ts' --ignore 'src/shared/generated' --ext 'ts' --exec 'npm run n:build:api && ts-node --project src/backend/tsconfig.backend.json' src/backend/server.ts",
+    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --watch 'src/shared/**/*.ts' --ignore 'src/shared/generated' --ext 'ts' --exec 'npm run n:build:api && ts-node -r tsconfig-paths/register --project src/backend/tsconfig.backend.json' src/backend/server.ts",
     "start:frontend": "npm run ng:watch",
     "dev": "concurrently --kill-others -n \"BACKEND,FRONTEND,DOCKER\" -c \"bgBlue,bgGreen,bgRed\" \"npm run start:backend\" \"npm run start:frontend\" \"docker compose up\"",
     "seed": "ts-node src/backend/seed.ts"
@@ -56,6 +56,7 @@
     "npm": "^11.9.0",
     "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8"
   }
