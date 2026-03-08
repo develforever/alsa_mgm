@@ -6,3 +6,5 @@ dist
 public/*
 !public/.gitkeep
 mysql_data
+.env
+.env.local

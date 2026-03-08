@@ -2,16 +2,28 @@
     "compilerOptions": {
         "target": "ES2022",
         "module": "commonjs",
-        "rootDir": "../",
-        "outDir": "../../dist/backend",
+        "rootDir": "../../", // Musi obejmować najwyższy wspólny folder dla backendu i shared
+        "outDir": "../../dist",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "strictPropertyInitialization": false
+        "strictPropertyInitialization": false,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "@shared/*": [
+                "../shared/*"
+            ] // Opcjonalnie: ułatwia importy
+        }
     },
     "include": [
-        "./**/*"
+        "./**/*",
+        "../shared/**/*" // KLUCZOWE: Musisz dołączyć folder shared!
+    ],
+    "exclude": [
+        "node_modules",
+        "../../dist"
     ]
 }

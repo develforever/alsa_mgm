@@ -1,11 +1,7 @@
-import { Component, OnInit, signal, inject, computed } from '@angular/core';
-import { DataService } from '../../../../services/data.service';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuditLog } from '../../../../../../shared/models/types';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { AppUiDataTableComponent, TableFetchOptions } from '../../../../ui/data/table.component';
-
+import { DataAuditService } from '../../../../services/data/audit.service';
 
 @Component({
   selector: 'home-audit-log-component',
@@ -16,11 +12,12 @@ import { AppUiDataTableComponent, TableFetchOptions } from '../../../../ui/data/
   ],
 })
 export class AuditLogComponent {
-  private dataService = inject(DataService);
+  private dataService = inject(DataAuditService);
 
   displayedColumns: string[] = ['timestamp', 'userEmail', 'action', 'entityName', 'details'];
   fetchLogs = (options: TableFetchOptions) => {
     return this.dataService.getAuditLogs(options.page, options.limit);
   };
+
 
 }

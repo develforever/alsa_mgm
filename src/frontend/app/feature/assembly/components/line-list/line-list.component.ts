@@ -1,8 +1,11 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { DataService } from '../../../../services/data.service';
 import { Product, ALAssLine, LineStatus } from '../../../../../../shared/models/types';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ensureArray } from '../../../../utils/api.utils';
+import { DataProductService } from '../../../../services/data/product.service';
+import { DataLineService } from '../../../../services/data/line.service';
+import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 
 @Component({
   selector: 'assembly-line-list',
@@ -13,7 +16,8 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class LineListComponent implements OnInit {
-  private dataService = inject(DataService);
+  private dataService = inject(DataProductService);
+  private dataLineService = inject(DataLineService);
 
   lines = signal<ALAssLine[]>([]);
   products = signal<Product[]>([]);
@@ -25,13 +29,19 @@ export class LineListComponent implements OnInit {
   }
 
   loadData() {
-    this.dataService.getLines().subscribe(data => this.lines.set(data));
-    this.dataService.getProducts().subscribe(data => this.products.set(data));
+
+    forkJoin({
+      lines: this.dataLineService.getLines().pipe(ensureArray<ALAssLine>()),
+      products: this.dataService.getProducts().pipe(ensureArray<Product>()),
+    }).subscribe(({ lines, products }) => {
+      this.lines.set(lines);
+      this.products.set(products);
+    });
   }
 
   addLine() {
     if (this.newLine.Name && this.newLine.ProductID) {
-      this.dataService.addLine(this.newLine as any).subscribe(() => {
+      this.dataLineService.addLine(this.newLine as any).subscribe(() => {
         this.loadData();
         this.newLine = { Name: '', ProductID: null, Status: 1 };
       });
@@ -43,7 +53,7 @@ export class LineListComponent implements OnInit {
   }
 
   deleteLine(line: ALAssLine) {
-    this.dataService.deleteLine(line.ALAssLineID).subscribe(() => {
+    this.dataLineService.deleteLine(line.ALAssLineID).subscribe(() => {
       this.loadData();
     });
   }

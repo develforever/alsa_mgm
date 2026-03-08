@@ -1,7 +1,5 @@
-import * as dotenv from 'dotenv';
-dotenv.config({
-  path: '.env'
-});
+import * as dotenv from 'dotenv-flow';
+dotenv.config();
 import config from './config/config';
 import app from './app';
 

@@ -2,8 +2,10 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
+import { DataWorkstationService } from '../../../../services/data/workstation.service';
 import { ALWStation } from '../../../../../../shared/models/types';
+import { ensureArray } from '../../../../utils/api.utils';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'assembly-workstation-list',
@@ -11,12 +13,20 @@ import { ALWStation } from '../../../../../../shared/models/types';
   templateUrl: './workstation-list.component.html',
 })
 export class WorkstationListComponent implements OnInit {
-  private dataService = inject(DataService);
+  private dataService = inject(DataWorkstationService);
   stations = signal<ALWStation[]>([]);
   newStation = { Name: '', ShortName: '', PCName: '', AutoStart: 0 };
 
   ngOnInit() { this.load(); }
-  load() { this.dataService.getWorkstations().subscribe(d => this.stations.set(d)); }
+  load() {
+
+    forkJoin({
+      stations: this.dataService.getWorkstations().pipe(ensureArray<ALWStation>()),
+    }).subscribe(({ stations }) => {
+      this.stations.set(stations);
+    });
+
+  }
 
   addStation() {
     this.dataService.addWorkstation(this.newStation).subscribe(() => {

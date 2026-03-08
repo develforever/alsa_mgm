@@ -1,0 +1,28 @@
+
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AbstractDataService } from '../data.service';
+import { ALWStation } from '../../../../shared/models/types';
+import { ApiResponse } from '../../../../shared/api/ApiResponse';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DataWorkstationService extends AbstractDataService {
+
+  getWorkstations(): Observable<ApiResponse<ALWStation>> {
+    return this.http.get<ApiResponse<ALWStation>>(`${this.apiUrl}/workstations`);
+  }
+
+  addWorkstation(station: Partial<ALWStation>) {
+    return this.http.post<ApiResponse<ALWStation>>(`${this.apiUrl}/workstations`, station);
+  }
+
+  updateWorkstation(id: number, station: Partial<ALWStation>) {
+    return this.http.put<ApiResponse<ALWStation>>(`${this.apiUrl}/workstations/${id}`, station);
+  }
+
+  deleteWorkstation(id: number) {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/workstations/${id}`);
+  }
+}

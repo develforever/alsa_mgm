@@ -1,14 +1,15 @@
 {
   "scripts": {
-    "n:build": "tsc -p ./src/backend/tsconfig.backend.json",
+    "n:build": "npm run n:build:api && tsc -p ./src/backend/tsconfig.backend.json",
     "n:start": "node dist/server.js",
     "n:lint": "eslint 'src/**/*.ts'",
+    "n:build:api": "tsoa spec-and-routes",
     "ng": "ng",
     "ng:start": "ng serve",
     "ng:build": "ng build",
     "ng:watch": "ng build --watch --configuration development",
     "ng:test": "ng test",
-    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --watch 'src/shared/**/*.ts' --exec 'ts-node --project src/backend/tsconfig.backend.json' src/backend/server.ts",
+    "start:backend": "nodemon --watch 'src/backend/**/*.ts' --watch 'src/shared/**/*.ts' --ignore 'src/shared/generated' --ext 'ts' --exec 'npm run n:build:api && ts-node --project src/backend/tsconfig.backend.json' src/backend/server.ts",
     "start:frontend": "npm run ng:watch",
     "dev": "concurrently --kill-others -n \"BACKEND,FRONTEND,DOCKER\" -c \"bgBlue,bgGreen,bgRed\" \"npm run start:backend\" \"npm run start:frontend\" \"docker compose up\"",
     "seed": "ts-node src/backend/seed.ts"
@@ -25,13 +26,16 @@
     "@types/express-session": "^1.18.2",
     "@types/passport": "^1.0.17",
     "@types/passport-github2": "^1.2.9",
+    "dotenv-flow": "^4.1.0",
     "express-session": "^1.19.0",
     "mysql2": "^3.16.3",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "reflect-metadata": "^0.2.2",
     "rxjs": "~7.8.0",
+    "swagger-ui-express": "^5.0.1",
     "tslib": "^2.3.0",
+    "tsoa": "^7.0.0-alpha.0",
     "typeorm": "^0.3.28"
   },
   "devDependencies": {
@@ -41,6 +45,7 @@
     "@angular/material": "^21.2.1",
     "@types/express": "^5.0.6",
     "@types/node": "^25.2.2",
+    "@types/swagger-ui-express": "^4.1.8",
     "concurrently": "^9.2.1",
     "dotenv": "^17.2.4",
     "eslint": "^10.0.0",

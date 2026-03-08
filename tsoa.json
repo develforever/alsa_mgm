@@ -1,0 +1,21 @@
+{
+  "entryFile": "src/backend/app.ts",
+  "noImplicitAdditionalProperties": "throw-error",
+  "controllerPathGlobs": [
+    "src/backend/controllers/**/*Controller.ts"
+  ],
+  "spec": {
+    "outputDirectory": "src/shared/generated",
+    "specVersion": 3,
+    "servers": [
+      {
+        "url": "/api",
+        "description": "Główny prefiks API"
+      }
+    ]
+  },
+  "routes": {
+    "routesDir": "src/shared/generated",
+    "middleware": "express"
+  }
+}

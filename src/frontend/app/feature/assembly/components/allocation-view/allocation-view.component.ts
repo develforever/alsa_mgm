@@ -2,8 +2,12 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
 import { Allocation, ALAssLine, ALWStation } from '../../../../../../shared/models/types';
+import { DataAllocationService } from '../../../../services/data/allocation.service';
+import { DataLineService } from '../../../../services/data/line.service';
+import { DataWorkstationService } from '../../../../services/data/workstation.service';
+import { forkJoin } from 'rxjs';
+import { ensureArray } from '../../../../utils/api.utils';
 
 @Component({
   selector: 'assembly-allocation-view',
@@ -12,7 +16,9 @@ import { Allocation, ALAssLine, ALWStation } from '../../../../../../shared/mode
   styleUrls: ['./allocation-view.component.scss']
 })
 export class AllocationViewComponent implements OnInit {
-  private dataService = inject(DataService);
+  private dataService = inject(DataAllocationService);
+  private dataLineService = inject(DataLineService);
+  private dataStationService = inject(DataWorkstationService);
 
   allocations = signal<Allocation[]>([]);
   lines = signal<ALAssLine[]>([]);
@@ -36,9 +42,15 @@ export class AllocationViewComponent implements OnInit {
   ngOnInit() { this.loadAll(); }
 
   loadAll() {
-    this.dataService.getAllocations().subscribe(d => this.allocations.set(d));
-    this.dataService.getLines().subscribe(d => this.lines.set(d));
-    this.dataService.getWorkstations().subscribe(d => this.stations.set(d));
+    forkJoin({
+      allocations: this.dataService.getAllocations().pipe(ensureArray<Allocation>()),
+      lines: this.dataLineService.getLines().pipe(ensureArray<ALAssLine>()),
+      stations: this.dataStationService.getWorkstations().pipe(ensureArray<ALWStation>())
+    }).subscribe(({ allocations, lines, stations }) => {
+      this.allocations.set(allocations);
+      this.lines.set(lines);
+      this.stations.set(stations);
+    });
   }
 
   save() {

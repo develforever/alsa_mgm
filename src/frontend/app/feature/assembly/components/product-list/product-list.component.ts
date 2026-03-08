@@ -2,8 +2,10 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
 import { Product } from '../../../../../../shared/models/types';
+import { DataProductService } from '../../../../services/data/product.service';
+import { forkJoin } from 'rxjs';
+import { ensureArray } from '../../../../utils/api.utils';
 
 @Component({
   selector: 'assembly-product-list',
@@ -12,7 +14,7 @@ import { Product } from '../../../../../../shared/models/types';
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent implements OnInit {
-  private dataService = inject(DataService);
+  private dataService = inject(DataProductService);
 
   products = signal<Product[]>([]);
   newProductName = '';
@@ -22,7 +24,10 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    this.dataService.getProducts().subscribe(data => this.products.set(data));
+
+    forkJoin({
+      products: this.dataService.getProducts().pipe(ensureArray<Product>()),
+    }).subscribe(data => this.products.set(data.products));
   }
 
   addProduct() {
