@@ -6,8 +6,6 @@
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
 
-      {{ currentTitle() }}
-
       @if (authService.isLoggedIn()) {
       <button mat-button (click)="onLogout()">Wyloguj</button>
       } @else if(router.url !== '/login') {
@@ -16,6 +14,7 @@
     </div>
   </div>
   <div class="full-width">
+    <div>{{ currentTitle() }}</div>
     <router-outlet />
   </div>
 </main>

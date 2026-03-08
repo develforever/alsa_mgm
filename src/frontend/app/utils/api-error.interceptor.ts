@@ -12,7 +12,7 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
             if (event instanceof HttpResponse) {
                 const body = event.body as ApiResponse<any>;
 
-                if (body && 'message' in body && !('data' in body)) {
+                if (body && 'message' in body && 'code' in body && !('data' in body)) {
                     console.error('Przechwycono błąd API:', body.message);
 
                     snackBar.open(`Błąd: ${body.message}`, 'Zamknij', {
