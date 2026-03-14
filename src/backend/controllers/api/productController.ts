@@ -2,6 +2,9 @@ import { AppDataSource } from "../../config/data-source";
 import { ApiResponse, ApiResponseInfo } from "../../../shared/api/ApiResponse";
 import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Request, Path } from "tsoa";
 import { Product } from "../../entity/Product";
+import { ApiRequest } from "@shared/api/ApiRequest";
+import { GetProductsSchema, PatchProductsSchema } from "@shared/api/product/schema";
+import { ProductMapper } from "./product/maper";
 
 const productRepo = AppDataSource.getRepository(Product);
 
@@ -13,14 +16,17 @@ export class ProductController extends Controller {
     public async getAll(
         @Query() page: number = 0,
         @Query() size: number = 10
-    ): Promise<ApiResponse<Product[]>> {
-        const lines = await productRepo.find({
+    ): Promise<ApiResponse<GetProductsSchema>> {
+        const items = await productRepo.find({
             skip: page * size,
             take: size,
+            order: {
+                ProductID: "DESC"
+            }
         });
         const total = await productRepo.count();
         return {
-            data: lines,
+            data: ProductMapper.toGetProductsSchema(items),
             total,
         };
     }
@@ -28,9 +34,12 @@ export class ProductController extends Controller {
     @Post("")
     public async create(
         @Body() body: { Name: string, Active: number },
-        @Request() req: any
+        @Request() req: ApiRequest
     ): Promise<ApiResponse<Product>> {
+
         const { Name, Active } = body;
+        const user = req.user;
+
         if (!Name) {
             return {
                 message: "Name is required",
@@ -39,9 +48,8 @@ export class ProductController extends Controller {
         }
         const newProduct = productRepo.create({ Name, Active: Active ?? 1 });
 
-
         await productRepo.save(newProduct, {
-            data: { userEmail: req.user?.userEmail }
+            data: { userEmail: user?.userEmail }
         });
         return { data: newProduct };
     }
@@ -49,8 +57,7 @@ export class ProductController extends Controller {
     @Patch("{id}")
     public async update(
         @Path() id: number,
-        @Body() body: { Name: string, Active: number },
-        @Request() req: any
+        @Body() body: PatchProductsSchema,
     ): Promise<ApiResponse<Product>> {
 
         await productRepo.update(id, body);
@@ -71,8 +78,7 @@ export class ProductController extends Controller {
 
     @Delete("{id}")
     public async delete(
-        @Path() id: number,
-        @Request() req: any
+        @Path() id: number
     ): Promise<ApiResponseInfo> {
 
         await productRepo.softDelete(id);

@@ -2,7 +2,6 @@ import { CommonModule } from "@angular/common";
 import { Component, inject, signal, effect } from "@angular/core";
 import {
   RouterLink,
-  RouterLinkActive,
   RouterOutlet,
   Router,
   ActivatedRoute,
@@ -27,7 +26,6 @@ import { AppTopMenu } from "./ui/TopMenu";
     RouterOutlet,
     CommonModule,
     RouterLink,
-    RouterLinkActive,
     MatMenuModule,
     MatButtonModule,
     MatIconModule,

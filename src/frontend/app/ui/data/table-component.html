@@ -24,7 +24,19 @@
 
         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
             <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
-            <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            <td mat-cell *matCellDef="let element">
+
+                <!-- Sprawdzamy czy zewnątrz podano własny szablon (np. dla actions) -->
+                <ng-container *ngIf="getCustomTemplate(column); else defaultText">
+                    <ng-container
+                        *ngTemplateOutlet="getCustomTemplate(column)!; context: { $implicit: element }"></ng-container>
+                </ng-container>
+
+                <!-- Domyślny tekst jeśli brak własnego szablonu (dla Name, ID, Active itd.) -->
+                <ng-template #defaultText>
+                    {{element[column]}}
+                </ng-template>
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['select', ...displayedColumns]"></tr>

@@ -156,28 +156,40 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALWStation_"},{"ref":"ApiResponseList_ALWStation_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_Product-Array_": {
+    "GetProductsSchema": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"Product"},"required":true},
+            "ProductID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Active": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetProductsSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetProductsSchema","required":true},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_Product-Array_": {
+    "ApiResponseList_GetProductsSchema_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"Product"}},"required":true},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetProductsSchema"},"required":true},
             "total": {"dataType":"double","required":true},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_Product-Array_": {
+    "ApiResponse_GetProductsSchema_": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_Product-Array_"},{"ref":"ApiResponseList_Product-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetProductsSchema_"},{"ref":"ApiResponseList_GetProductsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_Product_": {
@@ -202,6 +214,15 @@ const models: TsoaRoute.Models = {
     "ApiResponse_Product_": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_Product_"},{"ref":"ApiResponseList_Product_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PatchProductsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "Name": {"dataType":"string","required":true},
+            "Active": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_ALAssLine-Array_": {
@@ -520,8 +541,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsProductController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"Active":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true}}},
-                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                body: {"in":"body","name":"body","required":true,"ref":"PatchProductsSchema"},
         };
         app.patch('/api/products/:id',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),
@@ -552,7 +572,6 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsProductController_delete: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.delete('/api/products/:id',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),

@@ -1,14 +1,15 @@
 
 
-import { AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ContentChildren, inject, Input, QueryList, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { catchError, Observable, of, startWith, switchMap } from 'rxjs';
+import { catchError, merge, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { ApiResponse, ApiResponseList, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AppTableCellDefDirective } from './AppTableCellDefDirective';
 
 export interface TableFetchOptions {
     page: number;
@@ -30,6 +31,9 @@ export type TableFetchFn<T> = (options: TableFetchOptions) => Observable<ApiResp
     ],
 })
 export class AppUiDataTableComponent<T> implements AfterViewInit {
+
+    @Input() refresh$ = new Subject<void>();
+
     @Input() pageSize = 10;
     @Input() displayedColumns: string[] = [];
     @Input({ required: true }) fetchFn!: TableFetchFn<T>;
@@ -42,11 +46,28 @@ export class AppUiDataTableComponent<T> implements AfterViewInit {
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+    // Zbieramy wszystkie własne definicje z wnętrza <app-ui-data-table>
+    @ContentChildren(AppTableCellDefDirective)
+    customCellDefs!: QueryList<AppTableCellDefDirective>;
+    // Funkcja pomocnicza znajdująca szablon dla danej kolumny
+    getCustomTemplate(columnName: string) {
+        return this.customCellDefs?.find(def => def.columnName === columnName)?.template;
+    }
+
     ngAfterViewInit() {
-        this.paginator.page.pipe(
+
+        this.init();
+    }
+
+    init() {
+        merge(
+            this.paginator.page,
+            this.refresh$
+        ).pipe(
             startWith({}),
             switchMap(() => {
                 this.isLoading = true;
+                this.dataSource.data = [];
                 this.cdr.detectChanges();
 
                 const options: TableFetchOptions = {
