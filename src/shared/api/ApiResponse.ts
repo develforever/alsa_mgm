@@ -20,4 +20,5 @@ export interface ApiError {
     stack?: string;
 }
 
+
 export type ApiResponse<T> = ApiResponseSingle<T> | ApiResponseList<T> | ApiResponseInfo | ApiError;

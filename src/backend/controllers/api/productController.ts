@@ -3,7 +3,7 @@ import { ApiResponse, ApiResponseInfo } from "../../../shared/api/ApiResponse";
 import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Request, Path } from "tsoa";
 import { Product } from "../../entity/Product";
 import { ApiRequest } from "@shared/api/ApiRequest";
-import { GetProductsSchema, PatchProductsSchema } from "@shared/api/product/schema";
+import { GetProductsSchema, PatchProductsSchema, PostProductsSchema } from "@shared/api/product/schema";
 import { ProductMapper } from "./product/maper";
 
 const productRepo = AppDataSource.getRepository(Product);
@@ -14,8 +14,8 @@ export class ProductController extends Controller {
 
     @Get("")
     public async getAll(
-        @Query() page: number = 0,
-        @Query() size: number = 10
+        @Query() page = 0,
+        @Query() size = 10
     ): Promise<ApiResponse<GetProductsSchema>> {
         const items = await productRepo.find({
             skip: page * size,
@@ -33,7 +33,7 @@ export class ProductController extends Controller {
 
     @Post("")
     public async create(
-        @Body() body: { Name: string, Active: number },
+        @Body() body: PostProductsSchema,
         @Request() req: ApiRequest
     ): Promise<ApiResponse<Product>> {
 

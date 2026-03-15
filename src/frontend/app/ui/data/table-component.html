@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 app-ui-data-table-component">
     @if (isLoading) {
     <div class="loading-shade">
         <mat-spinner diameter="50"></mat-spinner>
@@ -22,25 +22,48 @@
             </td>
         </ng-container>
 
-        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+        @for (column of columnsToShow(); track column) {
+        @if (column !== 'select') {
+        <ng-container [matColumnDef]="column">
             <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
             <td mat-cell *matCellDef="let element">
 
-                <!-- Sprawdzamy czy zewnątrz podano własny szablon (np. dla actions) -->
-                <ng-container *ngIf="getCustomTemplate(column); else defaultText">
-                    <ng-container
-                        *ngTemplateOutlet="getCustomTemplate(column)!; context: { $implicit: element }"></ng-container>
-                </ng-container>
+                @if (getCustomTemplate(column)) {
+                <ng-container
+                    *ngTemplateOutlet="getCustomTemplate(column)!; context: { $implicit: element }"></ng-container>
 
-                <!-- Domyślny tekst jeśli brak własnego szablonu (dla Name, ID, Active itd.) -->
-                <ng-template #defaultText>
-                    {{element[column]}}
-                </ng-template>
+                } @else {
+
+                @switch (columnTypes[column]) {
+                @case ('date') {
+                <span title="{{ element[column] }}">{{ element[column] | date:'short' }}</span>
+                }
+                @case ('boolean') {
+                {{ element[column] ? 'Tak' : 'Nie' }}
+                }
+                @case ('number') {
+                {{ element[column] | number }}
+                }
+
+                @case ('action_delete_edit') {
+                <button mat-button color="primary"
+                    (click)="$event.stopPropagation(); editAction.emit(element)">Edytuj</button>
+                <button mat-button color="warn"
+                    (click)="$event.stopPropagation(); deleteAction.emit(element)">Usuń</button>
+                }
+                @default {
+                {{ element[column] }}
+                }
+                }
+
+                }
             </td>
         </ng-container>
+        }
+        }
 
-        <tr mat-header-row *matHeaderRowDef="['select', ...displayedColumns]"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['select', ...displayedColumns];" (click)="selection.toggle(row)">
+        <tr mat-header-row *matHeaderRowDef="columnsToShow()"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToShow();" (click)="selection.toggle(row)">
         </tr>
     </table>
 

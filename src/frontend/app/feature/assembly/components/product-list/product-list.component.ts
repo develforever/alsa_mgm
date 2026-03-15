@@ -1,27 +1,26 @@
 
-import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataProductService } from '../../../../services/data/product.service';
 import { TableFetchOptions } from '../../../../ui/data/table.component';
 import { AppUiDataTableComponent } from '../../../../ui/data/table.component';
 import { GetProductsSchema } from '../../../../../../shared/api/product/schema';
-import { buildArray } from '../../../../utils/table.utils';
 import { AppTableCellDefDirective } from '../../../../ui/data/AppTableCellDefDirective';
 import { Subject } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
-import { YesNoDialogComponent } from '../../../../ui/dialog/yes-no.dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AppUiDialogYesNoComponent } from '../../../../ui/dialog/yes-no.dialog.component';
 
 @Component({
-  selector: 'assembly-product-list',
+  selector: 'app-assembly-product-list',
   imports: [CommonModule, FormsModule, AppUiDataTableComponent, AppTableCellDefDirective, MatButtonModule, MatFormFieldModule, MatInputModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent {
 
   tableRefresh$ = new Subject<void>();
   private dataService = inject(DataProductService);
@@ -29,20 +28,15 @@ export class ProductListComponent implements OnInit {
   products = signal<GetProductsSchema[]>([]);
   newProductName = '';
 
-  displayedColumns = buildArray<GetProductsSchema, 'actions'>(
-    ['ProductID', 'Name', 'Active', 'CreatedAt', 'UpdatedAt'],
-    ['actions']
-  );
+  toggleDialogData = { title: 'Zmiana statusu', content: 'Na pewno?' }
+  deleteDialogData = { title: 'Usuwanie', content: 'Na pewno?' }
+
   fetchProducts = (options: TableFetchOptions) => {
     return this.dataService.getProducts(options.page, options.limit);
   };
 
   readonly dialog = inject(MatDialog);
 
-
-  ngOnInit(): void {
-
-  }
 
 
   addProduct() {
@@ -55,37 +49,26 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  toggleActive(product: GetProductsSchema) {
-
-    this.dialog.open(YesNoDialogComponent, {
-      data: {
-        title: 'Toggle active/inactive',
-        content: 'Are you sure you want to toggle active status?'
-      }
-    }).afterClosed().subscribe((result) => {
-      if (!result) return;
-      const updated = { Name: product.Name, Active: product.Active === 1 ? 0 : 1 };
-      this.dataService.updateProduct(product.ProductID, updated).subscribe(() => {
-        this.tableRefresh$.next();
-      });
-
+  toggleActive = ([row, result]: [GetProductsSchema, boolean]) => {
+    if (!result) return;
+    const updated = { Name: row.Name, Active: row.Active === 1 ? 0 : 1 };
+    this.dataService.updateProduct(row.ProductID, updated).subscribe(() => {
+      this.tableRefresh$.next();
     });
-
 
   }
 
-  deleteProduct(product: GetProductsSchema) {
-    this.dialog.open(YesNoDialogComponent, {
-      data: {
-        title: 'Delete product',
-        content: 'Are you sure you want to delete this product?'
-      }
-    }).afterClosed().subscribe((result) => {
-      if (!result) return;
-      this.dataService.deleteProduct(product.ProductID).subscribe(() => {
-        this.tableRefresh$.next();
-      });
+  deleteProduct = ([row, result]: [GetProductsSchema, boolean]) => {
+    if (!result) return;
+    this.dataService.deleteProduct(row.ProductID).subscribe(() => {
+      this.tableRefresh$.next();
     });
+  }
+
+  test = ([row, result]: [GetProductsSchema, boolean]) => {
+
+    this.tableRefresh$.next();
+
   }
 }
 

@@ -1,6 +1,8 @@
-import { Request } from 'express';
 
-export type ApiRequest = Request & {
+
+import { Request } from "express";
+
+export interface ApiRequest extends Request {
     user?: {
         userEmail: string;
     }

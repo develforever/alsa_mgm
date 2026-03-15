@@ -499,6 +499,23 @@
 					}
 				]
 			},
+			"PostProductsSchema": {
+				"properties": {
+					"Name": {
+						"type": "string"
+					},
+					"Active": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"Name",
+					"Active"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"PatchProductsSchema": {
 				"properties": {
 					"Name": {
@@ -1025,20 +1042,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"Active": {
-										"type": "number",
-										"format": "double"
-									},
-									"Name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"Active",
-									"Name"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/PostProductsSchema"
 							}
 						}
 					}

@@ -9,16 +9,13 @@
     <button matButton (click)="addProduct()">Add Product</button>
   </div>
 
-  <app-ui-data-table-component [fetchFn]="fetchProducts" [displayedColumns]="displayedColumns" [pageSize]="10"
-    [refresh$]="tableRefresh$">
-
+  <app-ui-data-table-component #myTable [fetchFn]="fetchProducts" [pageSize]="10" [refresh$]="tableRefresh$">
     <ng-template appTableCellDef="actions" let-row>
-      <button matButton (click)="$event.stopPropagation(); toggleActive(row)">Zmień status</button>
-      <button matButton (click)="$event.stopPropagation(); deleteProduct(row)">Usuń</button>
-    </ng-template>
 
-    <ng-template appTableCellDef="CreatedAt" let-row>{{ row.CreatedAt | date:'short' }}</ng-template>
-    <ng-template appTableCellDef="UpdatedAt" let-row>{{ row.UpdatedAt | date:'short' }}</ng-template>
+      <button matButton (click)="myTable.openDialog($event, row, toggleDialogData).then(toggleActive)">Zmień
+        status</button>
+      <button matButton (click)="myTable.openDialog($event, row, deleteDialogData).then(deleteProduct)">Usuń</button>
+    </ng-template>
 
   </app-ui-data-table-component>
 

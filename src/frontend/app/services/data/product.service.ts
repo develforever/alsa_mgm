@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AbstractDataService } from '../data.service';
 import { ApiResponse, ApiResponseInfo } from '../../../../shared/api/ApiResponse';
 import { HttpParams } from '@angular/common/http';
-import { GetProductsSchema, PatchProductsSchema } from '../../../../shared/api/product/schema';
+import { GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../shared/api/product/schema';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class DataProductService extends AbstractDataService {
     });
   }
 
-  addProduct(product: Partial<GetProductsSchema>) {
+  addProduct(product: PostProductsSchema) {
     return this.http.post<ApiResponse<GetProductsSchema>>(`${this.apiUrl}/products`, product);
   }
 

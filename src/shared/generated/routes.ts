@@ -216,6 +216,15 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_Product_"},{"ref":"ApiResponseList_Product_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostProductsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "Name": {"dataType":"string","required":true},
+            "Active": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PatchProductsSchema": {
         "dataType": "refObject",
         "properties": {
@@ -509,7 +518,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsProductController_create: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"Active":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true}}},
+                body: {"in":"body","name":"body","required":true,"ref":"PostProductsSchema"},
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/products',

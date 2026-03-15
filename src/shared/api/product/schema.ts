@@ -8,6 +8,11 @@ export interface GetProductsSchema {
     UpdatedAt: Date;
 }
 
+export interface PostProductsSchema {
+    Name: string;
+    Active: number;
+}
+
 export interface PatchProductsSchema {
     Name: string;
     Active: number;

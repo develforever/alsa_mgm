@@ -27,6 +27,7 @@
     "@types/express-session": "^1.18.2",
     "@types/passport": "^1.0.17",
     "@types/passport-github2": "^1.2.9",
+    "angular-eslint": "^21.3.0",
     "dotenv-flow": "^4.1.0",
     "express-session": "^1.19.0",
     "mysql2": "^3.16.3",
