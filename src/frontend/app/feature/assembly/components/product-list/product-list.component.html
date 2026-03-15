@@ -9,14 +9,22 @@
     <button matButton (click)="addProduct()">Add Product</button>
   </div>
 
-  <app-ui-data-table-component #myTable [fetchFn]="fetchProducts" [pageSize]="10" [refresh$]="tableRefresh$">
-    <ng-template appTableCellDef="actions" let-row>
+  <div class="flex flex-gap-1">
+    <div class="flex-grow-1">
+      <app-ui-data-table-component #myTable [fetchFn]="fetchProducts" [pageSize]="10" [refresh$]="tableRefresh$"
+        (rowClick)="openSidebar($event)">
+        <ng-template appTableCellDef="actions" let-row>
 
-      <button matButton (click)="myTable.openDialog($event, row, toggleDialogData).then(toggleActive)">Zmień
-        status</button>
-      <button matButton (click)="myTable.openDialog($event, row, deleteDialogData).then(deleteProduct)">Usuń</button>
-    </ng-template>
+          <button matButton (click)="myTable.openDialog($event, row, toggleDialogData).then(toggleActive)">Zmień
+            status</button>
+          <button matButton
+            (click)="myTable.openDialog($event, row, deleteDialogData).then(deleteProduct)">Usuń</button>
+        </ng-template>
 
-  </app-ui-data-table-component>
+      </app-ui-data-table-component>
+    </div>
+    <router-outlet name="sidebar"></router-outlet>
+
+  </div>
 
 </div>

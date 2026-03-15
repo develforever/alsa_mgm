@@ -4,7 +4,7 @@ export interface ApiResponseInfo {
 }
 
 export interface ApiResponseSingle<T> {
-    data: T;
+    data?: T;
     error?: ApiError;
 }
 

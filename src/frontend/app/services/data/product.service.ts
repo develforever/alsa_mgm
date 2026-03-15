@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbstractDataService } from '../data.service';
-import { ApiResponse, ApiResponseInfo } from '../../../../shared/api/ApiResponse';
+import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
 import { HttpParams } from '@angular/common/http';
-import { GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../shared/api/product/schema';
+import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../shared/api/product/schema';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,10 @@ export class DataProductService extends AbstractDataService {
     return this.http.get<ApiResponse<GetProductsSchema>>(`${this.apiUrl}/products`, {
       params,
     });
+  }
+
+  getProduct(id: number): Observable<ApiResponseSingle<GetProductSchema>> {
+    return this.http.get<ApiResponseSingle<GetProductSchema>>(`${this.apiUrl}/products/${id}`);
   }
 
   addProduct(product: PostProductsSchema) {

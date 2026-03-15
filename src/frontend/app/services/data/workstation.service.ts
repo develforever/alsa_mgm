@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbstractDataService } from '../data.service';
 import { ALWStation } from '../../../../shared/models/types';
-import { ApiResponse } from '../../../../shared/api/ApiResponse';
+import { ApiResponse, ApiResponseList } from '../../../../shared/api/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataWorkstationService extends AbstractDataService {
 
-  getWorkstations(): Observable<ApiResponse<ALWStation>> {
-    return this.http.get<ApiResponse<ALWStation>>(`${this.apiUrl}/workstations`);
+  getWorkstations(): Observable<ApiResponseList<ALWStation>> {
+    return this.http.get<ApiResponseList<ALWStation>>(`${this.apiUrl}/workstations`);
   }
 
   addWorkstation(station: Partial<ALWStation>) {

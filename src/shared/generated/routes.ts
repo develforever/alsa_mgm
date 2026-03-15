@@ -103,7 +103,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_ALWStation-Array_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"}},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -135,7 +135,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_ALWStation_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"ALWStation","required":true},
+            "data": {"ref":"ALWStation"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -171,7 +171,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_GetProductsSchema_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"GetProductsSchema","required":true},
+            "data": {"ref":"GetProductsSchema"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -192,10 +192,31 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetProductsSchema_"},{"ref":"ApiResponseList_GetProductsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetProductSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ProductID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Active": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetProductSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetProductSchema"},
+            "error": {"ref":"ApiError"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_Product_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"Product","required":true},
+            "data": {"ref":"Product"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -237,7 +258,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_ALAssLine-Array_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"}},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -261,7 +282,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_ALAssLine_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"ALAssLine","required":true},
+            "data": {"ref":"ALAssLine"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -299,7 +320,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_AuditLog_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"AuditLog","required":true},
+            "data": {"ref":"AuditLog"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -323,7 +344,7 @@ const models: TsoaRoute.Models = {
     "ApiResponseSingle_ALAssLineWStationAllocation_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"ALAssLineWStationAllocation","required":true},
+            "data": {"ref":"ALAssLineWStationAllocation"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -506,6 +527,36 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getAll',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
+        };
+        app.get('/api/products/:id',
+            ...(fetchMiddlewares<RequestHandler>(ProductController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.getOne)),
+
+            async function ProductController_getOne(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_getOne, request, response });
+
+                const controller = new ProductController();
+
+              await templateService.apiHandler({
+                methodName: 'getOne',
                 controller,
                 response,
                 next,

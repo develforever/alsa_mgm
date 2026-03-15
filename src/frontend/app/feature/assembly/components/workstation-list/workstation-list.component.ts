@@ -8,7 +8,7 @@ import { ensureArray } from '../../../../utils/api.utils';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'assembly-workstation-list',
+  selector: 'app-assembly-workstation-list',
   imports: [CommonModule, FormsModule],
   templateUrl: './workstation-list.component.html',
 })

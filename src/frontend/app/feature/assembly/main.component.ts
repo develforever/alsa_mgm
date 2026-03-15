@@ -4,8 +4,8 @@ import { RouterOutlet } from "@angular/router";
 
 
 @Component({
-    selector: 'assembly-main-component',
-    template: `<router-outlet></router-outlet> `,
+    selector: 'app-assembly-main-component',
+    templateUrl: './main.component.html',
     imports: [RouterOutlet],
 })
 export class MainAssemblyComponent { }

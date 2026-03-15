@@ -1,5 +1,5 @@
 
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataProductService } from '../../../../services/data/product.service';
@@ -12,16 +12,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-import { AppUiDialogYesNoComponent } from '../../../../ui/dialog/yes-no.dialog.component';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-assembly-product-list',
-  imports: [CommonModule, FormsModule, AppUiDataTableComponent, AppTableCellDefDirective, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [CommonModule, FormsModule, AppUiDataTableComponent, AppTableCellDefDirective, MatButtonModule, MatFormFieldModule, MatInputModule, RouterOutlet],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
 
+  private router = inject(Router);
   tableRefresh$ = new Subject<void>();
   private dataService = inject(DataProductService);
 
@@ -37,7 +38,13 @@ export class ProductListComponent {
 
   readonly dialog = inject(MatDialog);
 
-
+  openSidebar(event: { row: GetProductsSchema, selected: boolean }) {
+    if (event.selected) {
+      this.router.navigate(['/assembly/products', { outlets: { sidebar: ['selected', event.row.ProductID] } }]);
+    } else {
+      this.router.navigate(['/assembly/products', { outlets: { sidebar: null } }]);
+    }
+  }
 
   addProduct() {
     if (!this.newProductName.trim()) return;
@@ -63,12 +70,6 @@ export class ProductListComponent {
     this.dataService.deleteProduct(row.ProductID).subscribe(() => {
       this.tableRefresh$.next();
     });
-  }
-
-  test = ([row, result]: [GetProductsSchema, boolean]) => {
-
-    this.tableRefresh$.next();
-
   }
 }
 

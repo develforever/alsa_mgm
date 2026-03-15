@@ -6,6 +6,7 @@ import { LineListComponent } from "./components/line-list/line-list.component";
 import { WorkstationListComponent } from "./components/workstation-list/workstation-list.component";
 import { MainAssemblyComponent } from "./main.component";
 import { Route } from "@angular/router";
+import { ProductListSidebarComponent } from "./components/product-list/product-list-sidebar.component";
 
 export function getRoute(): Route {
     return {
@@ -33,6 +34,14 @@ export function getRoute(): Route {
                 component: ProductListComponent,
                 canActivate: [authGuard],
                 title: "Produkty",
+                children: [
+                    {
+                        path: "selected/:id",
+                        component: ProductListSidebarComponent,
+                        title: "Produkt",
+                        outlet: "sidebar"
+                    },
+                ]
             },
             {
                 path: "allocations",

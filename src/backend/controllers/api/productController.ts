@@ -1,9 +1,9 @@
 import { AppDataSource } from "../../config/data-source";
-import { ApiResponse, ApiResponseInfo } from "../../../shared/api/ApiResponse";
+import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../shared/api/ApiResponse";
 import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Request, Path } from "tsoa";
 import { Product } from "../../entity/Product";
 import { ApiRequest } from "@shared/api/ApiRequest";
-import { GetProductsSchema, PatchProductsSchema, PostProductsSchema } from "@shared/api/product/schema";
+import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from "@shared/api/product/schema";
 import { ProductMapper } from "./product/maper";
 
 const productRepo = AppDataSource.getRepository(Product);
@@ -28,6 +28,16 @@ export class ProductController extends Controller {
         return {
             data: ProductMapper.toGetProductsSchema(items),
             total,
+        };
+    }
+
+    @Get("{id}")
+    public async getOne(
+        @Path() id: number
+    ): Promise<ApiResponseSingle<GetProductSchema>> {
+        const item = await productRepo.findOneBy({ ProductID: id });
+        return {
+            data: item ? ProductMapper.toGetProductSchema(item) : undefined,
         };
     }
 

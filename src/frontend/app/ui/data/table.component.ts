@@ -13,6 +13,7 @@ import { AppTableCellDefDirective } from './AppTableCellDefDirective';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AppUiDialogYesNoComponent, YesNoDialogData } from '../dialog/yes-no.dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 export interface TableFetchOptions {
     page: number;
@@ -37,17 +38,13 @@ export type FlatFetchFn<T> = () => Observable<ApiResponse<T[]> | ApiResponseList
         MatButtonModule
     ],
     styleUrls: ['./table.component.scss'],
-    styles: [`
-    :host {
-        padding: 10px;
-    }
-    `]
 })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class AppUiDataTableComponent<T extends Record<string, any>> implements AfterViewInit {
 
     @Output() editAction = new EventEmitter<T>();
     @Output() deleteAction = new EventEmitter<T>();
+    @Output() rowClick = new EventEmitter<{ row: T, selected: boolean }>();
 
     @Input() refresh$ = new Subject<void>();
 
@@ -81,12 +78,14 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
         return this.customCellDefs?.find(def => def.columnName === columnName)?.template;
     }
 
+
     ngAfterViewInit() {
 
         this.init();
     }
 
     init() {
+
         merge(
             this.paginator.page,
             this.refresh$
@@ -127,7 +126,9 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
 
             const response = data as ApiResponseList<T> | ApiResponseSingle<T> | ApiResponseSingle<T[]>;
 
-            const rows = Array.isArray(response.data) ? response.data : [response.data];
+            const rows = response.data !== undefined
+                ? (Array.isArray(response.data) ? response.data : [response.data])
+                : [];
 
             this.dataSource.data = rows as T[];
             this.totalElements = ('total' in response) && response.total !== undefined ? response.total : rows.length;
@@ -196,8 +197,6 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     }
 
     openDialog($event: Event, row: T, dialogData: YesNoDialogData): Promise<[T, boolean]> {
-        $event.stopPropagation();
-        $event.preventDefault();
         return new Promise((resolve) => {
             this.dialog.open(AppUiDialogYesNoComponent, {
                 data: dialogData

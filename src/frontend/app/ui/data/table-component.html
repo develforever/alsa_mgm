@@ -63,7 +63,7 @@
         }
 
         <tr mat-header-row *matHeaderRowDef="columnsToShow()"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToShow();" (click)="selection.toggle(row)">
+        <tr mat-row *matRowDef="let row; columns: columnsToShow();" (click)="selection.toggle(row); rowClick.emit({row: row, selected: selection.isSelected(row)})">
         </tr>
     </table>
 

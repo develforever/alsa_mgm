@@ -245,9 +245,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -314,9 +311,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -400,9 +394,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -445,6 +436,50 @@
 					}
 				]
 			},
+			"GetProductSchema": {
+				"properties": {
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Active": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"ProductID",
+					"Name",
+					"Active",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetProductSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetProductSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ApiResponseSingle_Product_": {
 				"properties": {
 					"data": {
@@ -454,9 +489,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -545,9 +577,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -602,9 +631,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -692,9 +718,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -746,9 +769,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -1050,6 +1070,36 @@
 			}
 		},
 		"/api/products/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "Update",
 				"responses": {
