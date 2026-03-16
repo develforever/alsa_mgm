@@ -233,7 +233,49 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_ALWStation-Array_": {
+			"ApiMeta": {
+				"properties": {
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"links": {
+						"properties": {
+							"details": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"entity": {
+						"properties": {
+							"primaryKey": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"primaryKey"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"page",
+					"limit",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_ALWStation_": {
 				"properties": {
 					"data": {
 						"items": {
@@ -243,64 +285,16 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_ALWStation-Array_": {
-				"properties": {
-					"data": {
-						"items": {
-							"items": {
-								"$ref": "#/components/schemas/ALWStation"
-							},
-							"type": "array"
-						},
-						"type": "array"
 					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"required": [
-					"data",
-					"total"
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": true
-			},
-			"ApiResponseInfo": {
-				"properties": {
-					"message": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponse_ALWStation-Array_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_ALWStation-Array_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_ALWStation-Array_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseInfo"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
 			},
 			"ApiResponseSingle_ALWStation_": {
 				"properties": {
@@ -314,25 +308,14 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseList_ALWStation_": {
+			"ApiResponseInfo": {
 				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/ALWStation"
-						},
-						"type": "array"
-					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
+					"message": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"data",
-					"total"
+					"message"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -405,17 +388,15 @@
 						},
 						"type": "array"
 					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"required": [
-					"data",
-					"total"
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -500,17 +481,15 @@
 						},
 						"type": "array"
 					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"required": [
-					"data",
-					"total"
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -565,7 +544,7 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_ALAssLine-Array_": {
+			"ApiResponseList_ALAssLine_": {
 				"properties": {
 					"data": {
 						"items": {
@@ -575,52 +554,16 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_ALAssLine-Array_": {
-				"properties": {
-					"data": {
-						"items": {
-							"items": {
-								"$ref": "#/components/schemas/ALAssLine"
-							},
-							"type": "array"
-						},
-						"type": "array"
 					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"required": [
-					"data",
-					"total"
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": true
-			},
-			"ApiResponse_ALAssLine-Array_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_ALAssLine-Array_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_ALAssLine-Array_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseInfo"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
 			},
 			"ApiResponseSingle_ALAssLine_": {
 				"properties": {
@@ -631,29 +574,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_ALAssLine_": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/ALAssLine"
-						},
-						"type": "array"
-					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					}
-				},
-				"required": [
-					"data",
-					"total"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -709,18 +629,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_AuditLog_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/AuditLog"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
 			"ApiResponseList_AuditLog_": {
 				"properties": {
 					"data": {
@@ -729,46 +637,16 @@
 						},
 						"type": "array"
 					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"required": [
-					"data",
-					"total"
+					"data"
 				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponse_AuditLog_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_AuditLog_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_AuditLog_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseInfo"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
-			},
-			"ApiResponseSingle_ALAssLineWStationAllocation_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/ALAssLineWStationAllocation"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					}
-				},
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -780,18 +658,28 @@
 						},
 						"type": "array"
 					},
-					"total": {
-						"type": "number",
-						"format": "double"
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_ALAssLineWStationAllocation_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ALAssLineWStationAllocation"
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
 					}
 				},
-				"required": [
-					"data",
-					"total"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -828,7 +716,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALWStation-Array_"
+									"$ref": "#/components/schemas/ApiResponseList_ALWStation_"
 								}
 							}
 						}
@@ -1180,7 +1068,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALAssLine-Array_"
+									"$ref": "#/components/schemas/ApiResponseList_ALAssLine_"
 								}
 							}
 						}
@@ -1429,7 +1317,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_AuditLog_"
+									"$ref": "#/components/schemas/ApiResponseList_AuditLog_"
 								}
 							}
 						}
@@ -1472,7 +1360,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALAssLineWStationAllocation_"
+									"$ref": "#/components/schemas/ApiResponseList_ALAssLineWStationAllocation_"
 								}
 							}
 						}

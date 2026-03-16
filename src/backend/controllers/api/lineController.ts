@@ -1,5 +1,5 @@
 import { AppDataSource } from "../../config/data-source";
-import { ApiResponse } from "../../../shared/api/ApiResponse";
+import { ApiResponse, ApiResponseList } from "../../../shared/api/ApiResponse";
 
 import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Path } from "tsoa";
 import { LineStatus } from "@shared/models/types";
@@ -13,9 +13,9 @@ export class LineController extends Controller {
 
     @Get("")
     public async getAll(
-        @Query() page: number = 0,
-        @Query() size: number = 10
-    ): Promise<ApiResponse<ALAssLine[]>> {
+        @Query() page = 0,
+        @Query() size = 10
+    ): Promise<ApiResponseList<ALAssLine>> {
         const lines = await lineRepo.find({
             skip: page * size,
             take: size,
@@ -23,7 +23,11 @@ export class LineController extends Controller {
         const total = await lineRepo.count();
         return {
             data: lines,
-            total,
+            meta: {
+                page,
+                limit: size,
+                total,
+            }
         };
     }
 

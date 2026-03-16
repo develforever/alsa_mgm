@@ -25,10 +25,14 @@ export class ProductController extends Controller {
             }
         });
         const total = await productRepo.count();
-        return {
-            data: ProductMapper.toGetProductsSchema(items),
+        const output = ProductMapper.toGetProductsSchema({
+            items,
             total,
-        };
+            page,
+            size,
+        });
+
+        return output;
     }
 
     @Get("{id}")

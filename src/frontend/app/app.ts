@@ -45,7 +45,7 @@ export class App {
 
 
     effect(() => {
-      this.titleService.setTitle(`${this.currentTitle()} -  ALSA`);
+      this.titleService.setTitle(`${this.currentTitle().join(' > ')} -  ALSA`);
     });
 
     this.router.events

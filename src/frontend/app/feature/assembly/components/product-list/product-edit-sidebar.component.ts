@@ -6,14 +6,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'app-product-list-sidebar',
-    templateUrl: './product-list-sidebar.component.html',
+    selector: 'app-product-edit-sidebar',
+    templateUrl: './product-edit-sidebar.component.html',
     imports: [
         MatCardModule,
         MatButtonModule,
     ],
 })
-export class ProductListSidebarComponent implements OnInit {
+export class ProductEditSidebarComponent implements OnInit {
 
     private route = inject(ActivatedRoute);
     private dataService = inject(DataProductService);
@@ -40,12 +40,9 @@ export class ProductListSidebarComponent implements OnInit {
         this.router.navigate(['/assembly/products']);
     }
 
-    editProduct() {
-        this.router.navigate(['/assembly/products', { outlets: { sidebar: ['edit', this.selectedProductId] } }]);
+    updateProduct() {
+        console.log('update');
     }
 
-    deleteProduct() {
-        console.log('delete');
-    }
 
 }

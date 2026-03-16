@@ -11,8 +11,9 @@ html {
         tertiary: mat.$orange-palette,
       ),
       typography: Roboto,
-      density: 0,
+      density: -2,
     ));
+  @include mat.system-classes();
 }
 
 body {
@@ -41,5 +42,9 @@ body {
 
   &-gap-1 {
     gap: 1rem;
+  }
+
+  &-grow-1 {
+    flex-grow: 1;
   }
 }

@@ -12,7 +12,7 @@
     "start:backend": "nodemon --watch 'src/backend/**/*.ts' --watch 'src/shared/**/*.ts' --ignore 'src/shared/generated' --ext 'ts' --exec 'npm run n:build:api && ts-node -r tsconfig-paths/register --project src/backend/tsconfig.backend.json' src/backend/server.ts",
     "start:frontend": "npm run ng:watch",
     "dev": "concurrently --kill-others -n \"BACKEND,FRONTEND,DOCKER\" -c \"bgBlue,bgGreen,bgRed\" \"npm run start:backend\" \"npm run start:frontend\" \"docker compose up -d; docker compose logs -f\"",
-    "seed": "ts-node src/backend/seed.ts",
+    "seed": "ts-node -r tsconfig-paths/register --project src/backend/tsconfig.backend.json src/backend/seed.ts",
     "lint": "eslint 'src/**/*.ts'"
   },
   "dependencies": {

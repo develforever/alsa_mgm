@@ -100,36 +100,26 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_ALWStation-Array_": {
+    "ApiMeta": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"}},
-            "error": {"ref":"ApiError"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALWStation-Array_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"}},"required":true},
+            "page": {"dataType":"double","required":true},
+            "limit": {"dataType":"double","required":true},
             "total": {"dataType":"double","required":true},
-            "error": {"ref":"ApiError"},
+            "links": {"dataType":"nestedObjectLiteral","nestedProperties":{"details":{"dataType":"string"}}},
+            "entity": {"dataType":"nestedObjectLiteral","nestedProperties":{"primaryKey":{"dataType":"string","required":true}}},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseInfo": {
+    "ApiResponseList_ALWStation_": {
         "dataType": "refObject",
         "properties": {
-            "message": {"dataType":"string","required":true},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_ALWStation-Array_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALWStation-Array_"},{"ref":"ApiResponseList_ALWStation-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_ALWStation_": {
@@ -141,12 +131,10 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALWStation_": {
+    "ApiResponseInfo": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
-            "total": {"dataType":"double","required":true},
-            "error": {"ref":"ApiError"},
+            "message": {"dataType":"string","required":true},
         },
         "additionalProperties": true,
     },
@@ -181,8 +169,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetProductsSchema"},"required":true},
-            "total": {"dataType":"double","required":true},
             "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
@@ -226,8 +214,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "data": {"dataType":"array","array":{"dataType":"refObject","ref":"Product"},"required":true},
-            "total": {"dataType":"double","required":true},
             "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
@@ -255,44 +243,20 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_ALAssLine-Array_": {
+    "ApiResponseList_ALAssLine_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"}},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
             "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALAssLine-Array_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"}},"required":true},
-            "total": {"dataType":"double","required":true},
-            "error": {"ref":"ApiError"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_ALAssLine-Array_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALAssLine-Array_"},{"ref":"ApiResponseList_ALAssLine-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_ALAssLine_": {
         "dataType": "refObject",
         "properties": {
             "data": {"ref":"ALAssLine"},
-            "error": {"ref":"ApiError"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALAssLine_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
-            "total": {"dataType":"double","required":true},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -317,35 +281,12 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_AuditLog_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"ref":"AuditLog"},
-            "error": {"ref":"ApiError"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseList_AuditLog_": {
         "dataType": "refObject",
         "properties": {
             "data": {"dataType":"array","array":{"dataType":"refObject","ref":"AuditLog"},"required":true},
-            "total": {"dataType":"double","required":true},
             "error": {"ref":"ApiError"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_AuditLog_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_AuditLog_"},{"ref":"ApiResponseList_AuditLog_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_ALAssLineWStationAllocation_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"ref":"ALAssLineWStationAllocation"},
-            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
@@ -354,7 +295,16 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
-            "total": {"dataType":"double","required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_ALAssLineWStationAllocation_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"ALAssLineWStationAllocation"},
             "error": {"ref":"ApiError"},
         },
         "additionalProperties": true,
@@ -415,7 +365,6 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsWorkstationController_create: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"PCName":{"dataType":"string","required":true},"ShortName":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true}}},
-                req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/workstations',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
@@ -447,7 +396,6 @@ export function RegisterRoutes(app: Router) {
         const argsWorkstationController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
                 body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"PCName":{"dataType":"string","required":true},"ShortName":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true}}},
-                req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.patch('/api/workstations/:id',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
@@ -478,7 +426,6 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsWorkstationController_delete: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.delete('/api/workstations/:id',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),

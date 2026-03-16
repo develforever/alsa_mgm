@@ -7,6 +7,8 @@ import { WorkstationListComponent } from "./components/workstation-list/workstat
 import { MainAssemblyComponent } from "./main.component";
 import { Route } from "@angular/router";
 import { ProductListSidebarComponent } from "./components/product-list/product-list-sidebar.component";
+import { ProductAddSidebarComponent } from "./components/product-list/product-add-sidebar.component";
+import { ProductEditSidebarComponent } from "./components/product-list/product-edit-sidebar.component";
 
 export function getRoute(): Route {
     return {
@@ -39,6 +41,18 @@ export function getRoute(): Route {
                         path: "selected/:id",
                         component: ProductListSidebarComponent,
                         title: "Produkt",
+                        outlet: "sidebar"
+                    },
+                    {
+                        path: "add",
+                        component: ProductAddSidebarComponent,
+                        title: "Produkt New",
+                        outlet: "sidebar"
+                    },
+                    {
+                        path: "edit/:id",
+                        component: ProductEditSidebarComponent,
+                        title: "Produkt Edit",
                         outlet: "sidebar"
                     },
                 ]

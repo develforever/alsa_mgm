@@ -1,6 +1,6 @@
 import { AppDataSource } from "../../config/data-source";
 import { ALAssLineWStationAllocation } from "../../entity/ALAssLineWStationAllocation";
-import { ApiResponse, ApiResponseInfo } from "../../../shared/api/ApiResponse";
+import { ApiResponse, ApiResponseInfo, ApiResponseList } from "../../../shared/api/ApiResponse";
 
 const allocationRepo = AppDataSource.getRepository(ALAssLineWStationAllocation);
 
@@ -12,9 +12,9 @@ export class AllocationController extends Controller {
 
     @Get("")
     public async getAllocations(
-        @Query() page: number = 0,
-        @Query() size: number = 10
-    ): Promise<ApiResponse<ALAssLineWStationAllocation>> {
+        @Query() page = 0,
+        @Query() size = 10
+    ): Promise<ApiResponseList<ALAssLineWStationAllocation>> {
 
         const lines = await allocationRepo.find({
             relations: { assemblyLine: true, workstation: true },
@@ -24,7 +24,11 @@ export class AllocationController extends Controller {
         const total = await allocationRepo.count();
         return {
             data: lines,
-            total,
+            meta: {
+                page,
+                limit: size,
+                total,
+            }
         };
     }
 

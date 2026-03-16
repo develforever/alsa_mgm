@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="full-width">
-    <div>{{ currentTitle() }}</div>
+    <div class="breadcrumb">{{ currentTitle().join(' > ') }}</div>
     <router-outlet />
   </div>
 </main>

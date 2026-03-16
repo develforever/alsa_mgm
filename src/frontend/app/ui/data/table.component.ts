@@ -4,8 +4,8 @@ import { AfterViewInit, ChangeDetectorRef, Component, computed, ContentChildren,
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { catchError, merge, Observable, of, startWith, Subject, switchMap } from 'rxjs';
-import { ApiResponse, ApiResponseList, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
+import { catchError, filter, merge, Observable, of, startWith, Subject, switchMap } from 'rxjs';
+import { ApiMeta, ApiResponse, ApiResponseList, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -13,7 +13,7 @@ import { AppTableCellDefDirective } from './AppTableCellDefDirective';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AppUiDialogYesNoComponent, YesNoDialogData } from '../dialog/yes-no.dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 export interface TableFetchOptions {
     page: number;
@@ -47,9 +47,14 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     @Output() rowClick = new EventEmitter<{ row: T, selected: boolean }>();
 
     @Input() refresh$ = new Subject<void>();
-
     @Input() pageSize = 10;
     @Input() displayedColumns: string[] = [];
+
+
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
+    private lastSelectedViaRouteItem: T | undefined;
 
     detectedColumns = signal<string[]>([]);
     columnsToShow = computed(() => {
@@ -74,10 +79,11 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     @ContentChildren(AppTableCellDefDirective)
     customCellDefs!: QueryList<AppTableCellDefDirective>;
 
+    private meta: ApiMeta | undefined;
+
     getCustomTemplate(columnName: string) {
         return this.customCellDefs?.find(def => def.columnName === columnName)?.template;
     }
-
 
     ngAfterViewInit() {
 
@@ -85,6 +91,22 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     }
 
     init() {
+
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd)
+        ).subscribe(() => {
+            this.initSelection();
+        });
+
+        this.initSelection();
+
+
+        this.selection.changed
+            .subscribe((event: { added: T[], removed: T[], source: SelectionModel<T> }) => {
+
+                const last = event.source.selected[event.source.selected.length - 1];
+                this.rowClick.emit({ row: last, selected: event.source.isSelected(last) });
+            });
 
         merge(
             this.paginator.page,
@@ -111,7 +133,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
                 return stream$.pipe(
                     catchError((err): Observable<ApiResponseList<T>> => {
                         console.error(err);
-                        return of({ data: [], total: 0 } as ApiResponseList<T>);
+                        return of({ data: [], meta: { page: 0, limit: 0, total: 0 } } as ApiResponseList<T>);
                     })
                 );
 
@@ -125,15 +147,17 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
             }
 
             const response = data as ApiResponseList<T> | ApiResponseSingle<T> | ApiResponseSingle<T[]>;
+            this.meta = 'meta' in response ? response.meta : undefined;
 
             const rows = response.data !== undefined
                 ? (Array.isArray(response.data) ? response.data : [response.data])
                 : [];
 
             this.dataSource.data = rows as T[];
-            this.totalElements = ('total' in response) && response.total !== undefined ? response.total : rows.length;
+            this.totalElements = this.meta?.total || rows.length;
 
             if (rows.length > 0) {
+                this.initSelection();
                 this.autoDetectColumns(rows[0]);
                 this.autoDetectTypes(rows[0]);
 
@@ -142,6 +166,38 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
             this.isLoading = false;
             this.cdr.detectChanges();
         });
+    }
+
+    rowClickHandler(row: T) {
+
+        this.selection.toggle(row);
+        //this.rowClick.emit({ row, selected: this.selection.isSelected(row) });
+
+    }
+
+    private initSelection() {
+        const sidebar = this.route.snapshot.children
+            .find((c: any) => c.outlet === 'sidebar');
+
+        if (sidebar?.params['id']) {
+            const primaryKey = this.meta?.entity?.primaryKey;
+
+            if (!primaryKey) {
+                return;
+            }
+
+            const row = this.dataSource.data.find(row => String(row[primaryKey]) === String(sidebar.params['id']));
+
+            if (row) {
+                this.selection.select(row);
+                this.lastSelectedViaRouteItem = row;
+                this.cdr.detectChanges()
+            }
+        } else if (this.lastSelectedViaRouteItem) {
+            this.selection.deselect(this.lastSelectedViaRouteItem);
+            this.lastSelectedViaRouteItem = undefined;
+            this.cdr.detectChanges()
+        }
     }
 
     autoDetectColumns(sampleRow: T) {
@@ -197,6 +253,9 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     }
 
     openDialog($event: Event, row: T, dialogData: YesNoDialogData): Promise<[T, boolean]> {
+        $event.stopPropagation();
+        $event.preventDefault();
+
         return new Promise((resolve) => {
             this.dialog.open(AppUiDialogYesNoComponent, {
                 data: dialogData

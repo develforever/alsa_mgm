@@ -1,7 +1,7 @@
-import { ApiResponse, ApiResponseInfo } from "@shared/api/ApiResponse";
+import { ApiResponse, ApiResponseInfo, ApiResponseList } from "@shared/api/ApiResponse";
 import { AppDataSource } from "../../config/data-source";
 import { ALWStation } from "../../entity/ALWStation";
-import { Body, Controller, Delete, Get, Patch, Path, Post, Query, Request, Route, Tags } from "tsoa";
+import { Body, Controller, Delete, Get, Patch, Path, Post, Query, Route, Tags } from "tsoa";
 
 const stationRepo = AppDataSource.getRepository(ALWStation);
 
@@ -11,9 +11,9 @@ export class WorkstationController extends Controller {
 
     @Get("")
     public async getAll(
-        @Query() page: number = 0,
-        @Query() size: number = 10
-    ): Promise<ApiResponse<ALWStation[]>> {
+        @Query() page = 0,
+        @Query() size = 10
+    ): Promise<ApiResponseList<ALWStation>> {
         const stations = await stationRepo.find({
             skip: page * size,
             take: size,
@@ -21,14 +21,17 @@ export class WorkstationController extends Controller {
         const total = await stationRepo.count();
         return {
             data: stations,
-            total,
+            meta: {
+                page,
+                limit: size,
+                total,
+            }
         };
     }
 
     @Post("")
     public async create(
         @Body() body: { Name: string, ShortName: string, PCName: string },
-        @Request() req: any
     ): Promise<ApiResponse<ALWStation>> {
         const station = stationRepo.create(body);
         await stationRepo.save(station);
@@ -39,7 +42,6 @@ export class WorkstationController extends Controller {
     public async update(
         @Path() id: number,
         @Body() body: { Name: string, ShortName: string, PCName: string },
-        @Request() req: any
     ): Promise<ApiResponse<ALWStation>> {
         await stationRepo.update(id, body);
 
@@ -58,7 +60,6 @@ export class WorkstationController extends Controller {
     @Delete("{id}")
     public async delete(
         @Path() id: number,
-        @Request() req: any
     ): Promise<ApiResponseInfo> {
         await stationRepo.softDelete(id);
         return { message: "Workstations soft-deleted" };

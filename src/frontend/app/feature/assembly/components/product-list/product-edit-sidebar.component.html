@@ -1,7 +1,7 @@
 @if(product()){
 <mat-card appearance="outlined">
     <mat-card-header>
-        <mat-card-title>Szczegóły produktu</mat-card-title>
+        <mat-card-title>Edytuj produkt</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -14,8 +14,7 @@
 
     <mat-card-actions>
         <button matButton (click)="closeSidebar()">Zamknij</button>
-        <button matButton (click)="editProduct()">Edytuj</button>
-        <button matButton (click)="deleteProduct()">Usuń</button>
+        <button matButton (click)="updateProduct()">Aktualizuj</button>
     </mat-card-actions>
 </mat-card>
 }

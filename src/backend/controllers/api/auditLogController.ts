@@ -1,6 +1,6 @@
 import { AppDataSource } from "../../config/data-source";
 import { AuditLog } from "../../entity/AuditLog";
-import { ApiError, ApiResponse } from "../../../shared/api/ApiResponse";
+import { ApiResponseList } from "../../../shared/api/ApiResponse";
 
 const auditRepo = AppDataSource.getRepository(AuditLog);
 
@@ -12,9 +12,9 @@ export class AuditLogController extends Controller {
 
     @Get("logs")
     public async getAuditLogs(
-        @Query() page: number = 0,
-        @Query() size: number = 10
-    ): Promise<ApiResponse<AuditLog>> {
+        @Query() page = 0,
+        @Query() size = 10
+    ): Promise<ApiResponseList<AuditLog>> {
 
         const logs = await auditRepo.find({
             order: { timestamp: "DESC" },
@@ -26,7 +26,11 @@ export class AuditLogController extends Controller {
 
         return {
             data: logs,
-            total,
+            meta: {
+                page,
+                limit: size,
+                total,
+            }
         };
     }
 }
