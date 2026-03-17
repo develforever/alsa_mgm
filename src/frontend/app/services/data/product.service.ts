@@ -5,7 +5,7 @@ import { AbstractDataService } from '../data.service';
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
 import { HttpParams } from '@angular/common/http';
 import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../shared/api/product/schema';
-import { ITableDataService } from '../../ui/data/layout/smart-list-layout.component';
+import { ITableDataRowAddNavigationData, ITableDataService } from '../../ui/data/layout/smart-list-layout.component';
 import { ITableDataRowClickNavigationData } from '../../ui/data/layout/smart-list-layout.component';
 
 @Injectable({
@@ -50,7 +50,8 @@ export class DataProductService extends AbstractDataService {
   providedIn: 'root'
 })
 export class ITbleDataProductService extends DataProductService implements ITableDataService<GetProductsSchema>,
-  ITableDataRowClickNavigationData<GetProductsSchema> {
+  ITableDataRowClickNavigationData<GetProductsSchema>,
+  ITableDataRowAddNavigationData<GetProductsSchema> {
 
   getList(page: number, size: number): Observable<ApiResponse<GetProductsSchema>> {
     return this.getProducts(page, size);
@@ -62,5 +63,13 @@ export class ITbleDataProductService extends DataProductService implements ITabl
     } else {
       return { commands: ['/assembly/products', { outlets: { sidebar: null } }] };
     }
+  }
+
+  getRowAddNavigationData(): { commands: any[], extras?: any } {
+    return { commands: ['/assembly/products', { outlets: { sidebar: ['add'] } }] };
+  }
+
+  getAddLabel(): string {
+    return 'Add Product';
   }
 }

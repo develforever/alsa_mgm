@@ -1,11 +1,11 @@
 <div class="product-container">
   <h2>Product Management</h2>
 
-  <div class="add-bar">
+  <!-- <div class="add-bar">
     <button [routerLink]="['./', { outlets: { sidebar: ['add'] } }]" routerLinkActive="active" matButton>
       Add Product
     </button>
-  </div>
+  </div> -->
 
   <app-smart-list-layout #smartLayout [dataService]="dataTableService"
     [refresh$]="tableRefresh$"></app-smart-list-layout>

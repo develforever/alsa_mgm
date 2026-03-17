@@ -1,3 +1,9 @@
+<div class="add-bar">
+    <button [routerLink]="addRowNavigation()" routerLinkActive="active" matButton>
+        {{ addLabel() }}
+    </button>
+</div>
+
 <app-list-sidebar-layout>
     <app-ui-data-table-component #myTable [fetchFn]="fetchFn" [pageSize]="10" [refresh$]="refresh$"
         [externalCellDefs]="externalCellDefs" (rowClick)="onRowClick($event)">
