@@ -38,7 +38,7 @@ export class DataProductService extends AbstractDataService {
   }
 
   updateProduct(id: number, product: PatchProductsSchema) {
-    return this.http.patch<ApiResponse<GetProductsSchema>>(`${this.apiUrl}/products/${id}`, product);
+    return this.http.patch<ApiResponseSingle<GetProductSchema>>(`${this.apiUrl}/products/${id}`, product);
   }
 
   deleteProduct(id: number) {

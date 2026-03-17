@@ -1,15 +1,32 @@
 @if(product()){
 <mat-card appearance="outlined">
     <mat-card-header>
-        <mat-card-title>Edytuj produkt</mat-card-title>
+        <mat-card-title>Edycja: {{ product()?.Name }}</mat-card-title>
     </mat-card-header>
-
     <mat-card-content>
-        <mat-card-subtitle> ID: #{{ product()?.ProductID }}</mat-card-subtitle>
-        <mat-card-subtitle> Nazwa: {{ product()?.Name }}</mat-card-subtitle>
-        <mat-card-subtitle> Status: {{ product()?.Active ? 'Aktywny' : 'Nieaktywny' }}</mat-card-subtitle>
-        <mat-card-subtitle> Utworzono: {{ product()?.CreatedAt }}</mat-card-subtitle>
-        <mat-card-subtitle> Zaktualizowano: {{ product()?.UpdatedAt }}</mat-card-subtitle>
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            @for (control of productForm.controls | keyvalue; track control.key) {
+
+            @if(getControlType(control.key) === 'checkbox') {
+            <div class="full-width">
+                <mat-checkbox [formControlName]="control.key">
+                    {{ control.key | titlecase }}
+                </mat-checkbox>
+            </div>
+            } @else {
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>{{ control.key | titlecase }}</mat-label>
+                <input matInput [formControlName]="control.key" [type]="getControlType(control.key)"
+                    [placeholder]="control.key">
+
+                @if (productForm.get(control.key)?.invalid && productForm.get(control.key)?.touched) {
+                <mat-error>Pole {{ control.key }} jest niepoprawne</mat-error>
+                }
+            </mat-form-field>
+            }
+
+            }
+        </form>
     </mat-card-content>
 
     <mat-card-actions>
