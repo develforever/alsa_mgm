@@ -5,6 +5,8 @@ import { AbstractDataService } from '../data.service';
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
 import { HttpParams } from '@angular/common/http';
 import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../shared/api/product/schema';
+import { ITableDataService } from '../../ui/data/layout/smart-list-layout.component';
+import { ITableDataRowClickNavigationData } from '../../ui/data/layout/smart-list-layout.component';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +43,24 @@ export class DataProductService extends AbstractDataService {
 
   deleteProduct(id: number) {
     return this.http.delete<ApiResponse<ApiResponseInfo>>(`${this.apiUrl}/products/${id}`);
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ITbleDataProductService extends DataProductService implements ITableDataService<GetProductsSchema>,
+  ITableDataRowClickNavigationData<GetProductsSchema> {
+
+  getList(page: number, size: number): Observable<ApiResponse<GetProductsSchema>> {
+    return this.getProducts(page, size);
+  }
+
+  getRowClickNavigationData(row: GetProductsSchema, selected: boolean): { commands: any[], extras?: any } {
+    if (selected) {
+      return { commands: ['/assembly/products', { outlets: { sidebar: ['selected', row.ProductID] } }] };
+    } else {
+      return { commands: ['/assembly/products', { outlets: { sidebar: null } }] };
+    }
   }
 }

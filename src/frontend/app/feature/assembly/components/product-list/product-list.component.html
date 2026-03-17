@@ -7,15 +7,7 @@
     </button>
   </div>
 
-  <app-list-sidebar-layout>
-    <app-ui-data-table-component #myTable [fetchFn]="fetchProducts" [pageSize]="10" [refresh$]="tableRefresh$"
-      (rowClick)="openSidebar($event)">
-      <ng-template appTableCellDef="actions" let-row>
-        <button matButton (click)="myTable.openDialog($event, row, toggleDialogData).then(toggleActive)">Zmień
-          status</button>
-        <button matButton (click)="myTable.openDialog($event, row, deleteDialogData).then(deleteProduct)">Usuń</button>
-      </ng-template>
-    </app-ui-data-table-component>
-  </app-list-sidebar-layout>
+  <app-smart-list-layout #smartLayout [dataService]="dataTableService"
+    [refresh$]="tableRefresh$"></app-smart-list-layout>
 
 </div>

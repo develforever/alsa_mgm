@@ -65,6 +65,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     });
 
     @Input() columnTypes: Record<string, ColumnType> = {};
+    @Input() externalCellDefs?: QueryList<AppTableCellDefDirective>;
     @Input({ required: true }) fetchFn!: PaginatedFetchFn<T> | FlatFetchFn<T>;
     readonly dialog = inject(MatDialog);
 
@@ -82,7 +83,8 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     private meta: ApiMeta | undefined;
 
     getCustomTemplate(columnName: string) {
-        return this.customCellDefs?.find(def => def.columnName === columnName)?.template;
+        return this.customCellDefs?.find(def => def.columnName === columnName)?.template
+            || this.externalCellDefs?.find(def => def.columnName === columnName)?.template;
     }
 
     ngAfterViewInit() {
