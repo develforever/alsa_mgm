@@ -1,17 +1,27 @@
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AbstractDataService } from '../data.service';
-import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
+import { Observable, Subject } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
-import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../shared/api/product/schema';
-import { ITableDataRowAddNavigationData, ITableDataService } from '../../ui/data/layout/smart-list-layout.component';
-import { ITableDataRowClickNavigationData } from '../../ui/data/layout/smart-list-layout.component';
+import { AbstractDataService } from '../../../../../services/data.service';
+import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../../../../shared/api/product/schema';
+import { INotifyChangeService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData, ITableDataService } from '../../../../../ui/data/layout/smart-list-layout.component';
+import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../../../../shared/api/ApiResponse';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataProductService extends AbstractDataService {
+export class DataProductService extends AbstractDataService implements INotifyChangeService,
+  ITableDataService<GetProductsSchema>,
+  ITableDataRowClickNavigationData<GetProductsSchema>,
+  ITableDataRowAddNavigationData<GetProductsSchema> {
+
+  private notifyChangeSubject = new Subject<void>();
+  notifyChange$ = this.notifyChangeSubject.asObservable();
+
+  notifyChange(): void {
+    this.notifyChangeSubject.next();
+  }
 
   getProducts(page?: number, size?: number): Observable<ApiResponse<GetProductsSchema>> {
     let params = new HttpParams()
@@ -44,14 +54,6 @@ export class DataProductService extends AbstractDataService {
   deleteProduct(id: number) {
     return this.http.delete<ApiResponse<ApiResponseInfo>>(`${this.apiUrl}/products/${id}`);
   }
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ITbleDataProductService extends DataProductService implements ITableDataService<GetProductsSchema>,
-  ITableDataRowClickNavigationData<GetProductsSchema>,
-  ITableDataRowAddNavigationData<GetProductsSchema> {
 
   getList(page: number, size: number): Observable<ApiResponse<GetProductsSchema>> {
     return this.getProducts(page, size);

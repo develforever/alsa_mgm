@@ -1,6 +1,6 @@
 import { ApiResponse, ApiResponseInfo, ApiResponseList } from "@shared/api/ApiResponse";
-import { AppDataSource } from "../../config/data-source";
-import { ALWStation } from "../../entity/ALWStation";
+import { AppDataSource } from "../../../../config/data-source";
+import { ALWStation } from "../../../../entity/ALWStation";
 import { Body, Controller, Delete, Get, Patch, Path, Post, Query, Route, Tags } from "tsoa";
 
 const stationRepo = AppDataSource.getRepository(ALWStation);

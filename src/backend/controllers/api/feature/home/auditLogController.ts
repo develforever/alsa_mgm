@@ -1,6 +1,6 @@
-import { AppDataSource } from "../../config/data-source";
-import { AuditLog } from "../../entity/AuditLog";
-import { ApiResponseList } from "../../../shared/api/ApiResponse";
+import { AppDataSource } from "../../../../config/data-source";
+import { AuditLog } from "../../../../entity/AuditLog";
+import { ApiResponseList } from "../../../../../shared/api/ApiResponse";
 
 const auditRepo = AppDataSource.getRepository(AuditLog);
 

@@ -7,6 +7,120 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"AuditLog": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"action": {
+						"type": "string"
+					},
+					"entityName": {
+						"type": "string"
+					},
+					"entityId": {
+						"type": "string"
+					},
+					"details": {},
+					"userEmail": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"action",
+					"entityName",
+					"entityId",
+					"details",
+					"userEmail",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiError": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"code": {
+						"type": "number",
+						"format": "double"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiMeta": {
+				"properties": {
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"links": {
+						"properties": {
+							"details": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"entity": {
+						"properties": {
+							"primaryKey": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"primaryKey"
+						],
+						"type": "object"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_AuditLog_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/AuditLog"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ALAssLine": {
 				"properties": {
 					"ALAssLineID": {
@@ -213,68 +327,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiError": {
-				"properties": {
-					"message": {
-						"type": "string"
-					},
-					"code": {
-						"type": "number",
-						"format": "double"
-					},
-					"stack": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message",
-					"code"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiMeta": {
-				"properties": {
-					"page": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"links": {
-						"properties": {
-							"details": {
-								"type": "string"
-							}
-						},
-						"type": "object"
-					},
-					"entity": {
-						"properties": {
-							"primaryKey": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"primaryKey"
-						],
-						"type": "object"
-					}
-				},
-				"required": [
-					"page",
-					"limit",
-					"total"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
 			"ApiResponseList_ALWStation_": {
 				"properties": {
 					"data": {
@@ -303,6 +355,9 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"type": "object",
@@ -375,6 +430,9 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"type": "object",
@@ -456,6 +514,9 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"type": "object",
@@ -468,6 +529,9 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"type": "object",
@@ -572,6 +636,9 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"type": "object",
@@ -592,63 +659,6 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				]
-			},
-			"AuditLog": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"action": {
-						"type": "string"
-					},
-					"entityName": {
-						"type": "string"
-					},
-					"entityId": {
-						"type": "string"
-					},
-					"details": {},
-					"userEmail": {
-						"type": "string"
-					},
-					"timestamp": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"action",
-					"entityName",
-					"entityId",
-					"details",
-					"userEmail",
-					"timestamp"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_AuditLog_": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/AuditLog"
-						},
-						"type": "array"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": true
 			},
 			"ApiResponseList_ALAssLineWStationAllocation_": {
 				"properties": {
@@ -678,6 +688,9 @@
 					},
 					"error": {
 						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
 				"type": "object",
@@ -707,6 +720,145 @@
 		"contact": {}
 	},
 	"paths": {
+		"/api/auth/github": {
+			"get": {
+				"operationId": "AuthGithub",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"description": "Inicjuje logowanie przez GitHub.\nRedirects do GitHub OAuth.",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/auth/github/callback": {
+			"get": {
+				"operationId": "AuthGithubCallback",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"description": "Callback z GitHub po zalogowaniu.",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/auth/status": {
+			"get": {
+				"operationId": "AuthStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"user": {},
+										"isAuthenticated": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"user",
+										"isAuthenticated"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Sprawdza status zalogowania użytkownika.",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/auth/logout": {
+			"get": {
+				"operationId": "AuthLogout",
+				"responses": {
+					"200": {
+						"description": "Logged out",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Wylogowuje użytkownika i niszczy sesję.",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/audit/logs": {
+			"get": {
+				"operationId": "GetAuditLogs",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseList_AuditLog_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AuditLogs"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/api/workstations": {
 			"get": {
 				"operationId": "GetAll",
@@ -966,7 +1118,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
 								}
 							}
 						}
@@ -1205,145 +1364,6 @@
 						"name": "id",
 						"required": true,
 						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/auth/github": {
-			"get": {
-				"operationId": "AuthGithub",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"description": "Inicjuje logowanie przez GitHub.\nRedirects do GitHub OAuth.",
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/auth/github/callback": {
-			"get": {
-				"operationId": "AuthGithubCallback",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"description": "Callback z GitHub po zalogowaniu.",
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/auth/status": {
-			"get": {
-				"operationId": "AuthStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"user": {},
-										"isAuthenticated": {
-											"type": "boolean"
-										}
-									},
-									"required": [
-										"user",
-										"isAuthenticated"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"description": "Sprawdza status zalogowania użytkownika.",
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/auth/logout": {
-			"get": {
-				"operationId": "AuthLogout",
-				"responses": {
-					"200": {
-						"description": "Logged out",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"description": "Wylogowuje użytkownika i niszczy sesję.",
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/audit/logs": {
-			"get": {
-				"operationId": "GetAuditLogs",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ApiResponseList_AuditLog_"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"AuditLogs"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "page",
-						"required": false,
-						"schema": {
-							"default": 0,
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "size",
-						"required": false,
-						"schema": {
-							"default": 10,
 							"format": "double",
 							"type": "number"
 						}

@@ -1,19 +1,18 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { DataProductService } from "../../../../services/data/product.service";
 import { GetProductSchema } from "../../../../../../shared/api/product/schema";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'app-product-list-sidebar',
-    templateUrl: './product-list-sidebar.component.html',
+    selector: 'app-ui-data-layout-smart-list-view',
+    templateUrl: './view.component.html',
     imports: [
         MatCardModule,
         MatButtonModule,
     ],
 })
-export class ProductListSidebarComponent implements OnInit {
+export class ViewComponent implements OnInit {
 
     private route = inject(ActivatedRoute);
     private dataService = inject(DataProductService);

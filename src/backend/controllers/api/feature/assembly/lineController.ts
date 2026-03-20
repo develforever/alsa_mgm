@@ -1,9 +1,9 @@
-import { AppDataSource } from "../../config/data-source";
-import { ApiResponse, ApiResponseList } from "../../../shared/api/ApiResponse";
+import { AppDataSource } from "../../../../config/data-source";
+import { ApiResponse, ApiResponseList } from "../../../../../shared/api/ApiResponse";
 
 import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Path } from "tsoa";
 import { LineStatus } from "@shared/models/types";
-import { ALAssLine } from "../../entity/ALAssLine";
+import { ALAssLine } from "../../../../entity/ALAssLine";
 
 const lineRepo = AppDataSource.getRepository(ALAssLine);
 

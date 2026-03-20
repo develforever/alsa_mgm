@@ -173,7 +173,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     rowClickHandler(row: T) {
 
         this.selection.toggle(row);
-        //this.rowClick.emit({ row, selected: this.selection.isSelected(row) });
+        this.rowClick.emit({ row, selected: this.selection.isSelected(row) });
 
     }
 

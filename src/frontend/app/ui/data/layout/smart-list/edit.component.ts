@@ -1,6 +1,6 @@
 import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { DataProductService } from "../../../../services/data/product.service";
+import { DataProductService } from "./service/product.service";
 import { GetProductSchema, PatchProductsSchema } from "../../../../../../shared/api/product/schema";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -8,7 +8,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { CommonModule } from "@angular/common";
+import { CommonModule, KeyValue } from "@angular/common";
 
 
 type ProductFormControls = {
@@ -16,8 +16,8 @@ type ProductFormControls = {
 };
 
 @Component({
-    selector: 'app-product-edit-sidebar',
-    templateUrl: './product-edit-sidebar.component.html',
+    selector: 'app-ui-data-layout-smart-list-edit',
+    templateUrl: './edit.component.html',
     imports: [
         CommonModule,
         MatCardModule,
@@ -34,7 +34,7 @@ type ProductFormControls = {
         }
     `]
 })
-export class ProductEditSidebarComponent implements OnInit {
+export class EditComponent implements OnInit {
 
     constructor() {
         effect(() => {
@@ -57,19 +57,24 @@ export class ProductEditSidebarComponent implements OnInit {
     selectedProductId: number | null = null;
 
     productForm = new FormGroup<ProductFormControls>({
-        ProductID: new FormControl(0, [Validators.required]),
+        ProductID: new FormControl({ value: 0, disabled: true }, [Validators.required]),
         Name: new FormControl('', [Validators.required]),
         Active: new FormControl(0, Validators.required),
-        CreatedAt: new FormControl(new Date(), [Validators.required]),
-        UpdatedAt: new FormControl(new Date(), [Validators.required]),
+        CreatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
+        UpdatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
     });
 
     getControlType(key: string): string {
+        if (key === 'ProductID') return 'hidden';
         if (key === 'Active') return 'checkbox';
         const value = this.productForm.get(key)?.value;
         if (typeof value === 'number') return 'number';
         if (typeof value === 'boolean') return 'checkbox';
         return 'text';
+    }
+
+    keepOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+        return 0;
     }
 
     ngOnInit() {
@@ -100,6 +105,7 @@ export class ProductEditSidebarComponent implements OnInit {
         } as PatchProductsSchema;
         this.dataService.updateProduct(this.selectedProductId!, update).subscribe((res) => {
             this.product.set(res.data);
+            this.dataService.notifyChange();
         });
     }
 

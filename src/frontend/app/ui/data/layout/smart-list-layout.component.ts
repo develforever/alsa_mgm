@@ -1,12 +1,19 @@
-import { Component, computed, ContentChildren, EventEmitter, inject, Input, Output, QueryList, ViewChild } from "@angular/core";
+import { Component, computed, ContentChildren, EventEmitter, inject, Input, OnInit, Output, QueryList, ViewChild } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { ApiResponse } from "../../../../../shared/api/ApiResponse";
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
 import { NavigationExtras, Router, RouterLink } from "@angular/router";
-import { ListSidebarLayoutComponent } from "../../layout/list-sidebar-layout.component";
+import { ListSidebarLayoutComponent } from "./smart-list/layout.component";
 import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
 import { MatButtonModule } from "@angular/material/button";
+
+
+export interface INotifyChangeService {
+
+    notifyChange(): void;
+    notifyChange$: Observable<void>;
+}
 
 export interface ITableDataRowAddNavigationData<T extends Record<string, any>> {
 
@@ -38,7 +45,7 @@ export interface ITableDataService<T extends Record<string, any>> {
 
  */
 @Component({
-    selector: 'app-smart-list-layout',
+    selector: 'app-ui-data-layout-smart-list',
     templateUrl: './smart-list-layout.component.html',
     imports: [
         ListSidebarLayoutComponent,
@@ -47,17 +54,26 @@ export interface ITableDataService<T extends Record<string, any>> {
         MatButtonModule
     ],
 })
-export class SmartListLayoutComponent<T extends Record<string, any>> {
+export class SmartListLayoutComponent<T extends Record<string, any>> implements OnInit {
     @ViewChild('myTable') myTable!: AppUiDataTableComponent<T>;
-    @ContentChildren(AppTableCellDefDirective) externalCellDefs!: QueryList<AppTableCellDefDirective>;
+    @ContentChildren(AppTableCellDefDirective) externalCellDefs?: QueryList<AppTableCellDefDirective>;
 
     @Output() rowClicked = new EventEmitter<{ row: T, selected: boolean }>();
 
-    @Input() dataService!: ITableDataService<T>;
+    @Input() dataService!: ITableDataService<T> & INotifyChangeService;
 
-    @Input() refresh$ = new Subject<void>();
+    tableRefresh$ = new Subject<void>();
 
     private router = inject(Router);
+
+
+    ngOnInit(): void {
+
+        this.dataService.notifyChange$.subscribe(() => {
+            this.tableRefresh$.next();
+        });
+
+    }
 
     addLabel = computed(() => {
         if ('getAddLabel' in this.dataService) {

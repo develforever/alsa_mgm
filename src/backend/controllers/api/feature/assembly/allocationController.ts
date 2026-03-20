@@ -1,6 +1,6 @@
-import { AppDataSource } from "../../config/data-source";
-import { ALAssLineWStationAllocation } from "../../entity/ALAssLineWStationAllocation";
-import { ApiResponse, ApiResponseInfo, ApiResponseList } from "../../../shared/api/ApiResponse";
+import { AppDataSource } from "../../../../config/data-source";
+import { ALAssLineWStationAllocation } from "../../../../entity/ALAssLineWStationAllocation";
+import { ApiResponse, ApiResponseInfo, ApiResponseList } from "../../../../../shared/api/ApiResponse";
 
 const allocationRepo = AppDataSource.getRepository(ALAssLineWStationAllocation);
 

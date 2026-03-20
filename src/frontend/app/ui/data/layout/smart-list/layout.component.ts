@@ -6,15 +6,15 @@ import { MatCardHeader } from "@angular/material/card";
 import { MatCardContent } from "@angular/material/card";
 
 @Component({
-    selector: 'app-list-sidebar-layout',
-    templateUrl: './list-sidebar-layout.component.html',
-    styleUrls: ['./list-sidebar-layout.component.scss'],
+    selector: 'app-ui-data-layout-smart-list-layout',
+    templateUrl: './layout.component.html',
+    styleUrls: ['./layout.component.scss'],
     host: {
         class: 'flex flex-gap-1'
     },
     imports: [RouterOutlet, CommonModule, MatCardModule, MatCardHeader, MatCardContent],
 })
-export class ListSidebarLayoutComponent {
+export class LayoutComponent {
 
 
     isSidebarActive = signal(false);

@@ -2,14 +2,14 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { ALAssLine } from '../../../../../../shared/models/types';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ensureArray } from '../../../../utils/api.utils';
-import { DataProductService } from '../../../../services/data/product.service';
+import { ensureArray } from '../../../../utils/api.utils';;
 import { DataLineService } from '../../../../services/data/line.service';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { GetProductsSchema } from '../../../../../../shared/api/product/schema';
+import { DataProductService } from '../product-list/service/product.service';
 
 @Component({
-  selector: 'assembly-line-list',
+  selector: 'app-assembly-line-list',
   templateUrl: './line-list.component.html',
   imports: [
     CommonModule,

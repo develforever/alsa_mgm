@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { DataProductService } from "../../../../services/data/product.service";
+import { DataProductService } from "./service/product.service";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from "@angular/forms";
@@ -8,8 +8,8 @@ import { MatInputModule } from "@angular/material/input";
 import { Router } from "@angular/router";
 
 @Component({
-    selector: 'app-product-add-sidebar',
-    templateUrl: './product-add-sidebar.component.html',
+    selector: 'app-ui-data-layout-smart-list-add',
+    templateUrl: './add.component.html',
     imports: [
         MatCardModule,
         MatButtonModule,
@@ -18,7 +18,7 @@ import { Router } from "@angular/router";
         MatInputModule,
     ],
 })
-export class ProductAddSidebarComponent {
+export class AddComponent {
 
 
     private router = inject(Router);

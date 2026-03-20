@@ -6,6 +6,7 @@ export interface ApiResponseInfo {
 export interface ApiResponseSingle<T> {
     data?: T;
     error?: ApiError;
+    meta?: ApiMeta;
 }
 
 export interface ApiResponseList<T> {
@@ -21,9 +22,9 @@ export interface ApiError {
 }
 
 export interface ApiMeta {
-    page: number
-    limit: number
-    total: number
+    page?: number
+    limit?: number
+    total?: number
     links?: {
         details?: string
     }
