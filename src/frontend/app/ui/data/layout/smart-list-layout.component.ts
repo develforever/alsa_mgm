@@ -17,15 +17,12 @@ export interface INotifyChangeService {
 }
 
 export interface ITableDataRowAddNavigationData {
-
-    getRowAddNavigationData(): { commands: any[], extras?: NavigationExtras };
-
+    getSidebarAddRoute(): any[];
     getAddLabel(): string;
 }
 
 export interface ITableDataRowClickNavigationData<T extends Record<string, any>> {
-
-    getRowClickNavigationData(row: T, selected: boolean): { commands: any[], extras?: NavigationExtras };
+    getSidebarItemRoute(row: T): any[];
 }
 
 export interface ITableDataService<T extends Record<string, any>> {
@@ -39,7 +36,8 @@ export interface ICrudService<T extends Record<string, any>> extends ITableDataS
     delete(id: string | number): Observable<ApiResponse<ApiResponseInfo>>;
 
     getListViewCommands(): any[];
-    getItemEditCommands(id: string | number): any[];
+    getSidebarBaseRoute(): string;
+    getItemEditRoute(id: string | number): any[];
     getFormGroup(): FormGroup;
 }
 
@@ -82,12 +80,15 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
 
     ngOnInit(): void {
-
         this.smartListService.setDataService(this.dataService);
+        
+        // Calculate base route (current URL without outlets)
+        const baseRoute = this.router.url.split('(')[0];
+        this.smartListService.baseRoute.set(baseRoute);
+
         this.dataService.notifyChange$.subscribe(() => {
             this.tableRefresh$.next();
         });
-
     }
 
     addLabel = computed(() => {
@@ -98,8 +99,9 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
     });
 
     addRowNavigation = computed(() => {
-        if ('getRowAddNavigationData' in this.dataService) {
-            return (this.dataService as unknown as ITableDataRowAddNavigationData).getRowAddNavigationData().commands;
+        if ('getSidebarAddRoute' in this.dataService) {
+            const sidebarRoute = (this.dataService as unknown as ITableDataRowAddNavigationData).getSidebarAddRoute();
+            return [this.smartListService.baseRoute(), { outlets: { sidebar: sidebarRoute } }];
         }
         return [];
     });
@@ -111,10 +113,13 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
 
     onRowClick(event: { row: T, selected: boolean }) {
+        const baseRoute = this.smartListService.baseRoute();
 
-        if ('getRowClickNavigationData' in this.dataService) {
-            const navigationData = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getRowClickNavigationData(event.row, event.selected);
-            this.router.navigate(navigationData.commands, navigationData.extras);
+        if (event.selected && 'getSidebarItemRoute' in this.dataService) {
+            const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(event.row);
+            this.router.navigate([baseRoute, { outlets: { sidebar: sidebarRoute } }]);
+        } else {
+            this.router.navigate([baseRoute, { outlets: { sidebar: null } }]);
         }
 
         this.rowClicked.emit(event);

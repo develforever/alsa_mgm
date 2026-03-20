@@ -7,6 +7,11 @@ export class SmartListService<T extends Record<string, any> = Record<string, any
     
     private router = inject(Router);
     private _dataService = signal<ICrudService<T> | undefined>(undefined);
+    baseRoute = signal<string>('');
+
+    getBaseRoute() {
+        return this.baseRoute() || this.router.url.split('(')[0];
+    }
     
     setDataService(service: ICrudService<T>) {
         this._dataService.set(service);

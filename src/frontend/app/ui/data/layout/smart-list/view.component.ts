@@ -19,15 +19,15 @@ export class ViewComponent implements OnInit {
 
     item = signal<any | undefined>(undefined);
 
-    selectedProductId: number | null = null;
+    selectedId: number | null = null;
 
     ngOnInit() {
 
         this.route.params.subscribe(params => {
             const idFormUrl = params['id'];
             if (idFormUrl) {
-                this.selectedProductId = Number(idFormUrl);
-                this.smartListService.dataService.getOne(this.selectedProductId).subscribe((res) => {
+                this.selectedId = Number(idFormUrl);
+                this.smartListService.dataService.getOne(this.selectedId).subscribe((res) => {
                     this.item.set(res.data);
                 });
             }
@@ -35,18 +35,20 @@ export class ViewComponent implements OnInit {
     }
 
     closeSidebar() {
-        this.smartListService.closeSidebar(this.smartListService.dataService.getListViewCommands());
+        this.smartListService.closeSidebar(this.smartListService.getBaseRoute());
     }
 
-    editProduct() {
-        if (this.selectedProductId) {
-            this.smartListService.closeSidebar(this.smartListService.dataService.getItemEditCommands(this.selectedProductId));
+    editItem() {
+        if (this.selectedId) {
+            const baseRoute = this.smartListService.getBaseRoute();
+            const sidebarRoute = this.smartListService.dataService.getItemEditRoute(this.selectedId);
+            this.smartListService.closeSidebar([baseRoute, { outlets: { sidebar: sidebarRoute } }]);
         }
     }
 
-    deleteProduct() {
-        if (this.selectedProductId) {
-            this.smartListService.dataService.delete(this.selectedProductId).subscribe(() => {
+    deleteItem() {
+        if (this.selectedId) {
+            this.smartListService.dataService.delete(this.selectedId).subscribe(() => {
                 this.smartListService.refresh();
                 this.closeSidebar();
             });

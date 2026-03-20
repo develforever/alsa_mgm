@@ -76,11 +76,15 @@ export class DataProductService extends AbstractDataService implements ICrudServ
   }
 
   getListViewCommands(): any[] {
-    return ['/assembly/products'];
+    return [this.getSidebarBaseRoute()];
   }
 
-  getItemEditCommands(id: string | number): any[] {
-    return ['/assembly/products', { outlets: { sidebar: ['edit', id] } }];
+  getSidebarBaseRoute(): string {
+    return '/assembly/products';
+  }
+
+  getItemEditRoute(id: string | number): any[] {
+    return ['edit', id];
   }
 
   getFormGroup(): FormGroup {
@@ -93,16 +97,12 @@ export class DataProductService extends AbstractDataService implements ICrudServ
     });
   }
 
-  getRowClickNavigationData(row: GetProductsSchema, selected: boolean): { commands: any[], extras?: any } {
-    if (selected) {
-      return { commands: ['/assembly/products', { outlets: { sidebar: ['selected', row.ProductID] } }] };
-    } else {
-      return { commands: ['/assembly/products', { outlets: { sidebar: null } }] };
-    }
+  getSidebarItemRoute(row: GetProductsSchema): any[] {
+    return ['selected', row.ProductID];
   }
 
-  getRowAddNavigationData(): { commands: any[], extras?: any } {
-    return { commands: ['/assembly/products', { outlets: { sidebar: ['add'] } }] };
+  getSidebarAddRoute(): any[] {
+    return ['add'];
   }
 
   getAddLabel(): string {

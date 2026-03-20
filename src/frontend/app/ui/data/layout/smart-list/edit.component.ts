@@ -84,7 +84,7 @@ export class EditComponent implements OnInit {
     }
 
     closeSidebar() {
-        this.smartListService.closeSidebar(this.smartListService.dataService.getListViewCommands());
+        this.smartListService.closeSidebar(this.smartListService.getBaseRoute());
     }
 
     updateItem() {
