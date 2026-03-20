@@ -1,11 +1,10 @@
 import { Component, inject, signal } from "@angular/core";
-import { DataProductService } from "./service/product.service";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { Router } from "@angular/router";
+import { SmartListService } from "./smart-list.service";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-add',
@@ -20,9 +19,7 @@ import { Router } from "@angular/router";
 })
 export class AddComponent {
 
-
-    private router = inject(Router);
-    private dataService = inject(DataProductService);
+    private smartListService = inject(SmartListService);
 
     newProductName = signal('');
 
@@ -30,14 +27,14 @@ export class AddComponent {
         if (!this.newProductName().trim()) return;
 
         const productData = { Name: this.newProductName(), Active: 1 };
-        this.dataService.addProduct(productData).subscribe(() => {
+        this.smartListService.dataService.create(productData).subscribe(() => {
             this.newProductName.set('');
-            this.dataService.triggerRefresh();
+            this.smartListService.refresh();
             this.closeSidebar();
         });
     }
 
     closeSidebar() {
-        this.router.navigate(['/assembly/products']);
+        this.smartListService.closeSidebar('/assembly/products');
     }
 }

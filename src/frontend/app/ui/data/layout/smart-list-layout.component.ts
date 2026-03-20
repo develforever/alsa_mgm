@@ -1,13 +1,13 @@
 import { Component, computed, ContentChildren, EventEmitter, inject, Input, OnInit, Output, QueryList, ViewChild } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { ApiResponse } from "../../../../../shared/api/ApiResponse";
+import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
 import { NavigationExtras, Router, RouterLink } from "@angular/router";
-import { ListSidebarLayoutComponent } from "./smart-list/layout.component";
+import { LayoutComponent } from "./smart-list/layout.component";
 import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
 import { MatButtonModule } from "@angular/material/button";
-
+import { SmartListService } from "./smart-list/smart-list.service";
 
 export interface INotifyChangeService {
 
@@ -15,7 +15,7 @@ export interface INotifyChangeService {
     notifyChange$: Observable<void>;
 }
 
-export interface ITableDataRowAddNavigationData<T extends Record<string, any>> {
+export interface ITableDataRowAddNavigationData {
 
     getRowAddNavigationData(): { commands: any[], extras?: NavigationExtras };
 
@@ -29,6 +29,13 @@ export interface ITableDataRowClickNavigationData<T extends Record<string, any>>
 
 export interface ITableDataService<T extends Record<string, any>> {
     getList(page: number, size: number): Observable<ApiResponse<T>>;
+}
+
+export interface ICrudService<T extends Record<string, any>> extends ITableDataService<T>, INotifyChangeService {
+    getOne(id: string | number): Observable<ApiResponseSingle<T>>;
+    create(data: any): Observable<ApiResponse<T>>;
+    update(id: string | number, data: any): Observable<ApiResponseSingle<T>>;
+    delete(id: string | number): Observable<ApiResponse<ApiResponseInfo>>;
 }
 
 /**
@@ -47,8 +54,9 @@ export interface ITableDataService<T extends Record<string, any>> {
 @Component({
     selector: 'app-ui-data-layout-smart-list',
     templateUrl: './smart-list-layout.component.html',
+    providers: [SmartListService],
     imports: [
-        ListSidebarLayoutComponent,
+        LayoutComponent,
         AppUiDataTableComponent,
         RouterLink,
         MatButtonModule
@@ -60,15 +68,17 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
     @Output() rowClicked = new EventEmitter<{ row: T, selected: boolean }>();
 
-    @Input() dataService!: ITableDataService<T> & INotifyChangeService;
+    @Input() dataService!: ICrudService<T>;
 
     tableRefresh$ = new Subject<void>();
 
     private router = inject(Router);
+    private smartListService = inject(SmartListService);
 
 
     ngOnInit(): void {
 
+        this.smartListService.setDataService(this.dataService);
         this.dataService.notifyChange$.subscribe(() => {
             this.tableRefresh$.next();
         });
@@ -77,14 +87,14 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
     addLabel = computed(() => {
         if ('getAddLabel' in this.dataService) {
-            return (this.dataService as unknown as ITableDataRowAddNavigationData<T>).getAddLabel();
+            return (this.dataService as unknown as ITableDataRowAddNavigationData).getAddLabel();
         }
         return 'Add';
     });
 
     addRowNavigation = computed(() => {
         if ('getRowAddNavigationData' in this.dataService) {
-            return (this.dataService as unknown as ITableDataRowAddNavigationData<T>).getRowAddNavigationData().commands;
+            return (this.dataService as unknown as ITableDataRowAddNavigationData).getRowAddNavigationData().commands;
         }
         return [];
     });

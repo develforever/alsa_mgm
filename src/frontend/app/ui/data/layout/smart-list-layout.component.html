@@ -4,9 +4,9 @@
     </button>
 </div>
 
-<app-list-sidebar-layout>
+<app-ui-data-layout-smart-list-layout>
     <app-ui-data-table-component #myTable [fetchFn]="fetchFn" [pageSize]="10" [refresh$]="tableRefresh$"
         [externalCellDefs]="externalCellDefs" (rowClick)="onRowClick($event)">
         <ng-content></ng-content>
     </app-ui-data-table-component>
-</app-list-sidebar-layout>
+</app-ui-data-layout-smart-list-layout>

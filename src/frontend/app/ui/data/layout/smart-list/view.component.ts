@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { GetProductSchema } from "../../../../../../shared/api/product/schema";
+import { ActivatedRoute } from "@angular/router";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { SmartListService } from "./smart-list.service";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-view',
@@ -15,10 +15,9 @@ import { MatCardModule } from '@angular/material/card';
 export class ViewComponent implements OnInit {
 
     private route = inject(ActivatedRoute);
-    private dataService = inject(DataProductService);
-    private router = inject(Router);
+    private smartListService = inject(SmartListService);
 
-    product = signal<GetProductSchema | undefined>(undefined);
+    item = signal<any | undefined>(undefined);
 
     selectedProductId: number | null = null;
 
@@ -28,23 +27,28 @@ export class ViewComponent implements OnInit {
             const idFormUrl = params['id'];
             if (idFormUrl) {
                 this.selectedProductId = Number(idFormUrl);
-                this.dataService.getProduct(this.selectedProductId).subscribe((res) => {
-                    this.product.set(res.data);
+                this.smartListService.dataService.getOne(this.selectedProductId).subscribe((res) => {
+                    this.item.set(res.data);
                 });
             }
         });
     }
 
     closeSidebar() {
-        this.router.navigate(['/assembly/products']);
+        this.smartListService.closeSidebar('/assembly/products');
     }
 
     editProduct() {
-        this.router.navigate(['/assembly/products', { outlets: { sidebar: ['edit', this.selectedProductId] } }]);
+        this.smartListService.closeSidebar(['/assembly/products', { outlets: { sidebar: ['edit', this.selectedProductId] } }] as any);
     }
 
     deleteProduct() {
-        console.log('delete');
+        if (this.selectedProductId) {
+            this.smartListService.dataService.delete(this.selectedProductId).subscribe(() => {
+                this.smartListService.refresh();
+                this.closeSidebar();
+            });
+        }
     }
 
 }

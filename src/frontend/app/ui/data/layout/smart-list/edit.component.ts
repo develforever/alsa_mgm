@@ -1,19 +1,13 @@
 import { Component, effect, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DataProductService } from "./service/product.service";
-import { GetProductSchema, PatchProductsSchema } from "../../../../../../shared/api/product/schema";
+import { ActivatedRoute } from "@angular/router";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { CommonModule, KeyValue } from "@angular/common";
-
-
-type ProductFormControls = {
-    [K in keyof GetProductSchema]: FormControl<GetProductSchema[K] | null>;
-};
+import { CommonModule } from "@angular/common";
+import { SmartListService } from "./smart-list.service";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-edit',
@@ -38,28 +32,28 @@ export class EditComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            const currentProduct = this.product();
-            if (currentProduct) {
-                this.productForm.patchValue({
-                    ...currentProduct,
-                    Active: currentProduct.Active === 1
+            const currentItem = this.item();
+            if (currentItem) {
+                this.itemForm.patchValue({
+                    ...currentItem,
+                    Active: (currentItem as any).Active === 1
                 } as any, { emitEvent: false });
             }
         });
     }
 
     private route = inject(ActivatedRoute);
-    private dataService = inject(DataProductService);
-    private router = inject(Router);
+    private smartListService = inject(SmartListService);
 
-    product = signal<GetProductSchema | undefined>(undefined);
+    item = signal<any | undefined>(undefined);
 
-    selectedProductId: number | null = null;
+    selectedId: string | number | null = null;
 
-    productForm = new FormGroup<ProductFormControls>({
+    // TODO: This form should be dynamically generated or passed via context
+    itemForm = new FormGroup<Record<string, FormControl>>({
         ProductID: new FormControl({ value: 0, disabled: true }, [Validators.required]),
         Name: new FormControl('', [Validators.required]),
-        Active: new FormControl(0, Validators.required),
+        Active: new FormControl(false, Validators.required),
         CreatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
         UpdatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
     });
@@ -67,47 +61,49 @@ export class EditComponent implements OnInit {
     getControlType(key: string): string {
         if (key === 'ProductID') return 'hidden';
         if (key === 'Active') return 'checkbox';
-        const value = this.productForm.get(key)?.value;
+        const value = this.itemForm.get(key)?.value;
         if (typeof value === 'number') return 'number';
         if (typeof value === 'boolean') return 'checkbox';
         return 'text';
     }
 
-    keepOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    keepOrder = (): number => {
         return 0;
     }
 
     ngOnInit() {
-
         this.route.params.subscribe(params => {
             const idFormUrl = params['id'];
             if (idFormUrl) {
-                this.selectedProductId = Number(idFormUrl);
-                this.dataService.getProduct(this.selectedProductId).subscribe((res) => {
-                    this.product.set(res.data);
-                });
+                this.selectedId = isNaN(Number(idFormUrl)) ? idFormUrl : Number(idFormUrl);
+                if (this.selectedId !== null) {
+                    this.smartListService.dataService.getOne(this.selectedId).subscribe((res) => {
+                        this.item.set(res.data as any);
+                    });
+                }
             }
         });
     }
 
     onSubmit() {
-        console.log('submit');
+        this.updateItem();
     }
 
     closeSidebar() {
-        this.router.navigate(['/assembly/products']);
+        this.smartListService.closeSidebar('/assembly/products');
     }
 
-    updateProduct() {
+    updateItem() {
+        if (!this.selectedId) return;
+
         const update = {
-            Name: this.productForm.value.Name,
-            Active: this.productForm.value.Active ? 1 : 0,
-        } as PatchProductsSchema;
-        this.dataService.updateProduct(this.selectedProductId!, update).subscribe((res) => {
-            this.product.set(res.data);
-            this.dataService.notifyChange();
+            ...this.itemForm.value,
+            Active: this.itemForm.value['Active'] ? 1 : 0,
+        };
+
+        this.smartListService.dataService.update(this.selectedId, update).subscribe((res) => {
+            this.item.set(res.data as any);
+            this.smartListService.refresh();
         });
     }
-
-
 }

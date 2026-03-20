@@ -4,17 +4,16 @@ import { Observable, Subject } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { AbstractDataService } from '../../../../../services/data.service';
 import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../../../../shared/api/product/schema';
-import { INotifyChangeService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData, ITableDataService } from '../../../../../ui/data/layout/smart-list-layout.component';
+import { ICrudService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../../../../shared/api/ApiResponse';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataProductService extends AbstractDataService implements INotifyChangeService,
-  ITableDataService<GetProductsSchema>,
+export class DataProductService extends AbstractDataService implements ICrudService<GetProductsSchema>,
   ITableDataRowClickNavigationData<GetProductsSchema>,
-  ITableDataRowAddNavigationData<GetProductsSchema> {
+  ITableDataRowAddNavigationData {
 
   private notifyChangeSubject = new Subject<void>();
   notifyChange$ = this.notifyChangeSubject.asObservable();
@@ -57,6 +56,22 @@ export class DataProductService extends AbstractDataService implements INotifyCh
 
   getList(page: number, size: number): Observable<ApiResponse<GetProductsSchema>> {
     return this.getProducts(page, size);
+  }
+
+  getOne(id: string | number): Observable<ApiResponseSingle<GetProductsSchema>> {
+    return this.getProduct(id as number) as any;
+  }
+
+  create(data: any): Observable<ApiResponse<GetProductsSchema>> {
+    return this.addProduct(data);
+  }
+
+  update(id: string | number, data: any): Observable<ApiResponseSingle<GetProductsSchema>> {
+    return this.updateProduct(id as number, data) as any;
+  }
+
+  delete(id: string | number): Observable<ApiResponse<ApiResponseInfo>> {
+    return this.deleteProduct(id as number);
   }
 
   getRowClickNavigationData(row: GetProductsSchema, selected: boolean): { commands: any[], extras?: any } {

@@ -1,15 +1,15 @@
-@if(product()){
+@if(item()){
 <mat-card appearance="outlined">
     <mat-card-header>
-        <mat-card-title>Szczegóły produktu</mat-card-title>
+        <mat-card-title>Szczegóły</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-        <mat-card-subtitle> ID: #{{ product()?.ProductID }}</mat-card-subtitle>
-        <mat-card-subtitle> Nazwa: {{ product()?.Name }}</mat-card-subtitle>
-        <mat-card-subtitle> Status: {{ product()?.Active ? 'Aktywny' : 'Nieaktywny' }}</mat-card-subtitle>
-        <mat-card-subtitle> Utworzono: {{ product()?.CreatedAt }}</mat-card-subtitle>
-        <mat-card-subtitle> Zaktualizowano: {{ product()?.UpdatedAt }}</mat-card-subtitle>
+        <mat-card-subtitle> ID: #{{ item()?.ProductID || item()?.id }}</mat-card-subtitle>
+        <mat-card-subtitle> Nazwa: {{ item()?.Name || item()?.name }}</mat-card-subtitle>
+        <mat-card-subtitle> Status: {{ item()?.Active ? 'Aktywny' : 'Nieaktywny' }}</mat-card-subtitle>
+        <mat-card-subtitle> Utworzono: {{ item()?.CreatedAt || item()?.createdAt }}</mat-card-subtitle>
+        <mat-card-subtitle> Zaktualizowano: {{ item()?.UpdatedAt || item()?.updatedAt }}</mat-card-subtitle>
     </mat-card-content>
 
     <mat-card-actions>
