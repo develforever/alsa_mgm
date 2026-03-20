@@ -13,7 +13,7 @@ import { AppTableCellDefDirective } from './AppTableCellDefDirective';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AppUiDialogYesNoComponent, YesNoDialogData } from '../dialog/yes-no.dialog.component';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 
 export interface TableFetchOptions {
     page: number;
@@ -179,7 +179,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
 
     private initSelection() {
         const sidebar = this.route.snapshot.children
-            .find((c: any) => c.outlet === 'sidebar');
+            .find((c: ActivatedRouteSnapshot) => c.outlet === 'sidebar');
 
         if (sidebar?.params['id']) {
             const primaryKey = this.meta?.entity?.primaryKey;
@@ -195,10 +195,14 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
                 this.lastSelectedViaRouteItem = row;
                 this.cdr.detectChanges()
             }
-        } else if (this.lastSelectedViaRouteItem) {
+        } else if (this.lastSelectedViaRouteItem && this.selection.selected.length <= 1) {
+            // Only deselect automatically if we were in a single-selection state tied to the route
             this.selection.deselect(this.lastSelectedViaRouteItem);
             this.lastSelectedViaRouteItem = undefined;
             this.cdr.detectChanges()
+        } else {
+            // Keep selection but clear the reference
+            this.lastSelectedViaRouteItem = undefined;
         }
     }
 

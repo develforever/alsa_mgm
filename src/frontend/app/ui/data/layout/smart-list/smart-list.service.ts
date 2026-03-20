@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ICrudService } from "../smart-list-layout.component";
-import { Router } from "@angular/router";
+import { NavigationExtras, Router } from "@angular/router";
 
 @Injectable()
 export class SmartListService<T extends Record<string, any> = Record<string, any>> {
@@ -29,7 +29,7 @@ export class SmartListService<T extends Record<string, any> = Record<string, any
         this.dataService.notifyChange();
     }
 
-    navigate(commands: any[], extras?: any) {
+    navigate(commands: any[], extras?: NavigationExtras) {
         this.router.navigate(commands, extras);
     }
 

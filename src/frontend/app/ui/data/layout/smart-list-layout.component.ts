@@ -114,9 +114,10 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
     onRowClick(event: { row: T, selected: boolean }) {
         const baseRoute = this.smartListService.baseRoute();
+        const selectedRows = this.myTable.selection.selected;
 
-        if (event.selected && 'getSidebarItemRoute' in this.dataService) {
-            const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(event.row);
+        if (selectedRows.length === 1 && 'getSidebarItemRoute' in this.dataService) {
+            const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(selectedRows[0]);
             this.router.navigate([baseRoute, { outlets: { sidebar: sidebarRoute } }]);
         } else {
             this.router.navigate([baseRoute, { outlets: { sidebar: null } }]);
