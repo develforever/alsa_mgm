@@ -39,7 +39,7 @@ export class ViewComponent implements OnInit {
     }
 
     editProduct() {
-        this.smartListService.closeSidebar(['/assembly/products', { outlets: { sidebar: ['edit', this.selectedProductId] } }] as any);
+        this.smartListService.closeSidebar(['/assembly/products', { outlets: { sidebar: ['edit', this.selectedProductId] } }]);
     }
 
     deleteProduct() {

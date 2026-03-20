@@ -24,7 +24,12 @@ export class SmartListService<T extends Record<string, any> = Record<string, any
         this.dataService.notifyChange();
     }
 
-    closeSidebar(baseRoute: string) {
-        this.router.navigate([baseRoute]);
+    navigate(commands: any[], extras?: any) {
+        this.router.navigate(commands, extras);
+    }
+
+    closeSidebar(commands: string | any[]) {
+        const navCommands = Array.isArray(commands) ? commands : [commands];
+        this.router.navigate(navCommands);
     }
 }
