@@ -2,7 +2,7 @@ import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -49,21 +49,13 @@ export class EditComponent implements OnInit {
 
     selectedId: string | number | null = null;
 
-    // TODO: This form should be dynamically generated or passed via context
-    itemForm = new FormGroup<Record<string, FormControl>>({
-        ProductID: new FormControl({ value: 0, disabled: true }, [Validators.required]),
-        Name: new FormControl('', [Validators.required]),
-        Active: new FormControl(false, Validators.required),
-        CreatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
-        UpdatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
-    });
+    itemForm!: FormGroup;
 
     getControlType(key: string): string {
-        if (key === 'ProductID') return 'hidden';
-        if (key === 'Active') return 'checkbox';
-        const value = this.itemForm.get(key)?.value;
-        if (typeof value === 'number') return 'number';
-        if (typeof value === 'boolean') return 'checkbox';
+        if (key.toLowerCase().includes('id')) return 'hidden';
+        const control = this.itemForm.get(key);
+        if (typeof control?.value === 'boolean') return 'checkbox';
+        if (typeof control?.value === 'number') return 'number';
         return 'text';
     }
 
@@ -72,6 +64,8 @@ export class EditComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.itemForm = this.smartListService.dataService.getFormGroup();
+
         this.route.params.subscribe(params => {
             const idFormUrl = params['id'];
             if (idFormUrl) {
@@ -90,7 +84,7 @@ export class EditComponent implements OnInit {
     }
 
     closeSidebar() {
-        this.smartListService.closeSidebar('/assembly/products');
+        this.smartListService.closeSidebar(this.smartListService.dataService.getListViewCommands());
     }
 
     updateItem() {

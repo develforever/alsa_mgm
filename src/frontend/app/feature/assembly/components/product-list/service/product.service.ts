@@ -6,6 +6,7 @@ import { AbstractDataService } from '../../../../../services/data.service';
 import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../../../../shared/api/product/schema';
 import { ICrudService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../../../../../shared/api/ApiResponse';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Injectable({
@@ -72,6 +73,24 @@ export class DataProductService extends AbstractDataService implements ICrudServ
 
   delete(id: string | number): Observable<ApiResponse<ApiResponseInfo>> {
     return this.deleteProduct(id as number);
+  }
+
+  getListViewCommands(): any[] {
+    return ['/assembly/products'];
+  }
+
+  getItemEditCommands(id: string | number): any[] {
+    return ['/assembly/products', { outlets: { sidebar: ['edit', id] } }];
+  }
+
+  getFormGroup(): FormGroup {
+    return new FormGroup({
+      ProductID: new FormControl({ value: 0, disabled: true }, [Validators.required]),
+      Name: new FormControl('', [Validators.required]),
+      Active: new FormControl(false, Validators.required),
+      CreatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
+      UpdatedAt: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
+    });
   }
 
   getRowClickNavigationData(row: GetProductsSchema, selected: boolean): { commands: any[], extras?: any } {

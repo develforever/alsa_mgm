@@ -4,6 +4,7 @@ import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
 import { NavigationExtras, Router, RouterLink } from "@angular/router";
+import { FormGroup } from "@angular/forms";
 import { LayoutComponent } from "./smart-list/layout.component";
 import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
 import { MatButtonModule } from "@angular/material/button";
@@ -36,6 +37,10 @@ export interface ICrudService<T extends Record<string, any>> extends ITableDataS
     create(data: any): Observable<ApiResponse<T>>;
     update(id: string | number, data: any): Observable<ApiResponseSingle<T>>;
     delete(id: string | number): Observable<ApiResponse<ApiResponseInfo>>;
+
+    getListViewCommands(): any[];
+    getItemEditCommands(id: string | number): any[];
+    getFormGroup(): FormGroup;
 }
 
 /**

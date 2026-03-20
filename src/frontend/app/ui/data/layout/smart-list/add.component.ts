@@ -35,6 +35,6 @@ export class AddComponent {
     }
 
     closeSidebar() {
-        this.smartListService.closeSidebar('/assembly/products');
+        this.smartListService.closeSidebar(this.smartListService.dataService.getListViewCommands());
     }
 }

@@ -35,11 +35,13 @@ export class ViewComponent implements OnInit {
     }
 
     closeSidebar() {
-        this.smartListService.closeSidebar('/assembly/products');
+        this.smartListService.closeSidebar(this.smartListService.dataService.getListViewCommands());
     }
 
     editProduct() {
-        this.smartListService.closeSidebar(['/assembly/products', { outlets: { sidebar: ['edit', this.selectedProductId] } }]);
+        if (this.selectedProductId) {
+            this.smartListService.closeSidebar(this.smartListService.dataService.getItemEditCommands(this.selectedProductId));
+        }
     }
 
     deleteProduct() {
