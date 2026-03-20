@@ -74,6 +74,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     dataSource = new MatTableDataSource<T>([]);
     isLoading = true;
     totalElements = 0;
+    selectedRowId: string | number | null = null;
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -103,12 +104,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
         this.initSelection();
 
 
-        this.selection.changed
-            .subscribe((event: { added: T[], removed: T[], source: SelectionModel<T> }) => {
-
-                const last = event.source.selected[event.source.selected.length - 1];
-                this.rowClick.emit({ row: last, selected: event.source.isSelected(last) });
-            });
+        // Removed selection.changed subscription to decouple multi-selection from sidebar navigation
 
         merge(
             this.paginator.page,
@@ -171,10 +167,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     }
 
     rowClickHandler(row: T) {
-
-        this.selection.toggle(row);
-        this.rowClick.emit({ row, selected: this.selection.isSelected(row) });
-
+        this.rowClick.emit({ row, selected: true });
     }
 
     private initSelection() {
@@ -182,28 +175,11 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
             .find((c: ActivatedRouteSnapshot) => c.outlet === 'sidebar');
 
         if (sidebar?.params['id']) {
-            const primaryKey = this.meta?.entity?.primaryKey;
-
-            if (!primaryKey) {
-                return;
-            }
-
-            const row = this.dataSource.data.find(row => String(row[primaryKey]) === String(sidebar.params['id']));
-
-            if (row) {
-                this.selection.select(row);
-                this.lastSelectedViaRouteItem = row;
-                this.cdr.detectChanges()
-            }
-        } else if (this.lastSelectedViaRouteItem && this.selection.selected.length <= 1) {
-            // Only deselect automatically if we were in a single-selection state tied to the route
-            this.selection.deselect(this.lastSelectedViaRouteItem);
-            this.lastSelectedViaRouteItem = undefined;
-            this.cdr.detectChanges()
+            this.selectedRowId = sidebar.params['id'];
         } else {
-            // Keep selection but clear the reference
-            this.lastSelectedViaRouteItem = undefined;
+            this.selectedRowId = null;
         }
+        this.cdr.detectChanges();
     }
 
     autoDetectColumns(sampleRow: T) {
@@ -256,6 +232,12 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
             return;
         }
         this.selection.select(...this.dataSource.data);
+    }
+
+    isRowActive(row: T): boolean {
+        const primaryKey = this.meta?.entity?.primaryKey;
+        if (!primaryKey) return false;
+        return String(row[primaryKey]) === String(this.selectedRowId);
     }
 
     openDialog($event: Event, row: T, dialogData: YesNoDialogData): Promise<[T, boolean]> {

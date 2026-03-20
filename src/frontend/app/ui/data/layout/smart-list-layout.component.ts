@@ -1,4 +1,4 @@
-import { Component, computed, ContentChildren, EventEmitter, inject, Input, OnInit, Output, QueryList, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, computed, ContentChildren, EventEmitter, inject, Input, OnInit, Output, QueryList, ViewChild } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
@@ -65,7 +65,7 @@ export interface ICrudService<T extends Record<string, any>> extends ITableDataS
         MatButtonModule
     ],
 })
-export class SmartListLayoutComponent<T extends Record<string, any>> implements OnInit {
+export class SmartListLayoutComponent<T extends Record<string, any>> implements OnInit, AfterViewInit {
     @ViewChild('myTable') myTable!: AppUiDataTableComponent<T>;
     @ContentChildren(AppTableCellDefDirective) externalCellDefs?: QueryList<AppTableCellDefDirective>;
 
@@ -88,6 +88,15 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
         this.dataService.notifyChange$.subscribe(() => {
             this.tableRefresh$.next();
+        });
+    }
+
+    ngAfterViewInit(): void {
+        this.myTable.selection.changed.subscribe(() => {
+            if (this.myTable.selection.selected.length > 1) {
+                const baseRoute = this.smartListService.baseRoute();
+                this.router.navigate([baseRoute, { outlets: { sidebar: null } }]);
+            }
         });
     }
 
@@ -114,10 +123,10 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
     onRowClick(event: { row: T, selected: boolean }) {
         const baseRoute = this.smartListService.baseRoute();
-        const selectedRows = this.myTable.selection.selected;
+        const selectedCount = this.myTable.selection.selected.length;
 
-        if (selectedRows.length === 1 && 'getSidebarItemRoute' in this.dataService) {
-            const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(selectedRows[0]);
+        if (selectedCount <= 1 && 'getSidebarItemRoute' in this.dataService) {
+            const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(event.row);
             this.router.navigate([baseRoute, { outlets: { sidebar: sidebarRoute } }]);
         } else {
             this.router.navigate([baseRoute, { outlets: { sidebar: null } }]);
