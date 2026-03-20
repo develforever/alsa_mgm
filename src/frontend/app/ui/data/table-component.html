@@ -65,6 +65,7 @@
         <tr mat-header-row *matHeaderRowDef="columnsToShow()"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToShow();" 
             [class.active-row]="isRowActive(row)"
+            [class.selected-row]="selection.isSelected(row)"
             (click)="rowClickHandler(row)">
         </tr>
     </table>
