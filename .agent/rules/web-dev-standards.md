@@ -26,7 +26,6 @@ activation: always-on
 
 ## 📦 Struktura Projektu
 - **Clean Architecture**: Oddzielaj logikę biznesową od frameworka.
-- **Importy**: Używaj ścieżek absolutnych zdefiniowanych w aliasach (np. `@app/...`, `@env/...`).
 
 ## 🧪 Testowanie
 - **Unit Tests**: Każdy nowy serwis/komponent musi posiadać plik `.spec.ts`.
