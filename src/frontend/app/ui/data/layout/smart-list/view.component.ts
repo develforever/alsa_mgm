@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { SmartListService } from "./smart-list.service";
+import { CommonModule } from "@angular/common";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-view',
@@ -10,6 +11,7 @@ import { SmartListService } from "./smart-list.service";
     imports: [
         MatCardModule,
         MatButtonModule,
+        CommonModule,
     ],
 })
 export class ViewComponent implements OnInit {
@@ -17,9 +19,23 @@ export class ViewComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private smartListService = inject(SmartListService);
 
-    item = signal<any | undefined>(undefined);
+    item = signal<Record<string, any> | undefined>(undefined);
 
     selectedId: number | null = null;
+
+    keepOrder = (): number => {
+        return 0;
+    }
+
+    formatValue(key: string, value: any): string {
+        if (value === null || value === undefined) return '-';
+        if (typeof value === 'boolean') return value ? 'Tak' : 'Nie';
+        const isDate = key.toLowerCase().endsWith('at') || key.toLowerCase().includes('date');
+        if (isDate && typeof value === 'string' && !isNaN(Date.parse(value))) {
+            return new Date(value).toLocaleString();
+        }
+        return String(value);
+    }
 
     ngOnInit() {
 

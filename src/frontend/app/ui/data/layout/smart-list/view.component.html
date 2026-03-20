@@ -5,11 +5,13 @@
     </mat-card-header>
 
     <mat-card-content>
-        <mat-card-subtitle> ID: #{{ item()?.ProductID || item()?.id }}</mat-card-subtitle>
-        <mat-card-subtitle> Nazwa: {{ item()?.Name || item()?.name }}</mat-card-subtitle>
-        <mat-card-subtitle> Status: {{ item()?.Active ? 'Aktywny' : 'Nieaktywny' }}</mat-card-subtitle>
-        <mat-card-subtitle> Utworzono: {{ item()?.CreatedAt || item()?.createdAt }}</mat-card-subtitle>
-        <mat-card-subtitle> Zaktualizowano: {{ item()?.UpdatedAt || item()?.updatedAt }}</mat-card-subtitle>
+        @for (entry of item() | keyvalue: keepOrder; track entry.key) {
+            @if(entry.key !== 'isDeleted' && !entry.key.startsWith('_')) {
+                <mat-card-subtitle> 
+                    <strong>{{ entry.key | titlecase }}:</strong> {{ formatValue(entry.key, entry.value) }}
+                </mat-card-subtitle>
+            }
+        }
     </mat-card-content>
 
     <mat-card-actions>
