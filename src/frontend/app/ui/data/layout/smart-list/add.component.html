@@ -1,18 +1,39 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" data-testid="sidebar-add-card">
     <mat-card-header>
-        Dodaj nowy produkt
+        <mat-card-title>Dodaj nowy element</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-        <mat-form-field>
-            <mat-label>Nazwa produktu (np. 8DAB)</mat-label>
-            <input matInput [(ngModel)]="newProductName">
-        </mat-form-field>
+        <form [formGroup]="itemForm" (ngSubmit)="addItem()">
+            @for (control of itemForm.controls | keyvalue: keepOrder; track control.key) {
+
+            @if(getControlType(control.key) === 'checkbox') {
+            <div class="full-width">
+                <mat-checkbox [formControlName]="control.key" [attr.data-testid]="'input-' + control.key">
+                    {{ control.key | titlecase }}
+                </mat-checkbox>
+            </div>
+            } @else if(getControlType(control.key) === 'hidden') {
+            <input [formControlName]="control.key" [type]="getControlType(control.key)">
+            } @else {
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>{{ control.key | titlecase }}</mat-label>
+                <input matInput [formControlName]="control.key" [type]="getControlType(control.key)"
+                    [placeholder]="control.key" [attr.data-testid]="'input-' + control.key">
+
+                @if (itemForm.get(control.key)?.invalid && itemForm.get(control.key)?.touched) {
+                <mat-error>Pole {{ control.key }} jest niepoprawne</mat-error>
+                }
+            </mat-form-field>
+            }
+
+            }
+        </form>
     </mat-card-content>
 
     <mat-card-actions>
-        <button matButton (click)="addProduct()">Dodaj produkt</button>
-        <button matButton (click)="closeSidebar()">Anuluj</button>
+        <button matButton (click)="addItem()" data-testid="sidebar-add-save-button">Dodaj</button>
+        <button matButton (click)="closeSidebar()" data-testid="sidebar-add-cancel-button">Anuluj</button>
     </mat-card-actions>
 
 </mat-card>

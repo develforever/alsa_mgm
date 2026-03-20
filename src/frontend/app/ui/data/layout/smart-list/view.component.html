@@ -1,5 +1,5 @@
 @if(item()){
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" data-testid="sidebar-view-card">
     <mat-card-header>
         <mat-card-title>Szczegóły</mat-card-title>
     </mat-card-header>
@@ -7,7 +7,7 @@
     <mat-card-content>
         @for (entry of item() | keyvalue: keepOrder; track entry.key) {
             @if(entry.key !== 'isDeleted' && !entry.key.startsWith('_')) {
-                <mat-card-subtitle> 
+                <mat-card-subtitle [attr.data-testid]="'view-field-' + entry.key"> 
                     <strong>{{ entry.key | titlecase }}:</strong> {{ formatValue(entry.key, entry.value) }}
                 </mat-card-subtitle>
             }
@@ -15,9 +15,9 @@
     </mat-card-content>
 
     <mat-card-actions>
-        <button matButton (click)="closeSidebar()">Zamknij</button>
-        <button matButton (click)="editItem()">Edytuj</button>
-        <button matButton (click)="deleteItem()">Usuń</button>
+        <button matButton (click)="closeSidebar()" data-testid="sidebar-view-close-button">Zamknij</button>
+        <button matButton (click)="editItem()" data-testid="sidebar-view-edit-button">Edytuj</button>
+        <button matButton (click)="deleteItem()" data-testid="sidebar-view-delete-button">Usuń</button>
     </mat-card-actions>
 </mat-card>
 }
