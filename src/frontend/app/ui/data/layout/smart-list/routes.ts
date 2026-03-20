@@ -8,19 +8,19 @@ export function createSidebarRoutes() {
     return [{
         path: "selected/:id",
         component: ViewComponent,
-        title: "Produkt",
+        title: "List",
         outlet: "sidebar"
     },
     {
         path: "add",
         component: AddComponent,
-        title: "Produkt New",
+        title: "Add",
         outlet: "sidebar"
     },
     {
         path: "edit/:id",
         component: EditComponent,
-        title: "Produkt Edit",
+        title: "Edit",
         outlet: "sidebar"
     },]
 }
