@@ -11,8 +11,12 @@ import { ApiResponse } from '../../../../shared/api/ApiResponse';
 })
 export class DataAuditService extends AbstractDataService {
 
+  constructor() {
+    super('/audit/logs');
+  }
+
   getAuditLogs(page: number, size: number): Observable<ApiResponse<AuditLog>> {
-    return this.http.get<ApiResponse<AuditLog>>(`${this.apiUrl}/audit/logs`, {
+    return this.http.get<ApiResponse<AuditLog>>(`${this.getPath()}`, {
       params: {
         page: page.toString(),
         size: size.toString(),

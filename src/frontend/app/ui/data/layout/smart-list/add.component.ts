@@ -35,7 +35,6 @@ export class AddComponent implements OnInit {
 
     ngOnInit() {
         this.itemForm = this.smartListService.dataService.getFormGroup();
-        // Clear any existing values to start fresh for "Add"
         this.itemForm.reset();
     }
 
@@ -56,7 +55,6 @@ export class AddComponent implements OnInit {
 
         const data = {
             ...this.itemForm.value,
-            // Convert boolean to numeric if service expects it
             Active: this.itemForm.value['Active'] ? 1 : 0,
         };
 

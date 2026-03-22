@@ -3,7 +3,7 @@ import { Observable, Subject } from "rxjs";
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
-import { NavigationExtras, Router, RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { FormGroup } from "@angular/forms";
 import { LayoutComponent } from "./smart-list/layout.component";
 import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
@@ -17,27 +17,28 @@ export interface INotifyChangeService {
 }
 
 export interface ITableDataRowAddNavigationData {
-    getSidebarAddRoute(): any[];
+    getSidebarAddRoute(): unknown[];
     getAddLabel(): string;
 }
 
-export interface ITableDataRowClickNavigationData<T extends Record<string, any>> {
-    getSidebarItemRoute(row: T): any[];
+export interface ITableDataRowClickNavigationData<T extends object> {
+    getSidebarItemRoute(row: T): unknown[];
 }
 
-export interface ITableDataService<T extends Record<string, any>> {
+export interface ITableDataService<T extends object> {
     getList(page: number, size: number): Observable<ApiResponse<T>>;
+    getAll(): Observable<ApiResponse<T>>;
 }
 
-export interface ICrudService<T extends Record<string, any>> extends ITableDataService<T>, INotifyChangeService {
+export interface ICrudService<T extends object> extends ITableDataService<T>, INotifyChangeService {
     getOne(id: string | number): Observable<ApiResponseSingle<T>>;
-    create(data: any): Observable<ApiResponse<T>>;
-    update(id: string | number, data: any): Observable<ApiResponseSingle<T>>;
+    create(data: unknown): Observable<ApiResponse<T>>;
+    update(id: string | number, data: unknown): Observable<ApiResponseSingle<T>>;
     delete(id: string | number): Observable<ApiResponse<ApiResponseInfo>>;
 
-    getListViewCommands(): any[];
+    getListViewCommands(): unknown[];
     getSidebarBaseRoute(): string;
-    getItemEditRoute(id: string | number): any[];
+    getItemEditRoute(id: string | number): unknown[];
     getFormGroup(): FormGroup;
 }
 
@@ -65,7 +66,7 @@ export interface ICrudService<T extends Record<string, any>> extends ITableDataS
         MatButtonModule
     ],
 })
-export class SmartListLayoutComponent<T extends Record<string, any>> implements OnInit, AfterViewInit {
+export class SmartListLayoutComponent<T extends object> implements OnInit, AfterViewInit {
     @ViewChild('myTable') myTable!: AppUiDataTableComponent<T>;
     @ContentChildren(AppTableCellDefDirective) externalCellDefs?: QueryList<AppTableCellDefDirective>;
 
@@ -81,7 +82,7 @@ export class SmartListLayoutComponent<T extends Record<string, any>> implements 
 
     ngOnInit(): void {
         this.smartListService.setDataService(this.dataService);
-        
+
         // Calculate base route (current URL without outlets)
         const baseRoute = this.router.url.split('(')[0];
         this.smartListService.baseRoute.set(baseRoute);

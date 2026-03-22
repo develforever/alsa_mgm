@@ -9,6 +9,7 @@ import { SmartListLayoutComponent } from '../../../../ui/data/layout/smart-list-
 })
 export class ProductListComponent {
   dataTableService = inject(DataProductService);
+
 }
 
 

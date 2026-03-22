@@ -10,19 +10,23 @@ import { ApiResponse, ApiResponseList } from '../../../../shared/api/ApiResponse
 })
 export class DataWorkstationService extends AbstractDataService {
 
+  constructor() {
+    super('/workstations');
+  }
+
   getWorkstations(): Observable<ApiResponseList<ALWStation>> {
-    return this.http.get<ApiResponseList<ALWStation>>(`${this.apiUrl}/workstations`);
+    return this.http.get<ApiResponseList<ALWStation>>(`${this.getPath()}`);
   }
 
   addWorkstation(station: Partial<ALWStation>) {
-    return this.http.post<ApiResponse<ALWStation>>(`${this.apiUrl}/workstations`, station);
+    return this.http.post<ApiResponse<ALWStation>>(`${this.getPath()}`, station);
   }
 
   updateWorkstation(id: number, station: Partial<ALWStation>) {
-    return this.http.put<ApiResponse<ALWStation>>(`${this.apiUrl}/workstations/${id}`, station);
+    return this.http.put<ApiResponse<ALWStation>>(`${this.getPathById(id)}`, station);
   }
 
   deleteWorkstation(id: number) {
-    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/workstations/${id}`);
+    return this.http.delete<ApiResponse<any>>(`${this.getPathById(id)}`);
   }
 }

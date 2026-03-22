@@ -33,7 +33,7 @@ export class LineListComponent implements OnInit {
 
     forkJoin({
       lines: this.dataLineService.getLines().pipe(ensureArray<ALAssLine>()),
-      products: this.dataService.getProducts().pipe(ensureArray<GetProductsSchema>()),
+      products: this.dataService.getAll().pipe(ensureArray<GetProductsSchema>()),
     }).subscribe(({ lines, products }) => {
       this.lines.set(lines);
       this.products.set(products);
