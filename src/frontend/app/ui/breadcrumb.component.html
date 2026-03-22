@@ -1,0 +1,5 @@
+<div class="breadcrumb">
+    @for (item of items; track $index) {
+    <a [routerLink]="item.url">{{ item.title }}</a>
+    }
+</div>

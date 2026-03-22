@@ -1,0 +1,23 @@
+.breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.875rem;
+    border: 1px solid var(--mat-sys-primary);
+
+    a {
+        color: var(--mat-button-text-label-text-color, var(--mat-sys-primary));
+        text-decoration: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-right: 1px solid var(--mat-sys-primary);
+
+        &:hover {
+            color: var(--mat-sys-inverse-primary);
+        }
+
+        &:last-child {
+            color: var(--text-primary);
+        }
+    }
+}

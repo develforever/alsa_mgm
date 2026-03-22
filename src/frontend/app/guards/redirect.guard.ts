@@ -14,6 +14,10 @@ export const codeRedirectGuard: CanActivateFn = (route, state) => {
 
     return authService.checkAuth().pipe(
         map((isAuthenticated) => {
+
+            if (isAuthenticated) {
+                appStore.setUser(authService.user()!);
+            }
             if (codeFromUrl) {
                 appStore.setCode(codeFromUrl);
                 return router.createUrlTree(['/dashboard']);

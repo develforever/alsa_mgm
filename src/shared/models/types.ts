@@ -48,4 +48,18 @@ export interface AuditLog {
 export interface User {
   id: number;
   email: string;
+  nodeId: string;
+  displayName: string;
+  username: string;
+  profileUrl: string;
+  photos: [
+    {
+      value: string;
+    }
+  ];
+  provider: string;
+  userEmail: string;
+  userAvatar: string;
+  accessToken: string;
+
 }

@@ -7,14 +7,28 @@
     <div class="right-side">
 
       @if (authService.isLoggedIn()) {
-      <button mat-button (click)="onLogout()">Wyloguj</button>
+
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+        {{ appStore.user()?.displayName }}
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <a mat-menu-item (click)="onLogout()" role="menuitem" tabindex="0" (keyup.enter)="onLogout()"
+          (keyup.space)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span>Wyloguj</span>
+        </a>
+      </mat-menu>
+
       } @else if(router.url !== '/login') {
       <a mat-button routerLink="/login">Zaloguj się</a>
       }
     </div>
   </div>
   <div class="full-width">
-    <div class="breadcrumb">{{ currentTitle().join(' > ') }}</div>
+
+    <app-breadcrumb [items]="currentTitle()"></app-breadcrumb>
+
     <router-outlet />
   </div>
 </main>

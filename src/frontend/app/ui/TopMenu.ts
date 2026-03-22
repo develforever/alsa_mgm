@@ -16,6 +16,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from "../services/auth.service";
+import { AppStoreService } from "../services/store.service";
 
 export interface MenuItem {
     label: string
@@ -46,6 +47,7 @@ export class AppTopMenu {
     protected router = inject(Router);
     private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
+    private appStore = inject(AppStoreService);
 
     dynamicMenu = toSignal(
         this.router.events.pipe(

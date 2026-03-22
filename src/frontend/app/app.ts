@@ -14,6 +14,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AppTopMenu } from "./ui/TopMenu";
+import { AppStoreService } from "./services/store.service";
+import { BreadcrumbComponent } from "./ui/breadcrumb.component";
 
 @Component({
   selector: "app-root",
@@ -29,7 +31,8 @@ import { AppTopMenu } from "./ui/TopMenu";
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
-    AppTopMenu
+    AppTopMenu,
+    BreadcrumbComponent
   ],
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
@@ -39,20 +42,21 @@ export class App {
   private titleService = inject(Title);
   protected router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  protected readonly currentTitle = signal<string[]>([]);
+  protected readonly currentTitle = signal<{ title: string, url: string }[]>([]);
+  protected readonly appStore = inject(AppStoreService);
 
   constructor() {
 
 
     effect(() => {
-      this.titleService.setTitle(`${this.currentTitle().join(' > ')} -  ALSA`);
+      this.titleService.setTitle(`${this.currentTitle().map(t => t.title).join(' > ')} -  ALSA`);
     });
 
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         map(() => {
-          const titles: string[] = [];
+          const titles: { title: string, url: string }[] = [];
           let currentRoute: ActivatedRoute | null = this.activatedRoute.root;
 
           while (currentRoute) {
@@ -60,12 +64,15 @@ export class App {
             const parentTitle = currentRoute.parent?.snapshot.title;
 
             if (title && parentTitle != title) {
-              titles.push(title);
+              titles.push({
+                title: title,
+                url: currentRoute.snapshot.url.join('/')
+              });
             }
             currentRoute = currentRoute.firstChild;
           }
 
-          return titles.reverse();
+          return titles;
         })
       )
       .subscribe((fullTitle) => {
