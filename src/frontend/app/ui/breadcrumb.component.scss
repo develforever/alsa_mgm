@@ -1,23 +1,37 @@
 .breadcrumb {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    font-size: 0.875rem;
-    border: 1px solid var(--mat-sys-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  padding: 0.25rem 0;
 
-    a {
-        color: var(--mat-button-text-label-text-color, var(--mat-sys-primary));
-        text-decoration: none;
-        cursor: pointer;
-        padding: 0.5rem;
-        border-right: 1px solid var(--mat-sys-primary);
+  &__item {
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.125rem 0.25rem;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
 
-        &:hover {
-            color: var(--mat-sys-inverse-primary);
-        }
-
-        &:last-child {
-            color: var(--text-primary);
-        }
+    &:hover:not(&--active) {
+      text-decoration: underline;
+      background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
     }
+
+    &--active {
+      color: var(--mat-sys-on-surface);
+      font-weight: 500;
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+
+  &__sep {
+    color: var(--mat-sys-outline);
+    font-size: 1rem;
+    line-height: 1;
+    user-select: none;
+  }
 }

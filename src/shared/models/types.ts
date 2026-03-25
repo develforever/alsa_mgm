@@ -61,5 +61,5 @@ export interface User {
   userEmail: string;
   userAvatar: string;
   accessToken: string;
-
+  role: string;
 }

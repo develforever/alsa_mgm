@@ -1,5 +1,14 @@
-<div class="breadcrumb">
-    @for (item of items; track $index) {
-    <a [href]="item.url" (click)="navigate($event, item.url)">{{ item.title }}</a>
+<nav class="breadcrumb" aria-label="breadcrumb">
+  @for (item of items; track $index) {
+    <a
+      class="breadcrumb__item"
+      [class.breadcrumb__item--active]="$last"
+      [href]="item.url"
+      (click)="!$last && navigate($event, item.url)"
+      [attr.aria-current]="$last ? 'page' : null"
+    >{{ item.title }}</a>
+    @if (!$last) {
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
     }
-</div>
+  }
+</nav>

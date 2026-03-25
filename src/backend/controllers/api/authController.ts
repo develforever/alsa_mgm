@@ -2,6 +2,7 @@ import { Controller, Get, Route, Tags, Request, SuccessResponse } from "tsoa";
 import { Request as ExRequest } from "express";
 import passport from "passport";
 import config from "../../config/config";
+import { User } from "@shared/models/types";
 
 @Route("api/auth")
 @Tags("Authentication")
@@ -33,13 +34,23 @@ export class AuthController extends Controller {
       throw new Error("Dev login is not allowed in production");
     }
 
-    const mockUser = {
+    const mockUser: User = {
       id: 999,
       username: 'dev_hero',
       displayName: 'Developer Hero',
-      userEmail: 'dev@transmar.local',
+      userEmail: 'dev@alsa.local',
       userAvatar: 'https://ui-avatars.com/api/?name=Dev+Hero&background=0D8ABC&color=fff',
-      provider: 'mock'
+      provider: 'mock',
+      email: 'dev@alsa.local',
+      role: 'admin',
+      nodeId: '1',
+      profileUrl: 'https://ui-avatars.com/api/?name=Dev+Hero&background=0D8ABC&color=fff',
+      photos: [
+        {
+          value: 'https://ui-avatars.com/api/?name=Dev+Hero&background=0D8ABC&color=fff'
+        }
+      ],
+      accessToken: 'mock_access_token',
     };
 
     return new Promise((resolve, reject) => {
