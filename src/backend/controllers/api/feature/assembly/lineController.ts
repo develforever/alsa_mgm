@@ -31,6 +31,22 @@ export class LineController extends Controller {
         };
     }
 
+    @Get("{id}")
+    public async getOne(
+        @Path() id: number
+    ): Promise<ApiResponse<ALAssLine>> {
+        const line = await lineRepo.findOneBy({ ALAssLineID: id });
+        if (!line) {
+            return {
+                message: "Line not found",
+                code: 404
+            };
+        }
+        return {
+            data: line
+        };
+    }
+
     @Post("")
     public async create(
         @Body() body: Pick<ALAssLine, "ProductID" | "Name" | "Status">

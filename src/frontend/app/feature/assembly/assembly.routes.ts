@@ -41,18 +41,21 @@ export function getRoute(): Route {
                 component: AllocationViewComponent,
                 canActivate: [authGuard],
                 title: "Alokacje",
+                children: [...createSidebarRoutes()]
             },
             {
                 path: "lines",
                 component: LineListComponent,
                 canActivate: [authGuard],
                 title: "Linie montażowe",
+                children: [...createSidebarRoutes()]
             },
             {
                 path: "workstations",
                 component: WorkstationListComponent,
                 canActivate: [authGuard],
                 title: "Stanowiska",
+                children: [...createSidebarRoutes()]
             },
         ]
     };

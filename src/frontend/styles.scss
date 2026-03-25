@@ -36,6 +36,22 @@ body {
 
 /* You can add global styles to this file, and also import other style files */
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+@mixin flex-grow($n) {
+  flex-grow: $n;
+  min-width: 0;
+}
 
 .flex {
   display: flex;
@@ -44,7 +60,9 @@ body {
     gap: 1rem;
   }
 
-  &-grow-1 {
-    flex-grow: 1;
+  @for $i from 1 through 10 {
+    &-grow-#{$i} {
+      @include flex-grow($i);
+    }
   }
 }

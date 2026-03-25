@@ -1,4 +1,4 @@
-<div class="flex-grow-1">
+<div class="flex-grow-3">
     <ng-content></ng-content>
 </div>
 @if(!isSidebarActive()){
@@ -11,4 +11,6 @@
     </ng-content>
 </div>
 }
-<router-outlet class="sidebar" name="sidebar" (activate)="onActivate()" (deactivate)="onDeactivate()"></router-outlet>
+<div class="sidebar flex-grow-1">
+    <router-outlet name="sidebar" (activate)="onActivate()" (deactivate)="onDeactivate()"></router-outlet>
+</div>

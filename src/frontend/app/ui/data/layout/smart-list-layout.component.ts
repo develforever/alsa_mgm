@@ -128,6 +128,7 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
 
         if (selectedCount <= 1 && 'getSidebarItemRoute' in this.dataService) {
             const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(event.row);
+            console.log(sidebarRoute, baseRoute);
             this.router.navigate([baseRoute, { outlets: { sidebar: sidebarRoute } }]);
         } else {
             this.router.navigate([baseRoute, { outlets: { sidebar: null } }]);

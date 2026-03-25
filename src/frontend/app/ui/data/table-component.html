@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8 app-ui-data-table-component">
+<div class="mat-elevation-z8 app-ui-data-table-component overflow-y-auto">
     @if (isLoading) {
     <div class="loading-shade">
         <mat-spinner diameter="50"></mat-spinner>
@@ -10,16 +10,14 @@
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                    data-testid="table-select-all-checkbox"
+                <mat-checkbox (change)="$event ? toggleAllRows() : null" data-testid="table-select-all-checkbox"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
                 <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                    data-testid="table-select-row-checkbox"
-                    [checked]="selection.isSelected(row)">
+                    data-testid="table-select-row-checkbox" [checked]="selection.isSelected(row)">
                 </mat-checkbox>
             </td>
         </ng-container>
@@ -65,11 +63,8 @@
         }
 
         <tr mat-header-row *matHeaderRowDef="columnsToShow()"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToShow();" 
-            [class.active-row]="isRowActive(row)"
-            [class.selected-row]="selection.isSelected(row)"
-            data-testid="table-row"
-            (click)="rowClickHandler(row)">
+        <tr mat-row *matRowDef="let row; columns: columnsToShow();" [class.active-row]="isRowActive(row)"
+            [class.selected-row]="selection.isSelected(row)" data-testid="table-row" (click)="rowClickHandler(row)">
         </tr>
     </table>
 
