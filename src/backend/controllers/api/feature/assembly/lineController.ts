@@ -33,7 +33,7 @@ export class LineController extends Controller {
 
     @Post("")
     public async create(
-        @Body() body: ALAssLine
+        @Body() body: Pick<ALAssLine, "ProductID" | "Name" | "Status">
     ): Promise<ApiResponse<ALAssLine>> {
 
         const { ProductID, Name, Status } = body;

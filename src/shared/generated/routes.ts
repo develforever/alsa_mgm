@@ -296,6 +296,11 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALAssLine_"},{"ref":"ApiResponseList_ALAssLine_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_ALAssLine.ProductID-or-Name-or-Status_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"ProductID":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true},"Status":{"ref":"ALAssLineStatus","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseList_ALAssLineWStationAllocation_": {
         "dataType": "refObject",
         "properties": {
@@ -826,7 +831,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsLineController_create: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"ALAssLine"},
+                body: {"in":"body","name":"body","required":true,"ref":"Pick_ALAssLine.ProductID-or-Name-or-Status_"},
         };
         app.post('/api/lines',
             ...(fetchMiddlewares<RequestHandler>(LineController)),

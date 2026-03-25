@@ -660,6 +660,27 @@
 					}
 				]
 			},
+			"Pick_ALAssLine.ProductID-or-Name-or-Status_": {
+				"properties": {
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/ALAssLineStatus"
+					}
+				},
+				"required": [
+					"ProductID",
+					"Name",
+					"Status"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
 			"ApiResponseList_ALAssLineWStationAllocation_": {
 				"properties": {
 					"data": {
@@ -1300,7 +1321,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ALAssLine"
+								"$ref": "#/components/schemas/Pick_ALAssLine.ProductID-or-Name-or-Status_"
 							}
 						}
 					}
