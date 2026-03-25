@@ -58,15 +58,34 @@ export class App {
         map(() => {
           const titles: { title: string, url: string }[] = [];
           let currentRoute: ActivatedRoute | null = this.activatedRoute.root;
-
           while (currentRoute) {
             const title = currentRoute.snapshot.title;
             const parentTitle = currentRoute.parent?.snapshot.title;
 
             if (title && parentTitle != title) {
+              let url: string;
+
+              if (currentRoute.snapshot.outlet === 'primary') {
+                url = '/' + currentRoute.snapshot.pathFromRoot
+                  .filter(r => r.outlet === 'primary')
+                  .flatMap(s => s.url)
+                  .map(u => u.path)
+                  .filter(p => !!p)
+                  .join('/');
+              } else {
+                const primaryPath = '/' + currentRoute.snapshot.pathFromRoot
+                  .filter(r => r.outlet === 'primary')
+                  .flatMap(s => s.url)
+                  .map(u => u.path)
+                  .filter(p => !!p)
+                  .join('/');
+                const outletSegment = currentRoute.snapshot.url.map(u => u.path).join('/');
+                url = `${primaryPath}/(${currentRoute.snapshot.outlet}:${outletSegment})`;
+              }
+
               titles.push({
                 title: title,
-                url: currentRoute.snapshot.url.join('/')
+                url: url
               });
             }
             currentRoute = currentRoute.firstChild;

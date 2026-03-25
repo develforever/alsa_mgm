@@ -1,5 +1,5 @@
 <div class="breadcrumb">
     @for (item of items; track $index) {
-    <a [routerLink]="item.url">{{ item.title }}</a>
+    <a [href]="item.url" (click)="navigate($event, item.url)">{{ item.title }}</a>
     }
 </div>

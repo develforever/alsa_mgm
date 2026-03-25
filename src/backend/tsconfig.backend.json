@@ -11,6 +11,7 @@
         "experimentalDecorators": true,
         "strictPropertyInitialization": false,
         "resolveJsonModule": true,
+        "incremental": true,
         "baseUrl": ".",
         "paths": {
             "@shared/*": [

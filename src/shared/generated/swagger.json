@@ -736,6 +736,22 @@
 				"parameters": []
 			}
 		},
+		"/api/auth/dev-login": {
+			"get": {
+				"operationId": "DevLogin",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"description": "Mock logowania dla celów deweloperskich.\nDostępny tylko gdy NODE_ENV !== 'production'.",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/auth/github/callback": {
 			"get": {
 				"operationId": "AuthGithubCallback",

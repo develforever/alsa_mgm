@@ -3,7 +3,8 @@ import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { AppStoreService } from "../services/store.service";
 import { AuthService } from "../services/auth.service";
-import { catchError, map, of } from "rxjs";
+import { toObservable } from "@angular/core/rxjs-interop";
+import { map, take } from "rxjs";
 
 
 export const codeRedirectGuard: CanActivateFn = (route, state) => {
@@ -12,9 +13,8 @@ export const codeRedirectGuard: CanActivateFn = (route, state) => {
     const authService = inject(AuthService);
     const codeFromUrl = route.queryParamMap.get('auth_code');
 
-    return authService.checkAuth().pipe(
+    return toObservable(authService.isLoggedIn).pipe(
         map((isAuthenticated) => {
-
             if (isAuthenticated) {
                 appStore.setUser(authService.user()!);
             }
@@ -23,9 +23,6 @@ export const codeRedirectGuard: CanActivateFn = (route, state) => {
                 return router.createUrlTree(['/dashboard']);
             }
             if (isAuthenticated || appStore.code()) {
-                if (state.url.includes('/login')) {
-                    return router.createUrlTree(['/dashboard']);
-                }
                 if (state.url.includes('/login')) {
                     return router.createUrlTree(['/dashboard']);
                 }
@@ -38,6 +35,6 @@ export const codeRedirectGuard: CanActivateFn = (route, state) => {
 
             return router.createUrlTree(['/login']);
         }),
-        catchError(() => of(router.createUrlTree(['/login'])))
+        take(1)
     );
 };

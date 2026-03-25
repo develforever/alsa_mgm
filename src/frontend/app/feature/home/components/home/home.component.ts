@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'home-component',
+  selector: 'app-home',
   imports: [CommonModule],
   template: `
     <div style="text-align: center; margin-top: 50px;">
