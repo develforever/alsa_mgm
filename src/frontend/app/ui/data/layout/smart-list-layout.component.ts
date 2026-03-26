@@ -5,6 +5,7 @@ import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
 import { Router, RouterLink } from "@angular/router";
 import { FormGroup } from "@angular/forms";
+import { Crud_Form_Context, FieldConfig } from "../../../services/crud.service";
 import { LayoutComponent } from "./smart-list/layout.component";
 import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
 import { MatButtonModule } from "@angular/material/button";
@@ -26,8 +27,8 @@ export interface ITableDataRowClickNavigationData<T extends object> {
 }
 
 export interface ITableDataService<T extends object> {
-    getList(page: number, size: number): Observable<ApiResponse<T>>;
-    getAll(): Observable<ApiResponse<T>>;
+    getList(page: number, size: number, filter?: string): Observable<ApiResponse<T>>;
+    getAll(filter?: string): Observable<ApiResponse<T>>;
 }
 
 export interface ICrudService<T extends object> extends ITableDataService<T>, INotifyChangeService {
@@ -39,7 +40,8 @@ export interface ICrudService<T extends object> extends ITableDataService<T>, IN
     getListViewCommands(): unknown[];
     getSidebarBaseRoute(): string;
     getItemEditRoute(id: string | number): unknown[];
-    getFormGroup(): FormGroup;
+    getFormGroup(context?: Crud_Form_Context): FormGroup;
+    getFormConfig?(context?: Crud_Form_Context): Record<string, FieldConfig>;
 }
 
 /**
@@ -118,7 +120,7 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
 
 
     fetchFn = (options: TableFetchOptions) => {
-        return this.dataService.getList(options.page, options.limit);
+        return this.dataService.getList(options.page, options.limit, options.filter);
     }
 
 

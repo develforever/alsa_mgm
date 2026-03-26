@@ -649,6 +649,7 @@ export function RegisterRoutes(app: Router) {
         const argsProductController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
+                filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/products',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),

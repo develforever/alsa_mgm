@@ -1,0 +1,37 @@
+<mat-form-field class="w-full" [appearance]="appearance">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+    [placeholder]="placeholder"
+    (blur)="onBlur()"
+  />
+
+  @if (searchControl.value && !isDisabled) {
+    <button matSuffix mat-icon-button aria-label="Wyczyść" (click)="clearSelection($event)">
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith">
+    @if (isLoading()) {
+      <mat-option disabled>
+        <span class="loading-text">Ładowanie...</span>
+      </mat-option>
+    }
+    
+    @for (opt of options(); track valFn(opt)) {
+      <mat-option [value]="opt">
+        {{ displayFn(opt) }}
+      </mat-option>
+    }
+
+    @if (!isLoading() && options().length === 0) {
+      <mat-option disabled>
+        Brak wyników
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

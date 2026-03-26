@@ -7,6 +7,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { CommonModule } from "@angular/common";
 import { SmartListService } from "./smart-list.service";
+import { Crud_Form_Context, FieldConfig } from "../../../../services/crud.service";
+import { FilterableSelectComponent } from "../../../form/element/filterable-select/filterable-select.component";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-add',
@@ -18,7 +20,8 @@ import { SmartListService } from "./smart-list.service";
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        FilterableSelectComponent
     ],
     styles: [`
         .full-width {
@@ -31,14 +34,19 @@ export class AddComponent implements OnInit {
 
     private smartListService = inject(SmartListService);
 
+    fieldConfigs: Record<string, FieldConfig> = {};
     itemForm!: FormGroup;
 
     ngOnInit() {
         this.itemForm = this.smartListService.dataService.getFormGroup();
+        if (this.smartListService.dataService.getFormConfig) {
+            this.fieldConfigs = this.smartListService.dataService.getFormConfig(Crud_Form_Context.CREATE) || {};
+        }
         this.itemForm.reset();
     }
 
     getControlType(key: string): string {
+        if (this.fieldConfigs[key]) return this.fieldConfigs[key].type;
         if (key.toLowerCase().includes('id')) return 'hidden';
         const control = this.itemForm.get(key);
         if (typeof control?.value === 'boolean') return 'checkbox';

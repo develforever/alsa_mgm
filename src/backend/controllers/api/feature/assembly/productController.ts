@@ -5,6 +5,7 @@ import { Product } from "../../../../entity/Product";
 import { ApiRequest } from "@shared/api/ApiRequest";
 import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from "@shared/api/product/schema";
 import { ProductMapper } from "./product/maper";
+import { FindOptionsWhere, Like, FindManyOptions } from "typeorm";
 
 const productRepo = AppDataSource.getRepository(Product);
 
@@ -15,16 +16,27 @@ export class ProductController extends Controller {
     @Get("")
     public async getAll(
         @Query() page = 0,
-        @Query() size = 10
+        @Query() size = 10,
+        @Query() filter?: string
     ): Promise<ApiResponse<GetProductsSchema>> {
-        const items = await productRepo.find({
-            skip: page * size,
+
+        const where: FindOptionsWhere<Product> = {};
+
+        if (filter) {
+            where.Name = Like(`%${filter}%`);
+        }
+
+        const options: FindManyOptions<Product> = {
+            skip: (page > 0 ? page - 1 : 0) * size,
             take: size,
             order: {
                 ProductID: "DESC"
-            }
-        });
-        const total = await productRepo.count();
+            },
+            where,
+        }
+
+        const items = await productRepo.find(options);
+        const total = await productRepo.count(options);
         const output = ProductMapper.toGetProductsSchema({
             items,
             total,

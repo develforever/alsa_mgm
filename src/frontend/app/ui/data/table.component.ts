@@ -18,6 +18,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@
 export interface TableFetchOptions {
     page: number;
     limit: number;
+    filter?: string;
 }
 
 export type ColumnType = 'text' | 'date' | 'boolean' | 'number' | 'action_delete_edit' | 'custom';

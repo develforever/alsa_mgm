@@ -15,6 +15,15 @@
             </div>
             } @else if(getControlType(control.key) === 'hidden') {
             <input [formControlName]="control.key" [type]="getControlType(control.key)">
+            } @else if(getControlType(control.key) === 'relation') {
+            <app-filterable-select 
+                [formControlName]="control.key" 
+                [label]="fieldConfigs[control.key].label || control.key" 
+                [fetchFn]="fieldConfigs[control.key].fetchFn!"
+                [fetchByIdFn]="fieldConfigs[control.key].fetchByIdFn" 
+                [displayKey]="fieldConfigs[control.key].displayKey || 'Name'" 
+                [valueKey]="fieldConfigs[control.key].valueKey || 'ID'">
+            </app-filterable-select>
             } @else {
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label>{{ control.key | titlecase }}</mat-label>

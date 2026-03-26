@@ -5,15 +5,31 @@ import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from '../../../shared
 import { ICrudService } from '../ui/data/layout/smart-list-layout.component';
 import { FormGroup } from '@angular/forms';
 
-export abstract class AbstractCrudService<T extends object, CreateT = unknown, UpdateT = unknown> 
-  extends AbstractDataService 
+export enum Crud_Form_Context {
+  CREATE = 'create',
+  UPDATE = 'update',
+}
+
+export interface FieldConfig {
+  key: string;
+  type: 'text' | 'number' | 'checkbox' | 'hidden' | 'relation';
+  label?: string;
+  // For 'relation' fields
+  fetchFn?: (query: string) => Observable<any[]>;
+  fetchByIdFn?: (id: any) => Observable<any>;
+  displayKey?: string;
+  valueKey?: string;
+}
+
+export abstract class AbstractCrudService<T extends object, CreateT = unknown, UpdateT = unknown>
+  extends AbstractDataService
   implements ICrudService<T> {
 
   getAll(): Observable<ApiResponse<T>> {
     return this.http.get<ApiResponse<T>>(`${this.getPath()}`);
   }
 
-  getList(page: number, size: number): Observable<ApiResponse<T>> {
+  getList(page: number, size: number, filter?: string): Observable<ApiResponse<T>> {
     let params = new HttpParams();
 
     if (page) {
@@ -22,6 +38,10 @@ export abstract class AbstractCrudService<T extends object, CreateT = unknown, U
 
     if (size) {
       params = params.set('size', size.toString());
+    }
+
+    if (filter) {
+      params = params.set('filter', filter);
     }
 
     return this.http.get<ApiResponse<T>>(`${this.getPath()}`, {
@@ -49,5 +69,5 @@ export abstract class AbstractCrudService<T extends object, CreateT = unknown, U
   abstract getListViewCommands(): unknown[];
   abstract getSidebarBaseRoute(): string;
   abstract getItemEditRoute(id: string | number): unknown[];
-  abstract getFormGroup(): FormGroup;
+  abstract getFormGroup(context?: Crud_Form_Context): FormGroup;
 }

@@ -17,7 +17,7 @@ export const AppDataSource = new DataSource({
     password: config.DATABASE_PASSWORD,
     database: config.DATABASE_NAME,
     synchronize: true,
-    logging: false,
+    logging: true,
     entities: [Product, ALAssLine, ALWStation, ALAssLineWStationAllocation, AuditLog],
     subscribers: [AuditSubscriber],
     migrations: [],
