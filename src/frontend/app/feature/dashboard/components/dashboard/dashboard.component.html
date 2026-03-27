@@ -1,0 +1,66 @@
+<div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <div class="flex flex-gap-1">
+        <button type="button" matButton (click)="drawer.toggle()">
+            Toggle sidenav
+        </button>
+        <button mat-flat-button color="primary" (click)="resetLayout()">
+            <mat-icon>restore</mat-icon> Reset Layout
+        </button>
+    </div>
+</div>
+
+<mat-drawer-container class="dashboard-container" autosize>
+
+    <mat-drawer #drawer class="dashboard-sidenav" mode="side">
+        <p>Auto-resizing sidenav</p>
+    </mat-drawer>
+
+    <mat-drawer-content>
+        <div class="dashboard-grid flex flex-col flex-gap-1" cdkDropListGroup>
+
+            @for (row of layout().rows; track $index; let rIndex = $index) {
+            <div class="dashboard-row flex flex-gap-1" [ngStyle]="{'height': row.height}">
+
+                @for (cell of row.cells; track cell.id; let cIndex = $index) {
+                <div class="dashboard-cell" [ngClass]="getCellClasses(cell)" cdkDropList [id]="cell.id"
+                    [cdkDropListData]="cell.widgetType ? [cell.widgetType] : []"
+                    (cdkDropListDropped)="drop($event, rIndex, cIndex)">
+
+                    @if (cell.widgetType) {
+                    <!-- Draggable Widget -->
+                    <div class="widget-draggable-wrapper" cdkDrag [cdkDragData]="cell.widgetType">
+
+                        <!-- Drag handle -->
+                        <div class="widget-drag-handle" cdkDragHandle>
+                            <mat-icon>drag_indicator</mat-icon>
+                        </div>
+
+
+                        <!-- Widget Content -->
+                        <app-widget-host [widgetType]="cell.widgetType"
+                            [widgetConfig]="cell.widgetConfig || null"></app-widget-host>
+
+                        <!-- Drag Preview (shows when dragging) -->
+                        <div *cdkDragPreview class="widget-drag-preview">
+                            <div class="widget-drag-preview-content">
+                                <mat-icon>drag_indicator</mat-icon>
+                                <span>Moving Widget...</span>
+                            </div>
+                        </div>
+                    </div>
+                    } @else {
+                    <!-- Empty Cell Placeholder -->
+                    <div class="empty-cell-placeholder block">
+                        <app-widget-host [widgetType]="null"></app-widget-host>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+            }
+
+        </div>
+    </mat-drawer-content>
+
+</mat-drawer-container>

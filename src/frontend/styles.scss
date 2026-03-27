@@ -56,6 +56,18 @@ body {
 .flex {
   display: flex;
 
+  &.justify-between {
+    justify-content: space-between;
+  }
+
+  &.items-center {
+    align-items: center;
+  }
+
+  &-col {
+    flex-direction: column;
+  }
+
   &-gap-1 {
     gap: 1rem;
   }

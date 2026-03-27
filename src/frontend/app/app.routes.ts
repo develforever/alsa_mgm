@@ -2,20 +2,16 @@ import { Routes } from "@angular/router";
 
 import { getRoute as homeRoute } from "./feature/home/home.routes";
 import { getRoute as assemblyLineRoute } from "./feature/assembly/assembly.routes";
+import { getRoute as dashboardRoute } from "./feature/dashboard/dashboard.routes";
 
 const home = homeRoute();
 
 const children = [
+  dashboardRoute(),
   assemblyLineRoute()
 ];
 
 const menuItems = [
-  {
-    label: 'Dashboard',
-    link: '/dashboard',
-    icon: 'dashboard',
-    requiresAuth: true
-  },
   {
     label: 'Logi audytu',
     link: '/audit-logs',
