@@ -1,5 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, Type } from '@angular/core';
 import { DashboardConfig } from '../models/dashboard-config.model';
+import { WIDGET_REGISTRY } from '../models/widget-registry';
 
 const DEFAULT_LAYOUT: DashboardConfig = {
   rows: [
@@ -158,4 +159,33 @@ export class DashboardService {
       return null;
     }
   }
+
+  getAvailableWidgets() {
+    return Object.entries(WIDGET_REGISTRY).map(([key, value]) => {
+      const widgetClass = value as unknown as IDashboardWidgetClass;
+      return {
+        key,
+        component: value,
+        metadata: widgetClass.metadata,
+        defaultConfig: widgetClass.getDefaultConfig()
+      };
+    });
+  }
+}
+
+
+export interface WidgetMetadata {
+  label: string;
+  icon: string;
+  description?: string;
+}
+
+export interface IDashboardWidget {
+  getConfig(): Record<string, unknown>;
+  setConfig(config: Record<string, unknown>): void;
+}
+
+export type IDashboardWidgetClass = Type<IDashboardWidget> & {
+  getDefaultConfig(): Record<string, unknown>;
+  metadata: WidgetMetadata;
 }

@@ -5,20 +5,6 @@
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
-      @if (dashboardService.isDashboardActive() && authService.isLoggedIn()) {
-      <div class="edit-mode-controls flex flex-gap-1 items-center" style="margin-right: 16px;">
-        <mat-slide-toggle [checked]="dashboardService.isEditMode()" (change)="dashboardService.toggleEditMode()"
-          color="primary">
-          Tryb edycji
-        </mat-slide-toggle>
-
-        @if (dashboardService.isEditMode()) {
-        <button mat-flat-button color="accent" (click)="dashboardService.saveChanges()">
-          <mat-icon>save</mat-icon> Zapisz
-        </button>
-        }
-      </div>
-      }
 
       @if (authService.isLoggedIn()) {
 

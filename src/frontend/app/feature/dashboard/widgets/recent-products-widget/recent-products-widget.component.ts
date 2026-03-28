@@ -5,6 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DataProductService } from '../../../assembly/components/product-list/service/product.service';
+import { IDashboardWidget } from '../../services/dashboard.service';
 
 interface WidgetProduct {
   ProductID: string | number;
@@ -84,9 +85,13 @@ interface WidgetProduct {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecentProductsWidgetComponent {
+export class RecentProductsWidgetComponent implements IDashboardWidget {
 
-  widgetConfig = input<Record<string, unknown> | null>(null);
+  defaultConfig = signal<Record<string, unknown>>({
+    limit: 5
+  });
+
+  widgetConfig = input<Record<string, unknown>>(this.defaultConfig());
 
   private productService = inject(DataProductService);
 
@@ -100,6 +105,26 @@ export class RecentProductsWidgetComponent {
       const limit = Number(config?.['limit'] || 5);
       this.loadRecentProducts(limit);
     });
+  }
+
+  static metadata: import('../../services/dashboard.service').WidgetMetadata = {
+    label: 'Recent Products',
+    icon: 'inventory_2',
+    description: 'Ostatnio dodane produkty'
+  };
+
+  static getDefaultConfig(): Record<string, unknown> {
+    return {
+      limit: 5
+    };
+  }
+
+  getConfig(): Record<string, unknown> {
+    return this.widgetConfig()
+  }
+
+  setConfig(config: Record<string, unknown>): void {
+    this.defaultConfig.set(config);
   }
 
   private loadRecentProducts(limit: number) {

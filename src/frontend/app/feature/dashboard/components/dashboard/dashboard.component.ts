@@ -14,6 +14,8 @@ import { DashboardConfig, DashboardCell } from '../../models/dashboard-config.mo
 import { WidgetHostComponent } from '../widget-host/widget-host.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DashboardService } from '../../services/dashboard.service';
+import { AuthService } from '../../../../services/auth.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,6 +31,7 @@ import { DashboardService } from '../../services/dashboard.service';
     MatButtonModule,
     WidgetHostComponent,
     MatSidenavModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -36,6 +39,8 @@ import { DashboardService } from '../../services/dashboard.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   protected dashboardService = inject(DashboardService);
+  protected authService = inject(AuthService);
+  protected availableWidgets = this.dashboardService.getAvailableWidgets();
 
   allCellIds = computed(() => {
     const layout = this.dashboardService.activeLayout();
@@ -63,13 +68,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return classes;
   }
 
-  drop(event: CdkDragDrop<string[]>, rIndex: number, cIndex: number) {
+  drop(event: CdkDragDrop<string[], unknown, string>, rIndex: number, cIndex: number) {
     if (event.previousContainer === event.container) {
       return; // Dragged inside the exact same cell
     }
 
     const currentLayout = this.dashboardService.activeLayout();
     const updatedLayout = JSON.parse(JSON.stringify(currentLayout)) as DashboardConfig;
+    const targetCell = updatedLayout.rows[rIndex].cells[cIndex];
+
+    // Check if dragging from sidenav
+    if (event.previousContainer.id === 'external-widget-list') {
+      const widgetKey = event.item.data as string;
+      const widgetDef = this.availableWidgets.find(w => w.key === widgetKey);
+
+      if (widgetDef) {
+        targetCell.widgetType = widgetKey;
+        targetCell.widgetConfig = JSON.parse(JSON.stringify(widgetDef.defaultConfig));
+        this.dashboardService.updateLayout(updatedLayout);
+      }
+      return;
+    }
 
     // Find the source cell indices
     let sourceRIndex = -1;
@@ -91,7 +110,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Swap logic:
     // When dropping a widget into a new cell, we swap the widgetTypes
     const sourceCell = updatedLayout.rows[sourceRIndex].cells[sourceCIndex];
-    const targetCell = updatedLayout.rows[rIndex].cells[cIndex];
 
     const sourceWidgetType = sourceCell.widgetType;
     const targetWidgetType = targetCell.widgetType;

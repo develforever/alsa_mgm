@@ -1,6 +1,20 @@
 <div class="dashboard-header">
     <h1>Dashboard</h1>
     <div class="flex flex-gap-1">
+        @if (dashboardService.isDashboardActive() && authService.isLoggedIn()) {
+        <div class="edit-mode-controls flex flex-gap-1 items-center" style="margin-right: 16px;">
+            <mat-slide-toggle [checked]="dashboardService.isEditMode()" (change)="dashboardService.toggleEditMode()"
+                color="primary">
+                Edytuj
+            </mat-slide-toggle>
+
+            @if (dashboardService.isEditMode()) {
+            <button mat-flat-button color="accent" (click)="dashboardService.saveChanges()">
+                <mat-icon>save</mat-icon> Zapisz
+            </button>
+            }
+        </div>
+        }
         <button type="button" matButton (click)="drawer.toggle()">
             Toggle sidenav
         </button>
@@ -10,10 +24,32 @@
     </div>
 </div>
 
-<mat-drawer-container class="dashboard-container" [class.edit-mode]="dashboardService.isEditMode()" autosize>
+<mat-drawer-container class="dashboard-container" [class.edit-mode]="dashboardService.isEditMode()"
+    [class.open]="drawer.opened" autosize>
 
     <mat-drawer #drawer class="dashboard-sidenav" mode="side">
-        <p>Auto-resizing sidenav</p>
+        <div class="sidenav-wrapper">
+            <div class="sidenav-header">
+                <h3>Dostępne Widgety</h3>
+                <button mat-icon-button (click)="drawer.close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="widget-list" id="external-widget-list" cdkDropList [cdkDropListConnectedTo]="allCellIds()"
+                [cdkDropListData]="[]">
+                @for (widget of availableWidgets; track widget.key) {
+                <div class="widget-list-item" cdkDrag [cdkDragData]="widget.key"
+                    [cdkDragDisabled]="!dashboardService.isEditMode()">
+                    <mat-icon class="widget-icon">{{ widget.metadata.icon }}</mat-icon>
+                    <div class="widget-info">
+                        <span class="widget-label">{{ widget.metadata.label }}</span>
+                        <span class="widget-desc">{{ widget.metadata.description }}</span>
+                    </div>
+                    <mat-icon class="drag-handle">drag_indicator</mat-icon>
+                </div>
+                }
+            </div>
+        </div>
     </mat-drawer>
 
     <mat-drawer-content>
