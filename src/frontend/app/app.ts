@@ -16,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppTopMenu } from "./ui/TopMenu";
 import { AppStoreService } from "./services/store.service";
 import { BreadcrumbComponent } from "./ui/breadcrumb.component";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { DashboardService } from "./feature/dashboard/services/dashboard.service";
 
 @Component({
   selector: "app-root",
@@ -32,7 +34,8 @@ import { BreadcrumbComponent } from "./ui/breadcrumb.component";
     MatButtonModule,
     MatIconModule,
     AppTopMenu,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    MatSlideToggleModule
   ],
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
@@ -44,6 +47,7 @@ export class App {
   private activatedRoute = inject(ActivatedRoute);
   protected readonly currentTitle = signal<{ title: string, url: string }[]>([]);
   protected readonly appStore = inject(AppStoreService);
+  protected dashboardService = inject(DashboardService);
 
   constructor() {
 

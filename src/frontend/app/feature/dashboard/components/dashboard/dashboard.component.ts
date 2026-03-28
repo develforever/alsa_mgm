@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkDragDrop,
@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DashboardConfig, DashboardCell } from '../../models/dashboard-config.model';
 import { WidgetHostComponent } from '../widget-host/widget-host.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,66 +29,25 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatButtonModule,
     WidgetHostComponent,
     MatSidenavModule,
-
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  protected dashboardService = inject(DashboardService);
 
-  private version = 1
-
-
-  // Default configuration
-  private defaultLayout: DashboardConfig = {
-    rows: [
-      {
-        height: '400px',
-        columns: 2,
-        cells: [
-          { id: 'cell-1-1', widgetType: 'recent-products', flex: 2, widgetConfig: { limit: 2 } },
-          { id: 'cell-1-2', widgetType: null, flex: 1 }
-        ]
-      },
-      {
-        height: '350px',
-        columns: 4,
-        cells: [
-          { id: 'cell-2-1', widgetType: null },
-          { id: 'cell-2-2', widgetType: null },
-          { id: 'cell-2-3', widgetType: null },
-          { id: 'cell-2-4', widgetType: 'recent-products', flex: 2, widgetConfig: { limit: 6 } },
-        ]
-      }
-    ]
-  };
-
-  layout = signal<DashboardConfig>(this.defaultLayout);
+  allCellIds = computed(() => {
+    const layout = this.dashboardService.activeLayout();
+    return layout.rows.flatMap(r => r.cells.map(c => c.id));
+  });
 
   ngOnInit() {
-    this.loadLayout();
-    const saved = localStorage.getItem('dashboard_layout');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved) as DashboardConfig;
+    this.dashboardService.isDashboardActive.set(true);
+  }
 
-        // Merge missing properties (like 'flex') from default layout if they are missing in saved data
-        const flatDefaults = this.defaultLayout.rows.reduce<DashboardCell[]>((acc, row) => [...acc, ...row.cells], []);
-        parsed.rows.forEach(row => {
-          row.cells.forEach(cell => {
-            if (cell.flex === undefined) {
-              const def = flatDefaults.find(dc => dc.id === cell.id);
-              if (def) cell.flex = def.flex;
-            }
-          });
-        });
-
-        this.layout.set(parsed);
-      } catch {
-        // Fallback to default
-      }
-    }
+  ngOnDestroy() {
+    this.dashboardService.isDashboardActive.set(false);
   }
 
   getCellClasses(cell: DashboardCell) {
@@ -108,15 +68,16 @@ export class DashboardComponent implements OnInit {
       return; // Dragged inside the exact same cell
     }
 
-    const currentLayout = this.layout();
+    const currentLayout = this.dashboardService.activeLayout();
+    const updatedLayout = JSON.parse(JSON.stringify(currentLayout)) as DashboardConfig;
 
     // Find the source cell indices
     let sourceRIndex = -1;
     let sourceCIndex = -1;
 
-    for (let ri = 0; ri < currentLayout.rows.length; ri++) {
-      for (let ci = 0; ci < currentLayout.rows[ri].cells.length; ci++) {
-        if (currentLayout.rows[ri].cells[ci].id === event.previousContainer.id) {
+    for (let ri = 0; ri < updatedLayout.rows.length; ri++) {
+      for (let ci = 0; ci < updatedLayout.rows[ri].cells.length; ci++) {
+        if (updatedLayout.rows[ri].cells[ci].id === event.previousContainer.id) {
           sourceRIndex = ri;
           sourceCIndex = ci;
           break;
@@ -129,8 +90,8 @@ export class DashboardComponent implements OnInit {
 
     // Swap logic:
     // When dropping a widget into a new cell, we swap the widgetTypes
-    const sourceCell = currentLayout.rows[sourceRIndex].cells[sourceCIndex];
-    const targetCell = currentLayout.rows[rIndex].cells[cIndex];
+    const sourceCell = updatedLayout.rows[sourceRIndex].cells[sourceCIndex];
+    const targetCell = updatedLayout.rows[rIndex].cells[cIndex];
 
     const sourceWidgetType = sourceCell.widgetType;
     const targetWidgetType = targetCell.widgetType;
@@ -146,33 +107,10 @@ export class DashboardComponent implements OnInit {
     targetCell.widgetConfig = sourceConfig;
 
     // Trigger update
-    this.layout.set({ ...currentLayout }); // Trigger change detection
-    this.saveLayout();
+    this.dashboardService.updateLayout(updatedLayout);
   }
 
   resetLayout() {
-    localStorage.removeItem('dashboard_layout');
-    this.layout.set(JSON.parse(JSON.stringify(this.defaultLayout)));
-  }
-
-  private saveLayout() {
-
-    const data = {
-      version: this.version,
-      layout: this.layout()
-    }
-    localStorage.setItem('dashboard_layout', JSON.stringify(data));
-  }
-
-  private loadLayout() {
-    return
-    // const saved = localStorage.getItem('dashboard_layout');
-    // if (!saved) return;
-    // const data = JSON.parse(saved);
-    // if (data.version !== this.version) {
-    //   this.resetLayout();
-    //   return;
-    // }
-    // this.layout.set(data.layout);
+    this.dashboardService.resetLayout();
   }
 }

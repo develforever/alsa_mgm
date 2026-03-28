@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject, signal, Input, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -84,7 +84,7 @@ interface WidgetProduct {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecentProductsWidgetComponent implements OnInit {
+export class RecentProductsWidgetComponent {
 
   widgetConfig = input<Record<string, unknown> | null>(null);
 
@@ -94,10 +94,17 @@ export class RecentProductsWidgetComponent implements OnInit {
   loading = signal<boolean>(true);
   error = signal<boolean>(false);
 
-  ngOnInit() {
+  constructor() {
+    effect(() => {
+      const config = this.widgetConfig();
+      const limit = Number(config?.['limit'] || 5);
+      this.loadRecentProducts(limit);
+    });
+  }
 
-    const config = this.widgetConfig()
-    const limit = Number(config?.['limit'] || 5);
+  private loadRecentProducts(limit: number) {
+    this.loading.set(true);
+    this.error.set(false);
 
     this.productService.getList(1, limit).subscribe({
       next: (response: unknown) => {

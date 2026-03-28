@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<mat-drawer-container class="dashboard-container" autosize>
+<mat-drawer-container class="dashboard-container" [class.edit-mode]="dashboardService.isEditMode()" autosize>
 
     <mat-drawer #drawer class="dashboard-sidenav" mode="side">
         <p>Auto-resizing sidenav</p>
@@ -19,27 +19,30 @@
     <mat-drawer-content>
         <div class="dashboard-grid flex flex-col flex-gap-1" cdkDropListGroup>
 
-            @for (row of layout().rows; track $index; let rIndex = $index) {
+            @for (row of dashboardService.activeLayout().rows; track $index; let rIndex = $index) {
             <div class="dashboard-row flex flex-gap-1" [ngStyle]="{'height': row.height}">
 
                 @for (cell of row.cells; track cell.id; let cIndex = $index) {
                 <div class="dashboard-cell" [ngClass]="getCellClasses(cell)" cdkDropList [id]="cell.id"
                     [cdkDropListData]="cell.widgetType ? [cell.widgetType] : []"
-                    (cdkDropListDropped)="drop($event, rIndex, cIndex)">
+                    (cdkDropListDropped)="drop($event, rIndex, cIndex)"
+                    [cdkDropListDisabled]="!dashboardService.isEditMode()" [cdkDropListConnectedTo]="allCellIds()">
 
                     @if (cell.widgetType) {
                     <!-- Draggable Widget -->
-                    <div class="widget-draggable-wrapper" cdkDrag [cdkDragData]="cell.widgetType">
+                    <div class="widget-draggable-wrapper" cdkDrag [cdkDragData]="cell.widgetType"
+                        [cdkDragDisabled]="!dashboardService.isEditMode()">
 
                         <!-- Drag handle -->
+                        @if (dashboardService.isEditMode()) {
                         <div class="widget-drag-handle" cdkDragHandle>
                             <mat-icon>drag_indicator</mat-icon>
                         </div>
-
+                        }
 
                         <!-- Widget Content -->
-                        <app-widget-host [widgetType]="cell.widgetType"
-                            [widgetConfig]="cell.widgetConfig || null"></app-widget-host>
+                        <app-widget-host [widgetType]="cell.widgetType" [widgetConfig]="cell.widgetConfig || null"
+                            [cellId]="cell.id"></app-widget-host>
 
                         <!-- Drag Preview (shows when dragging) -->
                         <div *cdkDragPreview class="widget-drag-preview">
@@ -52,7 +55,7 @@
                     } @else {
                     <!-- Empty Cell Placeholder -->
                     <div class="empty-cell-placeholder block">
-                        <app-widget-host [widgetType]="null"></app-widget-host>
+                        <app-widget-host [widgetType]="null" [cellId]="cell.id"></app-widget-host>
                     </div>
                     }
                 </div>
