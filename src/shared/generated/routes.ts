@@ -68,6 +68,77 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetWorkstationsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ALWStationID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "ShortName": {"dataType":"string","required":true},
+            "PCName": {"dataType":"string"},
+            "AutoStart": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetWorkstationsSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetWorkstationsSchema"},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_GetWorkstationsSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetWorkstationsSchema"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseInfo": {
+        "dataType": "refObject",
+        "properties": {
+            "message": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_GetWorkstationsSchema_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetWorkstationsSchema_"},{"ref":"ApiResponseList_GetWorkstationsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetWorkstationSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ALWStationID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "ShortName": {"dataType":"string","required":true},
+            "PCName": {"dataType":"string"},
+            "AutoStart": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetWorkstationSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetWorkstationSchema"},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ALAssLine": {
         "dataType": "refObject",
         "properties": {
@@ -123,6 +194,7 @@ const models: TsoaRoute.Models = {
     "ALWStation": {
         "dataType": "refObject",
         "properties": {
+            "_executorEmail": {"dataType":"string"},
             "ALWStationID": {"dataType":"double","required":true},
             "Name": {"dataType":"string","required":true},
             "ShortName": {"dataType":"string","required":true},
@@ -132,16 +204,6 @@ const models: TsoaRoute.Models = {
             "updatedAt": {"dataType":"datetime","required":true},
             "deletedAt": {"dataType":"datetime"},
             "allocations": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALWStation_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
@@ -156,10 +218,12 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseInfo": {
+    "ApiResponseList_ALWStation_": {
         "dataType": "refObject",
         "properties": {
-            "message": {"dataType":"string","required":true},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
@@ -167,6 +231,28 @@ const models: TsoaRoute.Models = {
     "ApiResponse_ALWStation_": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALWStation_"},{"ref":"ApiResponseList_ALWStation_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostWorkstationsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "Name": {"dataType":"string","required":true},
+            "ShortName": {"dataType":"string","required":true},
+            "PCName": {"dataType":"string"},
+            "AutoStart": {"dataType":"double"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PatchWorkstationsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "Name": {"dataType":"string"},
+            "ShortName": {"dataType":"string"},
+            "PCName": {"dataType":"string"},
+            "AutoStart": {"dataType":"double"},
+        },
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GetProductsSchema": {
@@ -603,6 +689,7 @@ export function RegisterRoutes(app: Router) {
         const argsWorkstationController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
+                filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/workstations',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
@@ -631,8 +718,39 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsWorkstationController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
+        };
+        app.get('/api/workstations/:id',
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.getOne)),
+
+            async function WorkstationController_getOne(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_getOne, request, response });
+
+                const controller = new WorkstationController();
+
+              await templateService.apiHandler({
+                methodName: 'getOne',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsWorkstationController_create: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"PCName":{"dataType":"string","required":true},"ShortName":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true}}},
+                body: {"in":"body","name":"body","required":true,"ref":"PostWorkstationsSchema"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/workstations',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
@@ -663,7 +781,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsWorkstationController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"PCName":{"dataType":"string","required":true},"ShortName":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true}}},
+                body: {"in":"body","name":"body","required":true,"ref":"PatchWorkstationsSchema"},
         };
         app.patch('/api/workstations/:id',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),

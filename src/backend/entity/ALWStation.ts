@@ -8,9 +8,10 @@ import {
   DeleteDateColumn
 } from "typeorm";
 import { ALAssLineWStationAllocation } from "./ALAssLineWStationAllocation";
+import { BaseAuditEntity } from "./BaseAuditEntity";
 
 @Entity("ALWStation")
-export class ALWStation {
+export class ALWStation extends BaseAuditEntity {
   @PrimaryGeneratedColumn()
   ALWStationID: number;
 

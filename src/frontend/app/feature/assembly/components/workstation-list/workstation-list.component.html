@@ -1,30 +1,5 @@
-<div class="p-4">
-    <h2>Workstation Management</h2>
-    <div class="mb-4 bg-light p-3 border rounded">
-        <input [(ngModel)]="newStation.Name" placeholder="Full Name (e.g. Laser Welding)">
-        <input [(ngModel)]="newStation.ShortName" placeholder="Short (e.g. LW)">
-        <input [(ngModel)]="newStation.PCName" placeholder="PC Name">
-        <button (click)="addStation()" class="btn btn-primary">Add Station</button>
-    </div>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Short Name</th>
-                <th>Full Name</th>
-                <th>PC Name</th>
-                <th>AutoStart</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let s of stations()">
-                <td><strong>{{ s.ShortName }}</strong></td>
-                <td>{{ s.Name }}</td>
-                <td>{{ s.PCName }}</td>
-                <td>{{ s.AutoStart ? 'Yes' : 'No' }}</td>
-                <td><button (click)="deleteStation(s.ALWStationID)" class="btn btn-danger btn-sm">Delete</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<app-ui-data-layout-smart-list [dataService]="dataTableService">
+    <ng-template appTableCellDef="AutoStart" let-row>
+        {{ row.AutoStart === 1 ? 'Tak' : 'Nie' }}
+    </ng-template>
+</app-ui-data-layout-smart-list>

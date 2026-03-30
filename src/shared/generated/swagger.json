@@ -121,6 +121,163 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"GetWorkstationsSchema": {
+				"properties": {
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"ShortName": {
+						"type": "string"
+					},
+					"PCName": {
+						"type": "string"
+					},
+					"AutoStart": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"ALWStationID",
+					"Name",
+					"ShortName",
+					"AutoStart",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetWorkstationsSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetWorkstationsSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetWorkstationsSchema_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GetWorkstationsSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseInfo": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_GetWorkstationsSchema_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationsSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_GetWorkstationsSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"GetWorkstationSchema": {
+				"properties": {
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"ShortName": {
+						"type": "string"
+					},
+					"PCName": {
+						"type": "string"
+					},
+					"AutoStart": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"ALWStationID",
+					"Name",
+					"ShortName",
+					"AutoStart",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetWorkstationSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetWorkstationSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ALAssLine": {
 				"properties": {
 					"ALAssLineID": {
@@ -278,6 +435,9 @@
 			},
 			"ALWStation": {
 				"properties": {
+					"_executorEmail": {
+						"type": "string"
+					},
 					"ALWStationID": {
 						"type": "number",
 						"format": "double"
@@ -327,6 +487,21 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"ApiResponseSingle_ALWStation_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ALWStation"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ApiResponseList_ALWStation_": {
 				"properties": {
 					"data": {
@@ -348,33 +523,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_ALWStation_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/ALWStation"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseInfo": {
-				"properties": {
-					"message": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
 			"ApiResponse_ALWStation_": {
 				"anyOf": [
 					{
@@ -390,6 +538,48 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				]
+			},
+			"PostWorkstationsSchema": {
+				"properties": {
+					"Name": {
+						"type": "string"
+					},
+					"ShortName": {
+						"type": "string"
+					},
+					"PCName": {
+						"type": "string"
+					},
+					"AutoStart": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"Name",
+					"ShortName"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PatchWorkstationsSchema": {
+				"properties": {
+					"Name": {
+						"type": "string"
+					},
+					"ShortName": {
+						"type": "string"
+					},
+					"PCName": {
+						"type": "string"
+					},
+					"AutoStart": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
 			},
 			"GetProductsSchema": {
 				"properties": {
@@ -1064,7 +1254,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponseList_ALWStation_"
+									"$ref": "#/components/schemas/ApiResponse_GetWorkstationsSchema_"
 								}
 							}
 						}
@@ -1094,6 +1284,14 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			},
@@ -1121,23 +1319,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"PCName": {
-										"type": "string"
-									},
-									"ShortName": {
-										"type": "string"
-									},
-									"Name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"PCName",
-									"ShortName",
-									"Name"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/PostWorkstationsSchema"
 							}
 						}
 					}
@@ -1145,6 +1327,43 @@
 			}
 		},
 		"/api/workstations/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationSchema_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workstations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "Update",
 				"responses": {
@@ -1179,23 +1398,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"PCName": {
-										"type": "string"
-									},
-									"ShortName": {
-										"type": "string"
-									},
-									"Name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"PCName",
-									"ShortName",
-									"Name"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/PatchWorkstationsSchema"
 							}
 						}
 					}

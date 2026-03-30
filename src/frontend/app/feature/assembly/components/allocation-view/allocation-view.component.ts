@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { Allocation, ALWStation } from '../../../../../../shared/models/types';
 import { GetLinesSchema } from '../../../../../../shared/api/line/schema';
 import { DataAllocationService } from '../../../../services/data/allocation.service';
-import { DataWorkstationService } from '../../../../services/data/workstation.service';
 import { forkJoin } from 'rxjs';
 import { ensureArray } from '../../../../utils/api.utils';
 import { DataAssemblyLineService } from '../line-list/service/line.service';
+import { DataWorkstationService } from '../workstation-list/service/workstation.service';
 
 @Component({
   selector: 'app-assembly-allocation-view',
