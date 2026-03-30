@@ -2,26 +2,27 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Allocation, ALAssLine, ALWStation } from '../../../../../../shared/models/types';
+import { Allocation, ALWStation } from '../../../../../../shared/models/types';
+import { GetLinesSchema } from '../../../../../../shared/api/line/schema';
 import { DataAllocationService } from '../../../../services/data/allocation.service';
-import { DataLineService } from '../../../../services/data/line.service';
 import { DataWorkstationService } from '../../../../services/data/workstation.service';
 import { forkJoin } from 'rxjs';
 import { ensureArray } from '../../../../utils/api.utils';
+import { DataAssemblyLineService } from '../line-list/service/line.service';
 
 @Component({
-  selector: 'assembly-allocation-view',
+  selector: 'app-assembly-allocation-view',
   imports: [CommonModule, FormsModule],
   templateUrl: './allocation-view.component.html',
   styleUrls: ['./allocation-view.component.scss']
 })
 export class AllocationViewComponent implements OnInit {
   private dataService = inject(DataAllocationService);
-  private dataLineService = inject(DataLineService);
+  private dataLineService = inject(DataAssemblyLineService);
   private dataStationService = inject(DataWorkstationService);
 
   allocations = signal<Allocation[]>([]);
-  lines = signal<ALAssLine[]>([]);
+  lines = signal<GetLinesSchema[]>([]);
   stations = signal<ALWStation[]>([]);
 
   selectedLineId: number | null = null;
@@ -44,7 +45,7 @@ export class AllocationViewComponent implements OnInit {
   loadAll() {
     forkJoin({
       allocations: this.dataService.getAllocations().pipe(ensureArray<Allocation>()),
-      lines: this.dataLineService.getLines().pipe(ensureArray<ALAssLine>()),
+      lines: this.dataLineService.getAll().pipe(ensureArray<GetLinesSchema>()),
       stations: this.dataStationService.getWorkstations().pipe(ensureArray<ALWStation>())
     }).subscribe(({ allocations, lines, stations }) => {
       this.allocations.set(allocations);
@@ -65,7 +66,11 @@ export class AllocationViewComponent implements OnInit {
   }
 
   toggleSelect(id: number) {
-    this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id);
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
   }
 
   deleteMultiple() {

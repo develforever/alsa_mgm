@@ -271,10 +271,61 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALAssLine_": {
+    "GetLinesSchema": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ProductID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Status": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetLinesSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetLinesSchema"},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_GetLinesSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetLinesSchema"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_GetLinesSchema_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetLinesSchema_"},{"ref":"ApiResponseList_GetLinesSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetLineSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ProductID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Status": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetLineSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetLineSchema"},
             "error": {"ref":"ApiError"},
             "meta": {"ref":"ApiMeta"},
         },
@@ -291,14 +342,39 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_ALAssLine_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponse_ALAssLine_": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALAssLine_"},{"ref":"ApiResponseList_ALAssLine_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_ALAssLine.ProductID-or-Name-or-Status_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"ProductID":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true},"Status":{"ref":"ALAssLineStatus","required":true}},"validators":{}},
+    "PostLinesSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ProductID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Status": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PatchLinesSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ProductID": {"dataType":"double"},
+            "Name": {"dataType":"string"},
+            "Status": {"dataType":"double"},
+        },
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseList_ALAssLineWStationAllocation_": {
@@ -803,6 +879,7 @@ export function RegisterRoutes(app: Router) {
         const argsLineController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
+                filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/lines',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
@@ -862,7 +939,8 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsLineController_create: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"Pick_ALAssLine.ProductID-or-Name-or-Status_"},
+                body: {"in":"body","name":"body","required":true,"ref":"PostLinesSchema"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/lines',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
@@ -893,7 +971,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsLineController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                body: {"in":"body","name":"body","required":true,"ref":"ALAssLine"},
+                body: {"in":"body","name":"body","required":true,"ref":"PatchLinesSchema"},
         };
         app.patch('/api/lines/:id',
             ...(fetchMiddlewares<RequestHandler>(LineController)),

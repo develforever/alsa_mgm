@@ -12,21 +12,28 @@ export enum Crud_Form_Context {
 
 export interface FieldConfig {
   key: string;
-  type: 'text' | 'number' | 'checkbox' | 'hidden' | 'relation';
+  type: 'text' | 'number' | 'checkbox' | 'hidden' | 'relation' | 'toggle';
   label?: string;
   // For 'relation' fields
   fetchFn?: (query: string) => Observable<any[]>;
   fetchByIdFn?: (id: any) => Observable<any>;
   displayKey?: string;
   valueKey?: string;
+  validations?: Record<string, string>;
 }
 
 export abstract class AbstractCrudService<T extends object, CreateT = unknown, UpdateT = unknown>
   extends AbstractDataService
   implements ICrudService<T> {
 
-  getAll(): Observable<ApiResponse<T>> {
-    return this.http.get<ApiResponse<T>>(`${this.getPath()}`);
+  getAll(filter?: string): Observable<ApiResponse<T>> {
+    let params = new HttpParams();
+    if (filter) {
+      params = params.set('filter', filter);
+    }
+    return this.http.get<ApiResponse<T>>(`${this.getPath()}`, {
+      params,
+    });
   }
 
   getList(page: number, size: number, filter?: string): Observable<ApiResponse<T>> {

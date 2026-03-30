@@ -1,14 +1,11 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { SmartListService } from "./smart-list.service";
 import { Crud_Form_Context, FieldConfig } from "../../../../services/crud.service";
-import { FilterableSelectComponent } from "../../../form/element/filterable-select/filterable-select.component";
+import { SmartFormFieldComponent } from "./form-field.component";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-add',
@@ -18,10 +15,7 @@ import { FilterableSelectComponent } from "../../../form/element/filterable-sele
         MatCardModule,
         MatButtonModule,
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCheckboxModule,
-        FilterableSelectComponent
+        SmartFormFieldComponent
     ],
     styles: [`
         .full-width {
@@ -45,13 +39,8 @@ export class AddComponent implements OnInit {
         this.itemForm.reset();
     }
 
-    getControlType(key: string): string {
-        if (this.fieldConfigs[key]) return this.fieldConfigs[key].type;
-        if (key.toLowerCase().includes('id')) return 'hidden';
-        const control = this.itemForm.get(key);
-        if (typeof control?.value === 'boolean') return 'checkbox';
-        if (typeof control?.value === 'number') return 'number';
-        return 'text';
+    getControl(key: string): FormControl {
+        return this.itemForm.get(key) as FormControl;
     }
 
     keepOrder = (): number => {
@@ -59,12 +48,15 @@ export class AddComponent implements OnInit {
     }
 
     addItem() {
-        if (this.itemForm.invalid) return;
+        if (this.itemForm.invalid) {
+            this.smartListService.markAllAsTouched(this.itemForm);
+            return;
+        }
 
-        const data = {
-            ...this.itemForm.value,
-            Active: this.itemForm.value['Active'] ? 1 : 0,
-        };
+        let data = this.itemForm.value;
+        if (this.smartListService.dataService.mapFormToModel) {
+            data = this.smartListService.dataService.mapFormToModel(data);
+        }
 
         this.smartListService.dataService.create(data).subscribe(() => {
             this.smartListService.refresh();

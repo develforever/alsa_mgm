@@ -51,4 +51,18 @@ export class DataProductService extends AbstractCrudService<GetProductsSchema, P
   getAddLabel(): string {
     return 'Add Product';
   }
+
+  mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {
+    return {
+      ...value,
+      Active: value['Active'] ? 1 : 0,
+    };
+  }
+
+  mapModelToForm(item: GetProductsSchema): Record<string, unknown> {
+    return {
+      ...(item as unknown as Record<string, unknown>),
+      Active: item.Active === 1
+    };
+  }
 }

@@ -6,13 +6,17 @@
         <div class="col-md-5">
           <select class="form-select" [(ngModel)]="selectedLineId">
             <option [ngValue]="null">Select Line...</option>
-            <option *ngFor="let l of lines()" [value]="l.ALAssLineID">{{l.Name}} ({{l.product?.Name}})</option>
+            @for (l of lines(); track l.ALAssLineID) {
+              <option [value]="l.ALAssLineID">{{l.Name}} (ID: {{l.ProductID}})</option>
+            }
           </select>
         </div>
         <div class="col-md-5">
           <select class="form-select" [(ngModel)]="selectedStationId">
             <option [ngValue]="null">Select Workstation...</option>
-            <option *ngFor="let s of stations()" [value]="s.ALWStationID">{{s.ShortName}} - {{s.Name}}</option>
+            @for (s of stations(); track s.ALWStationID) {
+              <option [value]="s.ALWStationID">{{s.ShortName}} - {{s.Name}}</option>
+            }
           </select>
         </div>
         <div class="col-md-2">
@@ -24,7 +28,7 @@
 
   <section class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      <input type="text" class="form-control w-25" placeholder="Search..." (input)="filterText.set($any($event.target).value)">
+      <input type="text" #searchInput class="form-control w-25" placeholder="Search..." (input)="filterText.set(searchInput.value)">
       <button class="btn btn-danger" [disabled]="selectedIds.size === 0" (click)="deleteMultiple()">
         10. Remove Selected ({{selectedIds.size}})
       </button>
@@ -41,13 +45,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let a of filteredData()">
-            <td><input type="checkbox" (change)="toggleSelect(a.ALAssLineWStationAllocationID)"></td>
-            <td>{{ a.assemblyLine?.product?.Name }}</td>
-            <td>{{ a.assemblyLine?.Name }}</td>
-            <td><span class="badge bg-secondary">{{ a.Sort }}</span></td>
-            <td><strong>{{ a.workstation?.ShortName }}</strong> - {{ a.workstation?.Name }}</td>
-          </tr>
+          @for (a of filteredData(); track a.ALAssLineWStationAllocationID) {
+            <tr>
+              <td><input type="checkbox" (change)="toggleSelect(a.ALAssLineWStationAllocationID)"></td>
+              <td>{{ a.assemblyLine?.product?.Name }}</td>
+              <td>{{ a.assemblyLine?.Name }}</td>
+              <td><span class="badge bg-secondary">{{ a.Sort }}</span></td>
+              <td><strong>{{ a.workstation?.ShortName }}</strong> - {{ a.workstation?.Name }}</td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

@@ -6,36 +6,11 @@
     <mat-card-content>
         <form [formGroup]="itemForm" (ngSubmit)="addItem()">
             @for (control of itemForm.controls | keyvalue: keepOrder; track control.key) {
-
-            @if(getControlType(control.key) === 'checkbox') {
-            <div class="full-width">
-                <mat-checkbox [formControlName]="control.key" [attr.data-testid]="'input-' + control.key">
-                    {{ control.key | titlecase }}
-                </mat-checkbox>
-            </div>
-            } @else if(getControlType(control.key) === 'hidden') {
-            <input [formControlName]="control.key" [type]="getControlType(control.key)">
-            } @else if(getControlType(control.key) === 'relation') {
-            <app-filterable-select 
-                [formControlName]="control.key" 
-                [label]="fieldConfigs[control.key].label || control.key" 
-                [fetchFn]="fieldConfigs[control.key].fetchFn!"
-                [fetchByIdFn]="fieldConfigs[control.key].fetchByIdFn" 
-                [displayKey]="fieldConfigs[control.key].displayKey || 'Name'" 
-                [valueKey]="fieldConfigs[control.key].valueKey || 'ID'">
-            </app-filterable-select>
-            } @else {
-            <mat-form-field class="full-width" appearance="outline">
-                <mat-label>{{ control.key | titlecase }}</mat-label>
-                <input matInput [formControlName]="control.key" [type]="getControlType(control.key)"
-                    [placeholder]="control.key" [attr.data-testid]="'input-' + control.key">
-
-                @if (itemForm.get(control.key)?.invalid && itemForm.get(control.key)?.touched) {
-                <mat-error>Pole {{ control.key }} jest niepoprawne</mat-error>
-                }
-            </mat-form-field>
-            }
-
+                <app-smart-form-field 
+                    [control]="getControl(control.key)" 
+                    [key]="control.key" 
+                    [config]="fieldConfigs[control.key]">
+                </app-smart-form-field>
             }
         </form>
     </mat-card-content>

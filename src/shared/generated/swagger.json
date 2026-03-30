@@ -608,6 +608,162 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"GetLinesSchema": {
+				"properties": {
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"ALAssLineID",
+					"ProductID",
+					"Name",
+					"Status",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetLinesSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetLinesSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetLinesSchema_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GetLinesSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_GetLinesSchema_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_GetLinesSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_GetLinesSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"GetLineSchema": {
+				"properties": {
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"ALAssLineID",
+					"ProductID",
+					"Name",
+					"Status",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetLineSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetLineSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_ALAssLine_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ALAssLine"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ApiResponseList_ALAssLine_": {
 				"properties": {
 					"data": {
@@ -629,21 +785,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_ALAssLine_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/ALAssLine"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
 			"ApiResponse_ALAssLine_": {
 				"anyOf": [
 					{
@@ -660,7 +801,7 @@
 					}
 				]
 			},
-			"Pick_ALAssLine.ProductID-or-Name-or-Status_": {
+			"PostLinesSchema": {
 				"properties": {
 					"ProductID": {
 						"type": "number",
@@ -670,7 +811,8 @@
 						"type": "string"
 					},
 					"Status": {
-						"$ref": "#/components/schemas/ALAssLineStatus"
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -679,7 +821,24 @@
 					"Status"
 				],
 				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
+				"additionalProperties": true
+			},
+			"PatchLinesSchema": {
+				"properties": {
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
 			},
 			"ApiResponseList_ALAssLineWStationAllocation_": {
 				"properties": {
@@ -1272,7 +1431,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponseList_ALAssLine_"
+									"$ref": "#/components/schemas/ApiResponse_GetLinesSchema_"
 								}
 							}
 						}
@@ -1302,6 +1461,14 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			},
@@ -1329,7 +1496,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/Pick_ALAssLine.ProductID-or-Name-or-Status_"
+								"$ref": "#/components/schemas/PostLinesSchema"
 							}
 						}
 					}
@@ -1345,7 +1512,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALAssLine_"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetLineSchema_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
 								}
 							}
 						}
@@ -1401,7 +1575,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ALAssLine"
+								"$ref": "#/components/schemas/PatchLinesSchema"
 							}
 						}
 					}
@@ -1415,15 +1589,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ApiResponseInfo"
 								}
 							}
 						}

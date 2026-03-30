@@ -2,14 +2,11 @@ import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { SmartListService } from "./smart-list.service";
 import { Crud_Form_Context, FieldConfig } from "../../../../services/crud.service";
-import { FilterableSelectComponent } from "../../../form/element/filterable-select/filterable-select.component";
+import { SmartFormFieldComponent } from "./form-field.component";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-edit',
@@ -19,10 +16,7 @@ import { FilterableSelectComponent } from "../../../form/element/filterable-sele
         MatCardModule,
         MatButtonModule,
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCheckboxModule,
-        FilterableSelectComponent
+        SmartFormFieldComponent
     ],
     styles: [`
         .full-width {
@@ -37,10 +31,11 @@ export class EditComponent implements OnInit {
         effect(() => {
             const currentItem = this.item();
             if (currentItem) {
-                this.itemForm.patchValue({
-                    ...currentItem,
-                    Active: (currentItem as any).Active === 1
-                } as any, { emitEvent: false });
+                let formValue = { ...currentItem };
+                if (this.smartListService.dataService.mapModelToForm) {
+                    formValue = this.smartListService.dataService.mapModelToForm(currentItem);
+                }
+                this.itemForm.patchValue(formValue as any, { emitEvent: false });
             }
         });
     }
@@ -55,13 +50,8 @@ export class EditComponent implements OnInit {
 
     itemForm!: FormGroup;
 
-    getControlType(key: string): string {
-        if (this.fieldConfigs[key]) return this.fieldConfigs[key].type;
-        if (key.toLowerCase().includes('id')) return 'hidden';
-        const control = this.itemForm.get(key);
-        if (typeof control?.value === 'boolean') return 'checkbox';
-        if (typeof control?.value === 'number') return 'number';
-        return 'text';
+    getControl(key: string): FormControl {
+        return this.itemForm.get(key) as FormControl;
     }
 
     keepOrder = (): number => {
@@ -98,10 +88,15 @@ export class EditComponent implements OnInit {
     updateItem() {
         if (!this.selectedId) return;
 
-        const update = {
-            ...this.itemForm.value,
-            Active: this.itemForm.value['Active'] ? 1 : 0,
-        };
+        if (this.itemForm.invalid) {
+            this.smartListService.markAllAsTouched(this.itemForm);
+            return;
+        }
+
+        let update = this.itemForm.value;
+        if (this.smartListService.dataService.mapFormToModel) {
+            update = this.smartListService.dataService.mapFormToModel(update);
+        }
 
         this.smartListService.dataService.update(this.selectedId, update).subscribe((res) => {
             this.item.set(res.data as any);

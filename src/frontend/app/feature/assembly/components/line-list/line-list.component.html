@@ -1,1 +1,5 @@
-<app-ui-data-layout-smart-list [dataService]="dataTableService"></app-ui-data-layout-smart-list>
+<app-ui-data-layout-smart-list [dataService]="dataTableService">
+    <ng-template appTableCellDef="Status" let-row>
+        {{ row.Status === 1 ? 'Tak' : 'Nie' }}
+    </ng-template>
+</app-ui-data-layout-smart-list>

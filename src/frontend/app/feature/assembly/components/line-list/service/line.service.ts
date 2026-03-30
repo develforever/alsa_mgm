@@ -1,27 +1,24 @@
-import { Injectable } from '@angular/core';
-import { ALAssLine, LineStatus } from '../../../../../../../shared/models/types';
+import { Injectable, inject } from '@angular/core';
+import { LineStatus } from '../../../../../../../shared/models/types';
 import {
   ICrudService,
   ITableDataRowAddNavigationData,
   ITableDataRowClickNavigationData,
 } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbstractCrudService, Crud_Form_Context, FieldConfig } from '../../../../../services/crud.service';
+import { AbstractCrudService, FieldConfig } from '../../../../../services/crud.service';
 import { DataProductService } from '../../product-list/service/product.service';
 import { map } from 'rxjs';
-import { inject } from '@angular/core';
-
-export type PostLineSchema = Pick<ALAssLine, 'ProductID' | 'Name' | 'Status'>;
-export type PatchLineSchema = Partial<PostLineSchema>;
+import { GetLinesSchema, PatchLinesSchema, PostLinesSchema } from '../../../../../../../shared/api/line/schema';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataAssemblyLineService
-  extends AbstractCrudService<ALAssLine, PostLineSchema, PatchLineSchema>
+  extends AbstractCrudService<GetLinesSchema, PostLinesSchema, PatchLinesSchema>
   implements
-  ICrudService<ALAssLine>,
-  ITableDataRowClickNavigationData<ALAssLine>,
+  ICrudService<GetLinesSchema>,
+  ITableDataRowClickNavigationData<GetLinesSchema>,
   ITableDataRowAddNavigationData {
 
   private productService = inject(DataProductService);
@@ -42,8 +39,7 @@ export class DataAssemblyLineService
     return ['edit', id];
   }
 
-  getFormGroup(context?: Crud_Form_Context): FormGroup {
-
+  getFormGroup(): FormGroup {
     return new FormGroup({
       ALAssLineID: new FormControl({ value: 0, disabled: true }, [Validators.required]),
       Name: new FormControl('', [Validators.required]),
@@ -55,28 +51,51 @@ export class DataAssemblyLineService
     });
   }
 
-  getFormConfig(context?: Crud_Form_Context): Record<string, FieldConfig> {
+  getFormConfig(): Record<string, FieldConfig> {
     return {
+      Name: {
+        key: 'Name',
+        type: 'text',
+        label: 'Nazwa Linii',
+        validations: {
+          required: 'Nazwa linii produkcyjnej jest wymagana',
+        }
+      },
+      Status: {
+        key: 'Status',
+        type: 'toggle',
+        label: 'Status Aktywny',
+      },
       ProductID: {
         key: 'ProductID',
         type: 'relation',
-        label: 'Wybierz Produkt',
+        label: 'Produkt',
+        fetchFn: (query) => this.productService.getAll(query).pipe(map(res => ('data' in res && Array.isArray(res.data)) ? res.data : [])),
+        fetchByIdFn: (id) => this.productService.getOne(id).pipe(map(res => ('data' in res) ? res.data : null)),
         displayKey: 'Name',
         valueKey: 'ProductID',
-        fetchFn: (query: string) => this.productService.getList(1, 100, query).pipe(map(res => {
-          const items = ('data' in res && Array.isArray(res.data)) ? res.data : [];
-          if (!query) return items;
-          return items.filter((p: unknown) => {
-            const pName = (p as { Name: string }).Name;
-            return pName?.toLowerCase().includes(query.toLowerCase());
-          });
-        })),
-        fetchByIdFn: (id: number) => this.productService.getOne(id).pipe(map(res => ('data' in res ? res.data : undefined)))
+        validations: {
+          required: 'Wybranie produktu jest obowiązkowe',
+        }
       }
     };
   }
 
-  getSidebarItemRoute(row: ALAssLine): unknown[] {
+  mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {
+    return {
+      ...value,
+      Status: value['Status'] ? 1 : 2, // Active = 1, Locked = 2
+    };
+  }
+
+  mapModelToForm(item: GetLinesSchema): Record<string, unknown> {
+    return {
+      ...(item as unknown as Record<string, unknown>),
+      Status: item.Status === 1
+    };
+  }
+
+  getSidebarItemRoute(row: GetLinesSchema): unknown[] {
     return ['selected', row.ALAssLineID];
   }
 

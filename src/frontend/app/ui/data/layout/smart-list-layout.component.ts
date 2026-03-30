@@ -42,6 +42,8 @@ export interface ICrudService<T extends object> extends ITableDataService<T>, IN
     getItemEditRoute(id: string | number): unknown[];
     getFormGroup(context?: Crud_Form_Context): FormGroup;
     getFormConfig?(context?: Crud_Form_Context): Record<string, FieldConfig>;
+    mapFormToModel?(value: any): any;
+    mapModelToForm?(item: T): any;
 }
 
 /**
@@ -130,7 +132,6 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
 
         if (selectedCount <= 1 && 'getSidebarItemRoute' in this.dataService) {
             const sidebarRoute = (this.dataService as unknown as ITableDataRowClickNavigationData<T>).getSidebarItemRoute(event.row);
-            console.log(sidebarRoute, baseRoute);
             this.router.navigate([baseRoute, { outlets: { sidebar: sidebarRoute } }]);
         } else {
             this.router.navigate([baseRoute, { outlets: { sidebar: null } }]);
