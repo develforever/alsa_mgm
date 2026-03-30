@@ -8,7 +8,24 @@
         @for (entry of item() | keyvalue: keepOrder; track entry.key) {
             @if(entry.key !== 'isDeleted' && !entry.key.startsWith('_')) {
                 <mat-card-subtitle [attr.data-testid]="'view-field-' + entry.key"> 
-                    <strong>{{ entry.key | titlecase }}:</strong> {{ formatValue(entry.key, entry.value) }}
+                    @if (entry.key === 'assemblyLine' && entry.value && entry.value.Name) {
+                        <strong>Assembly Line:</strong> 
+                        <a [routerLink]="['/assembly/lines', { outlets: { sidebar: ['selected', entry.value.ALAssLineID] } }]" 
+                           class="text-blue-600 hover:text-blue-800 underline">
+                            {{ entry.value.Name }}
+                        </a>
+                        @if (entry.value.product && entry.value.product.Name) {
+                            <span class="text-muted"> ({{ entry.value.product.Name }})</span>
+                        }
+                    } @else if (entry.key === 'workstation' && entry.value && entry.value.Name) {
+                        <strong>Workstation:</strong> 
+                        <a [routerLink]="['/assembly/workstations', { outlets: { sidebar: ['selected', entry.value.ALWStationID] } }]" 
+                           class="text-blue-600 hover:text-blue-800 underline">
+                            {{ entry.value.ShortName || '' }} - {{ entry.value.Name }}
+                        </a>
+                    } @else {
+                        <strong>{{ entry.key | titlecase }}:</strong> {{ formatValue(entry.key, entry.value) }}
+                    }
                 </mat-card-subtitle>
             }
         }

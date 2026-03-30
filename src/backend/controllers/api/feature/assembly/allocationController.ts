@@ -1,47 +1,91 @@
 import { AppDataSource } from "../../../../config/data-source";
 import { ALAssLineWStationAllocation } from "../../../../entity/ALAssLineWStationAllocation";
-import { ApiResponse, ApiResponseInfo, ApiResponseList } from "../../../../../shared/api/ApiResponse";
+import { ApiError, ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
+import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Request, Path } from "tsoa";
+import { ApiRequest } from "@shared/api/ApiRequest";
+import { GetAllocationSchema, GetAllocationsSchema, PatchAllocationsSchema, PostAllocationsSchema } from "@shared/api/allocation/schema";
+import { AllocationMapper } from "./allocation/mapper";
+import { FindOptionsWhere, Like, FindManyOptions } from "typeorm";
 
 const allocationRepo = AppDataSource.getRepository(ALAssLineWStationAllocation);
-
-import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Path } from "tsoa";
 
 @Route("api/allocations")
 @Tags("Allocations")
 export class AllocationController extends Controller {
 
     @Get("")
-    public async getAllocations(
+    public async getAll(
         @Query() page = 0,
-        @Query() size = 10
-    ): Promise<ApiResponseList<ALAssLineWStationAllocation>> {
+        @Query() size = 10,
+        @Query() filter?: string
+    ): Promise<ApiResponse<GetAllocationsSchema>> {
 
-        const lines = await allocationRepo.find({
-            relations: { assemblyLine: true, workstation: true },
-            skip: page * size,
+        const where: FindOptionsWhere<ALAssLineWStationAllocation> = {};
+
+        const options: FindManyOptions<ALAssLineWStationAllocation> = {
+            skip: (page > 0 ? page - 1 : 0) * size,
             take: size,
+            order: {
+                ALAssLineWStationAllocationID: "DESC"
+            },
+            relations: { assemblyLine: { product: true }, workstation: true },
+            where,
+        }
+
+        const items = await allocationRepo.find(options);
+        const total = await allocationRepo.count(options);
+        const output = AllocationMapper.toGetAllocationsSchema({
+            items,
+            total,
+            page,
+            size,
         });
-        const total = await allocationRepo.count();
-        return {
-            data: lines,
-            meta: {
-                page,
-                limit: size,
-                total,
-            }
-        };
+
+        return output;
+    }
+
+    @Get("{id}")
+    public async getOne(
+        @Path() id: number
+    ): Promise<ApiResponseSingle<GetAllocationSchema> | ApiError> {
+        const item = await allocationRepo.findOne({ 
+            where: { ALAssLineWStationAllocationID: id },
+            relations: { assemblyLine: { product: true }, workstation: true }
+        });
+        if (!item) {
+            return {
+                message: "Allocation not found",
+                code: 404
+            };
+        }
+        return AllocationMapper.toGetAllocationSchema(item);
     }
 
     @Post("")
-    public async createAllocation(
-        @Body() body: { ALAssLineID: number, ALWStationID: number }
+    public async create(
+        @Body() body: PostAllocationsSchema,
+        @Request() req: ApiRequest
     ): Promise<ApiResponse<ALAssLineWStationAllocation>> {
+
         const { ALAssLineID, ALWStationID } = body;
-        const repo = AppDataSource.getRepository(ALAssLineWStationAllocation);
+        const user = req.user;
+
+        if (!ALAssLineID) {
+            return {
+                message: "ALAssLineID is required",
+                code: 400
+            };
+        }
+
+        if (!ALWStationID) {
+            return {
+                message: "ALWStationID is required",
+                code: 400
+            };
+        }
 
         try {
-
-            const maxSortResult = await repo
+            const maxSortResult = await allocationRepo
                 .createQueryBuilder("alloc")
                 .select("MAX(alloc.Sort)", "max")
                 .where("alloc.ALAssLineID = :lineId", { lineId: ALAssLineID })
@@ -49,16 +93,16 @@ export class AllocationController extends Controller {
 
             const nextSort = (maxSortResult.max || 0) + 1;
 
-            const newAlloc = repo.create({
+            const newAlloc = allocationRepo.create({
                 ALAssLineID,
                 ALWStationID,
                 Sort: nextSort
             });
 
-            await repo.save(newAlloc);
-            return {
-                data: newAlloc,
-            };
+            await allocationRepo.save(newAlloc, {
+                data: { userEmail: user?.userEmail }
+            });
+            return { data: newAlloc };
         } catch (error: any) {
             return {
                 message: "Błąd alokacji",
@@ -71,21 +115,23 @@ export class AllocationController extends Controller {
     @Patch("{id}")
     public async update(
         @Path() id: number,
-        @Body() body: { ALAssLineID: number, ALWStationID: number, Sort: number }
+        @Body() body: PatchAllocationsSchema,
     ): Promise<ApiResponse<ALAssLineWStationAllocation>> {
 
         await allocationRepo.update(id, body);
+
         const updatedAlloc = await allocationRepo.findOneBy({ ALAssLineWStationAllocationID: id });
+
         if (!updatedAlloc) {
             return {
                 message: "Allocation not found",
                 code: 404
             };
         }
-        return {
-            data: updatedAlloc,
-        };
 
+        return {
+            data: updatedAlloc
+        };
     }
 
     @Delete("{id}")
@@ -97,7 +143,7 @@ export class AllocationController extends Controller {
 
         return {
             message: "Allocation deleted"
-        }
+        };
     }
 
     @Delete("")
@@ -109,6 +155,7 @@ export class AllocationController extends Controller {
 
         return {
             message: "Allocations deleted"
-        }
+        };
     }
+
 }

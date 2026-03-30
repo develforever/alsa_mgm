@@ -1,61 +1,23 @@
-<div class="allocation-grid">
-  <section class="card mb-4">
-    <div class="card-body">
-      <h5>9. Allocate Workstation</h5>
-      <div class="row g-2">
-        <div class="col-md-5">
-          <select class="form-select" [(ngModel)]="selectedLineId">
-            <option [ngValue]="null">Select Line...</option>
-            @for (l of lines(); track l.ALAssLineID) {
-              <option [value]="l.ALAssLineID">{{l.Name}} (ID: {{l.ProductID}})</option>
-            }
-          </select>
-        </div>
-        <div class="col-md-5">
-          <select class="form-select" [(ngModel)]="selectedStationId">
-            <option [ngValue]="null">Select Workstation...</option>
-            @for (s of stations(); track s.ALWStationID) {
-              <option [value]="s.ALWStationID">{{s.ShortName}} - {{s.Name}}</option>
-            }
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-success w-100" (click)="save()" [disabled]="!selectedLineId || !selectedStationId">Allocate</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <input type="text" #searchInput class="form-control w-25" placeholder="Search..." (input)="filterText.set(searchInput.value)">
-      <button class="btn btn-danger" [disabled]="selectedIds.size === 0" (click)="deleteMultiple()">
-        10. Remove Selected ({{selectedIds.size}})
-      </button>
-    </div>
-    <div class="card-body p-0">
-      <table class="table table-hover mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>[{{selectedIds.size}}]</th>
-            <th>Product</th>
-            <th>Assembly Line</th>
-            <th>Sort</th>
-            <th>Station</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (a of filteredData(); track a.ALAssLineWStationAllocationID) {
-            <tr>
-              <td><input type="checkbox" (change)="toggleSelect(a.ALAssLineWStationAllocationID)"></td>
-              <td>{{ a.assemblyLine?.product?.Name }}</td>
-              <td>{{ a.assemblyLine?.Name }}</td>
-              <td><span class="badge bg-secondary">{{ a.Sort }}</span></td>
-              <td><strong>{{ a.workstation?.ShortName }}</strong> - {{ a.workstation?.Name }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </section>
-</div>
+<app-ui-data-layout-smart-list [dataService]="dataTableService">
+    <ng-template appTableCellDef="ALAssLineID" let-row>
+        {{ row.assemblyLine?.Name || 'N/A' }}
+        @if (row.assemblyLine?.product) {
+            <small class="text-muted d-block">{{ row.assemblyLine.product.Name }}</small>
+        }
+    </ng-template>
+    <ng-template appTableCellDef="ALWStationID" let-row>
+        <strong>{{ row.workstation?.ShortName || 'N/A' }}</strong> - {{ row.workstation?.Name || 'N/A' }}
+    </ng-template>
+    <ng-template appTableCellDef="Sort" let-row>
+        <span class="badge bg-secondary">{{ row.Sort }}</span>
+    </ng-template>
+    <ng-template appTableCellDef="assemblyLine" let-row>
+        {{ row.assemblyLine?.Name || 'N/A' }}
+        @if (row.assemblyLine?.product) {
+            <small class="text-muted d-block">{{ row.assemblyLine.product.Name }}</small>
+        }
+    </ng-template>
+    <ng-template appTableCellDef="workstation" let-row>
+        <strong>{{ row.workstation?.ShortName || 'N/A' }}</strong> - {{ row.workstation?.Name || 'N/A' }}
+    </ng-template>
+</app-ui-data-layout-smart-list>

@@ -385,6 +385,9 @@
 			},
 			"ALAssLineWStationAllocation": {
 				"properties": {
+					"_executorEmail": {
+						"type": "string"
+					},
 					"ALAssLineWStationAllocationID": {
 						"type": "number",
 						"format": "double"
@@ -1030,6 +1033,314 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"GetAllocationsSchema": {
+				"properties": {
+					"ALAssLineWStationAllocationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Sort": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"assemblyLine": {
+						"properties": {
+							"product": {
+								"properties": {
+									"Active": {
+										"type": "number",
+										"format": "double"
+									},
+									"Name": {
+										"type": "string"
+									},
+									"ProductID": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"Active",
+									"Name",
+									"ProductID"
+								],
+								"type": "object"
+							},
+							"Status": {
+								"type": "number",
+								"format": "double"
+							},
+							"ProductID": {
+								"type": "number",
+								"format": "double"
+							},
+							"Name": {
+								"type": "string"
+							},
+							"ALAssLineID": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"Status",
+							"ProductID",
+							"Name",
+							"ALAssLineID"
+						],
+						"type": "object"
+					},
+					"workstation": {
+						"properties": {
+							"AutoStart": {
+								"type": "number",
+								"format": "double"
+							},
+							"PCName": {
+								"type": "string"
+							},
+							"ShortName": {
+								"type": "string"
+							},
+							"Name": {
+								"type": "string"
+							},
+							"ALWStationID": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"AutoStart",
+							"ShortName",
+							"Name",
+							"ALWStationID"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ALAssLineWStationAllocationID",
+					"ALAssLineID",
+					"ALWStationID",
+					"Sort",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetAllocationsSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetAllocationsSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetAllocationsSchema_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GetAllocationsSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_GetAllocationsSchema_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_GetAllocationsSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_GetAllocationsSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"GetAllocationSchema": {
+				"properties": {
+					"ALAssLineWStationAllocationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Sort": {
+						"type": "number",
+						"format": "double"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"assemblyLine": {
+						"properties": {
+							"product": {
+								"properties": {
+									"Active": {
+										"type": "number",
+										"format": "double"
+									},
+									"Name": {
+										"type": "string"
+									},
+									"ProductID": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"Active",
+									"Name",
+									"ProductID"
+								],
+								"type": "object"
+							},
+							"Status": {
+								"type": "number",
+								"format": "double"
+							},
+							"ProductID": {
+								"type": "number",
+								"format": "double"
+							},
+							"Name": {
+								"type": "string"
+							},
+							"ALAssLineID": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"Status",
+							"ProductID",
+							"Name",
+							"ALAssLineID"
+						],
+						"type": "object"
+					},
+					"workstation": {
+						"properties": {
+							"AutoStart": {
+								"type": "number",
+								"format": "double"
+							},
+							"PCName": {
+								"type": "string"
+							},
+							"ShortName": {
+								"type": "string"
+							},
+							"Name": {
+								"type": "string"
+							},
+							"ALWStationID": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"AutoStart",
+							"ShortName",
+							"Name",
+							"ALWStationID"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ALAssLineWStationAllocationID",
+					"ALAssLineID",
+					"ALWStationID",
+					"Sort",
+					"CreatedAt",
+					"UpdatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_GetAllocationSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetAllocationSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_ALAssLineWStationAllocation_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ALAssLineWStationAllocation"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ApiResponseList_ALAssLineWStationAllocation_": {
 				"properties": {
 					"data": {
@@ -1051,21 +1362,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_ALAssLineWStationAllocation_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/ALAssLineWStationAllocation"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
 			"ApiResponse_ALAssLineWStationAllocation_": {
 				"anyOf": [
 					{
@@ -1081,6 +1377,42 @@
 						"$ref": "#/components/schemas/ApiError"
 					}
 				]
+			},
+			"PostAllocationsSchema": {
+				"properties": {
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"ALAssLineID",
+					"ALWStationID"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PatchAllocationsSchema": {
+				"properties": {
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Sort": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
 			}
 		},
 		"securitySchemes": {}
@@ -1817,14 +2149,14 @@
 		},
 		"/api/allocations": {
 			"get": {
-				"operationId": "GetAllocations",
+				"operationId": "GetAll",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponseList_ALAssLineWStationAllocation_"
+									"$ref": "#/components/schemas/ApiResponse_GetAllocationsSchema_"
 								}
 							}
 						}
@@ -1854,11 +2186,19 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			},
 			"post": {
-				"operationId": "CreateAllocation",
+				"operationId": "Create",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -1881,21 +2221,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"ALWStationID": {
-										"type": "number",
-										"format": "double"
-									},
-									"ALAssLineID": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"ALWStationID",
-									"ALAssLineID"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/PostAllocationsSchema"
 							}
 						}
 					}
@@ -1936,6 +2262,43 @@
 			}
 		},
 		"/api/allocations/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetAllocationSchema_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Allocations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "Update",
 				"responses": {
@@ -1970,26 +2333,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"Sort": {
-										"type": "number",
-										"format": "double"
-									},
-									"ALWStationID": {
-										"type": "number",
-										"format": "double"
-									},
-									"ALAssLineID": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"Sort",
-									"ALWStationID",
-									"ALAssLineID"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/PatchAllocationsSchema"
 							}
 						}
 					}

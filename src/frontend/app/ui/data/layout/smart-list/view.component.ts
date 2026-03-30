@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { SmartListService } from "./smart-list.service";
 import { CommonModule } from "@angular/common";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-view',
@@ -12,6 +13,7 @@ import { CommonModule } from "@angular/common";
         MatCardModule,
         MatButtonModule,
         CommonModule,
+        RouterLink,
     ],
 })
 export class ViewComponent implements OnInit {
@@ -30,6 +32,22 @@ export class ViewComponent implements OnInit {
     formatValue(key: string, value: any): string {
         if (value === null || value === undefined) return '-';
         if (typeof value === 'boolean') return value ? 'Tak' : 'Nie';
+        
+        // Handle nested objects
+        if (typeof value === 'object' && !Array.isArray(value)) {
+            if (key === 'assemblyLine' && value.Name) {
+                let result = value.Name;
+                if (value.product && value.product.Name) {
+                    result += ` (${value.product.Name})`;
+                }
+                return result;
+            }
+            if (key === 'workstation' && value.Name) {
+                return `${value.ShortName || ''} - ${value.Name}`;
+            }
+            return JSON.stringify(value); // Fallback for other objects
+        }
+        
         const isDate = key.toLowerCase().endsWith('at') || key.toLowerCase().includes('date');
         if (isDate && typeof value === 'string' && !isNaN(Date.parse(value))) {
             return new Date(value).toLocaleString();

@@ -10,9 +10,10 @@ import {
 } from "typeorm";
 import { ALAssLine } from "./ALAssLine";
 import { ALWStation } from "./ALWStation";
+import { BaseAuditEntity } from "./BaseAuditEntity";
 
 @Entity("ALAssLineWStationAllocation")
-export class ALAssLineWStationAllocation {
+export class ALAssLineWStationAllocation extends BaseAuditEntity {
     @PrimaryGeneratedColumn({ name: "ALAssLineWStationAllocationID" })
     ALAssLineWStationAllocationID!: number;
 

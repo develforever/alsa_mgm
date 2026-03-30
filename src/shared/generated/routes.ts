@@ -178,6 +178,7 @@ const models: TsoaRoute.Models = {
     "ALAssLineWStationAllocation": {
         "dataType": "refObject",
         "properties": {
+            "_executorEmail": {"dataType":"string"},
             "ALAssLineWStationAllocationID": {"dataType":"double","required":true},
             "ALAssLineID": {"dataType":"double","required":true},
             "ALWStationID": {"dataType":"double","required":true},
@@ -463,10 +464,65 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALAssLineWStationAllocation_": {
+    "GetAllocationsSchema": {
         "dataType": "refObject",
         "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
+            "ALAssLineWStationAllocationID": {"dataType":"double","required":true},
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ALWStationID": {"dataType":"double","required":true},
+            "Sort": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "assemblyLine": {"dataType":"nestedObjectLiteral","nestedProperties":{"product":{"dataType":"nestedObjectLiteral","nestedProperties":{"Active":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true},"ProductID":{"dataType":"double","required":true}}},"Status":{"dataType":"double","required":true},"ProductID":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true},"ALAssLineID":{"dataType":"double","required":true}}},
+            "workstation": {"dataType":"nestedObjectLiteral","nestedProperties":{"AutoStart":{"dataType":"double","required":true},"PCName":{"dataType":"string"},"ShortName":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true},"ALWStationID":{"dataType":"double","required":true}}},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetAllocationsSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetAllocationsSchema"},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_GetAllocationsSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetAllocationsSchema"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_GetAllocationsSchema_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetAllocationsSchema_"},{"ref":"ApiResponseList_GetAllocationsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetAllocationSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ALAssLineWStationAllocationID": {"dataType":"double","required":true},
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ALWStationID": {"dataType":"double","required":true},
+            "Sort": {"dataType":"double","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "assemblyLine": {"dataType":"nestedObjectLiteral","nestedProperties":{"product":{"dataType":"nestedObjectLiteral","nestedProperties":{"Active":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true},"ProductID":{"dataType":"double","required":true}}},"Status":{"dataType":"double","required":true},"ProductID":{"dataType":"double","required":true},"Name":{"dataType":"string","required":true},"ALAssLineID":{"dataType":"double","required":true}}},
+            "workstation": {"dataType":"nestedObjectLiteral","nestedProperties":{"AutoStart":{"dataType":"double","required":true},"PCName":{"dataType":"string"},"ShortName":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true},"ALWStationID":{"dataType":"double","required":true}}},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetAllocationSchema_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"GetAllocationSchema"},
             "error": {"ref":"ApiError"},
             "meta": {"ref":"ApiMeta"},
         },
@@ -483,9 +539,38 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_ALAssLineWStationAllocation_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponse_ALAssLineWStationAllocation_": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALAssLineWStationAllocation_"},{"ref":"ApiResponseList_ALAssLineWStationAllocation_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostAllocationsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ALWStationID": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PatchAllocationsSchema": {
+        "dataType": "refObject",
+        "properties": {
+            "ALAssLineID": {"dataType":"double"},
+            "ALWStationID": {"dataType":"double"},
+            "Sort": {"dataType":"double"},
+        },
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -1148,26 +1233,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAllocationController_getAllocations: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAllocationController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
+                filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/allocations',
             ...(fetchMiddlewares<RequestHandler>(AllocationController)),
-            ...(fetchMiddlewares<RequestHandler>(AllocationController.prototype.getAllocations)),
+            ...(fetchMiddlewares<RequestHandler>(AllocationController.prototype.getAll)),
 
-            async function AllocationController_getAllocations(request: ExRequest, response: ExResponse, next: any) {
+            async function AllocationController_getAll(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAllocationController_getAllocations, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAllocationController_getAll, request, response });
 
                 const controller = new AllocationController();
 
               await templateService.apiHandler({
-                methodName: 'getAllocations',
+                methodName: 'getAll',
                 controller,
                 response,
                 next,
@@ -1179,25 +1265,56 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAllocationController_createAllocation: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"ALWStationID":{"dataType":"double","required":true},"ALAssLineID":{"dataType":"double","required":true}}},
+        const argsAllocationController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
-        app.post('/api/allocations',
+        app.get('/api/allocations/:id',
             ...(fetchMiddlewares<RequestHandler>(AllocationController)),
-            ...(fetchMiddlewares<RequestHandler>(AllocationController.prototype.createAllocation)),
+            ...(fetchMiddlewares<RequestHandler>(AllocationController.prototype.getOne)),
 
-            async function AllocationController_createAllocation(request: ExRequest, response: ExResponse, next: any) {
+            async function AllocationController_getOne(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAllocationController_createAllocation, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAllocationController_getOne, request, response });
 
                 const controller = new AllocationController();
 
               await templateService.apiHandler({
-                methodName: 'createAllocation',
+                methodName: 'getOne',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAllocationController_create: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"ref":"PostAllocationsSchema"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.post('/api/allocations',
+            ...(fetchMiddlewares<RequestHandler>(AllocationController)),
+            ...(fetchMiddlewares<RequestHandler>(AllocationController.prototype.create)),
+
+            async function AllocationController_create(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAllocationController_create, request, response });
+
+                const controller = new AllocationController();
+
+              await templateService.apiHandler({
+                methodName: 'create',
                 controller,
                 response,
                 next,
@@ -1211,7 +1328,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAllocationController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"Sort":{"dataType":"double","required":true},"ALWStationID":{"dataType":"double","required":true},"ALAssLineID":{"dataType":"double","required":true}}},
+                body: {"in":"body","name":"body","required":true,"ref":"PatchAllocationsSchema"},
         };
         app.patch('/api/allocations/:id',
             ...(fetchMiddlewares<RequestHandler>(AllocationController)),
