@@ -9,6 +9,7 @@ import { forkJoin } from 'rxjs';
 import { ensureArray } from '../../../../utils/api.utils';
 import { DataAssemblyLineService } from '../line-list/service/line.service';
 import { DataWorkstationService } from '../workstation-list/service/workstation.service';
+import { GetWorkstationsSchema } from '../../../../../../shared/api/workstation/schema';
 
 @Component({
   selector: 'app-assembly-allocation-view',
@@ -23,7 +24,7 @@ export class AllocationViewComponent implements OnInit {
 
   allocations = signal<Allocation[]>([]);
   lines = signal<GetLinesSchema[]>([]);
-  stations = signal<ALWStation[]>([]);
+  stations = signal<GetWorkstationsSchema[]>([]);
 
   selectedLineId: number | null = null;
   selectedStationId: number | null = null;
@@ -46,7 +47,7 @@ export class AllocationViewComponent implements OnInit {
     forkJoin({
       allocations: this.dataService.getAllocations().pipe(ensureArray<Allocation>()),
       lines: this.dataLineService.getAll().pipe(ensureArray<GetLinesSchema>()),
-      stations: this.dataStationService.getWorkstations().pipe(ensureArray<ALWStation>())
+      stations: this.dataStationService.getAll().pipe(ensureArray<GetWorkstationsSchema>())
     }).subscribe(({ allocations, lines, stations }) => {
       this.allocations.set(allocations);
       this.lines.set(lines);
