@@ -2,6 +2,12 @@
     <button [routerLink]="addRowNavigation()" routerLinkActive="active" matButton data-testid="smart-list-add-button">
         {{ addLabel() }}
     </button>
+    <app-export-button 
+        *ngIf="exportData.length > 0"
+        [data]="exportData" 
+        [columns]="exportColumns" 
+        [filename]="exportFilename">
+    </app-export-button>
 </div>
 
 <app-ui-data-layout-smart-list-layout>

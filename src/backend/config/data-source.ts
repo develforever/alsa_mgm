@@ -5,6 +5,7 @@ import { ALAssLine } from "../entity/ALAssLine"
 import { ALWStation } from "../entity/ALWStation"
 import { ALAssLineWStationAllocation } from "../entity/ALAssLineWStationAllocation"
 import { AuditLog } from "../entity/AuditLog"
+import { User } from "../entity/User"
 import { AuditSubscriber } from "../entities/subscribers/AuditSubscriber"
 import config from "../config/config"
 
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource({
     database: config.DATABASE_NAME,
     synchronize: true,
     logging: true,
-    entities: [Product, ALAssLine, ALWStation, ALAssLineWStationAllocation, AuditLog],
+    entities: [Product, ALAssLine, ALWStation, ALAssLineWStationAllocation, AuditLog, User],
     subscribers: [AuditSubscriber],
     migrations: [],
 })

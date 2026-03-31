@@ -6,6 +6,7 @@ import { ApiRequest } from "@shared/api/ApiRequest";
 import { GetProductSchema, GetProductsSchema, PatchProductsSchema, PostProductsSchema } from "@shared/api/product/schema";
 import { ProductMapper } from "./product/maper";
 import { FindOptionsWhere, Like, FindManyOptions } from "typeorm";
+import { sanitizeLikeFilter } from "../../../../utils/filter.utils";
 
 const productRepo = AppDataSource.getRepository(Product);
 
@@ -22,8 +23,9 @@ export class ProductController extends Controller {
 
         const where: FindOptionsWhere<Product> = {};
 
-        if (filter) {
-            where.Name = Like(`%${filter}%`);
+        const sanitizedFilter = sanitizeLikeFilter(filter);
+        if (sanitizedFilter) {
+            where.Name = Like(`%${sanitizedFilter}%`);
         }
 
         const options: FindManyOptions<Product> = {

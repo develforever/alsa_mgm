@@ -7,38 +7,66 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"AuditLog": {
+			"UserRole": {
+				"enum": [
+					"admin",
+					"operator",
+					"viewer"
+				],
+				"type": "string"
+			},
+			"User": {
 				"properties": {
 					"id": {
 						"type": "number",
 						"format": "double"
 					},
-					"action": {
+					"githubId": {
 						"type": "string"
 					},
-					"entityName": {
+					"username": {
 						"type": "string"
 					},
-					"entityId": {
+					"displayName": {
 						"type": "string"
 					},
-					"details": {},
-					"userEmail": {
+					"email": {
 						"type": "string"
 					},
-					"timestamp": {
+					"avatarUrl": {
+						"type": "string"
+					},
+					"role": {
+						"$ref": "#/components/schemas/UserRole"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"lastLoginAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
 						"type": "string",
 						"format": "date-time"
 					}
 				},
 				"required": [
 					"id",
-					"action",
-					"entityName",
-					"entityId",
-					"details",
-					"userEmail",
-					"timestamp"
+					"githubId",
+					"username",
+					"displayName",
+					"email",
+					"avatarUrl",
+					"role",
+					"isActive",
+					"lastLoginAt",
+					"createdAt",
+					"updatedAt"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -100,6 +128,90 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"ApiResponseList_User_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/User"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_User_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/User"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateUserDTO": {
+				"properties": {
+					"role": {
+						"$ref": "#/components/schemas/UserRole"
+					},
+					"isActive": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AuditLog": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"action": {
+						"type": "string"
+					},
+					"entityName": {
+						"type": "string"
+					},
+					"entityId": {
+						"type": "string"
+					},
+					"details": {},
+					"userEmail": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"action",
+					"entityName",
+					"entityId",
+					"details",
+					"userEmail",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ApiResponseList_AuditLog_": {
 				"properties": {
 					"data": {
@@ -117,6 +229,168 @@
 				},
 				"required": [
 					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"DashboardMetrics": {
+				"properties": {
+					"products": {
+						"properties": {
+							"inactive": {
+								"type": "number",
+								"format": "double"
+							},
+							"active": {
+								"type": "number",
+								"format": "double"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"inactive",
+							"active",
+							"total"
+						],
+						"type": "object"
+					},
+					"assemblyLines": {
+						"properties": {
+							"closed": {
+								"type": "number",
+								"format": "double"
+							},
+							"locked": {
+								"type": "number",
+								"format": "double"
+							},
+							"active": {
+								"type": "number",
+								"format": "double"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"closed",
+							"locked",
+							"active",
+							"total"
+						],
+						"type": "object"
+					},
+					"workstations": {
+						"properties": {
+							"autoStartEnabled": {
+								"type": "number",
+								"format": "double"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"autoStartEnabled",
+							"total"
+						],
+						"type": "object"
+					},
+					"allocations": {
+						"properties": {
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"total"
+						],
+						"type": "object"
+					},
+					"recentActivity": {
+						"properties": {
+							"last30d": {
+								"type": "number",
+								"format": "double"
+							},
+							"last7d": {
+								"type": "number",
+								"format": "double"
+							},
+							"last24h": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"last30d",
+							"last7d",
+							"last24h"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"products",
+					"assemblyLines",
+					"workstations",
+					"allocations",
+					"recentActivity"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AssemblyLineStatusDistribution": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"percentage": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"status",
+					"count",
+					"percentage"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ProductAllocationSummary": {
+				"properties": {
+					"productName": {
+						"type": "string"
+					},
+					"productId": {
+						"type": "number",
+						"format": "double"
+					},
+					"lineCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"workstationCount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"productName",
+					"productId",
+					"lineCount",
+					"workstationCount"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -1534,6 +1808,229 @@
 				"parameters": []
 			}
 		},
+		"/api/users": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseList_User_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "role",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/UserRole"
+						}
+					},
+					{
+						"in": "query",
+						"name": "isActive",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				]
+			}
+		},
+		"/api/users/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_User_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_User_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserDTO"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"message": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"message"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/users/roles/list": {
+			"get": {
+				"operationId": "GetRoles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/audit/logs": {
 			"get": {
 				"operationId": "GetAuditLogs",
@@ -1573,8 +2070,170 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "entityName",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "action",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userEmail",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "dateFrom",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "dateTo",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
+			}
+		},
+		"/api/audit/entities": {
+			"get": {
+				"operationId": "GetEntityNames",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AuditLogs"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/audit/actions": {
+			"get": {
+				"operationId": "GetActions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AuditLogs"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/dashboard/metrics": {
+			"get": {
+				"operationId": "GetMetrics",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DashboardMetrics"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Dashboard"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/dashboard/lines/status-distribution": {
+			"get": {
+				"operationId": "GetLineStatusDistribution",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AssemblyLineStatusDistribution"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Dashboard"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/dashboard/products/allocations": {
+			"get": {
+				"operationId": "GetProductAllocationSummary",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ProductAllocationSummary"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Dashboard"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/api/workstations": {

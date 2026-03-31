@@ -6,6 +6,7 @@ import { ApiRequest } from "@shared/api/ApiRequest";
 import { GetLineSchema, GetLinesSchema, PatchLinesSchema, PostLinesSchema } from "@shared/api/line/schema";
 import { LineMapper } from "./line/maper";
 import { FindOptionsWhere, Like, FindManyOptions } from "typeorm";
+import { sanitizeLikeFilter } from "../../../../utils/filter.utils";
 
 const lineRepo = AppDataSource.getRepository(ALAssLine);
 
@@ -22,8 +23,9 @@ export class LineController extends Controller {
 
         const where: FindOptionsWhere<ALAssLine> = {};
 
-        if (filter) {
-            where.Name = Like(`%${filter}%`);
+        const sanitizedFilter = sanitizeLikeFilter(filter);
+        if (sanitizedFilter) {
+            where.Name = Like(`%${sanitizedFilter}%`);
         }
 
         const options: FindManyOptions<ALAssLine> = {

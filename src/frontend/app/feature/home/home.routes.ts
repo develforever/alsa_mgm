@@ -6,6 +6,7 @@ import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { HomeComponent } from "./components/home/home.component";
 import { MainHomeComponent } from "./components/main.component";
 import { codeRedirectGuard } from "../../guards/redirect.guard";
+import { userManagementRoute } from "../admin/components/user-management/user-management.component";
 
 
 export function getRoute(): Route {
@@ -32,11 +33,11 @@ export function getRoute(): Route {
             },
             {
                 path: "dashboard",
-                canActivate: [authGuard],
-                pathMatch: "full",
-                title: "Dashboard",
                 component: DashboardComponent,
+                canActivate: [authGuard],
+                title: "Dashboard",
             },
+            userManagementRoute,
         ]
     };
 }

@@ -1,0 +1,115 @@
+<div class="user-management-container">
+  <!-- Filters -->
+  <mat-card class="filter-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>filter_list</mat-icon>
+        Filtry użytkowników
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Rola</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (role of availableRoles(); track role) {
+              <mat-option [value]="role">{{ role }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="isActive">
+            <mat-option value="">Wszystkie</mat-option>
+            <mat-option [value]="true">Aktywni</mat-option>
+            <mat-option [value]="false">Nieaktywni</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="filter-actions">
+          <button mat-raised-button color="primary" (click)="applyFilters()">
+            <mat-icon>search</mat-icon>
+            Zastosuj
+          </button>
+          <button mat-button (click)="clearFilters()">
+            <mat-icon>clear</mat-icon>
+            Wyczyść
+          </button>
+        </div>
+      </form>
+
+      @if (activeFilters().length > 0) {
+        <div class="active-filters">
+          <span>Aktywne filtry:</span>
+          <mat-chip-set>
+            @for (filter of activeFilters(); track filter) {
+              <mat-chip (removed)="removeFilter(filter)">
+                {{ filter }}
+                <button matChipRemove><mat-icon>cancel</mat-icon></button>
+              </mat-chip>
+            }
+          </mat-chip-set>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Users Table -->
+  <mat-card class="table-card">
+    <mat-card-content>
+      <app-ui-data-table-component 
+        [fetchFn]="fetchUsers" 
+        [displayedColumns]="displayedColumns" 
+        [pageSize]="10"
+        [refresh$]="refresh$">
+        
+        <!-- Custom cell templates -->
+        <ng-template appTableCellDef="avatarUrl" let-row>
+          <img [src]="row.avatarUrl || 'assets/default-avatar.png'" 
+               alt="Avatar" 
+               class="user-avatar">
+        </ng-template>
+
+        <ng-template appTableCellDef="role" let-row>
+          <mat-chip [color]="getRoleColor(row.role)" selected>
+            {{ row.role }}
+          </mat-chip>
+        </ng-template>
+
+        <ng-template appTableCellDef="isActive" let-row>
+          <mat-slide-toggle 
+            [checked]="row.isActive"
+            (change)="toggleUserActive(row)">
+          </mat-slide-toggle>
+        </ng-template>
+
+        <ng-template appTableCellDef="actions" let-row>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="updateUserRole(row, userRole.Admin)">
+              <mat-icon>admin_panel_settings</mat-icon>
+              <span>Ustaw jako Admin</span>
+            </button>
+            <button mat-menu-item (click)="updateUserRole(row, userRole.Operator)">
+              <mat-icon>build</mat-icon>
+              <span>Ustaw jako Operator</span>
+            </button>
+            <button mat-menu-item (click)="updateUserRole(row, userRole.Viewer)">
+              <mat-icon>visibility</mat-icon>
+              <span>Ustaw jako Viewer</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="deleteUser(row)" class="delete-action">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Usuń użytkownika</span>
+            </button>
+          </mat-menu>
+        </ng-template>
+      </app-ui-data-table-component>
+    </mat-card-content>
+  </mat-card>
+</div>

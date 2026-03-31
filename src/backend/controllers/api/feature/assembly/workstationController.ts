@@ -6,6 +6,7 @@ import { ApiRequest } from "@shared/api/ApiRequest";
 import { GetWorkstationSchema, GetWorkstationsSchema, PatchWorkstationsSchema, PostWorkstationsSchema } from "@shared/api/workstation/schema";
 import { WorkstationMapper } from "./workstation/mapper";
 import { FindOptionsWhere, Like, FindManyOptions } from "typeorm";
+import { sanitizeLikeFilter } from "../../../../utils/filter.utils";
 
 const workstationRepo = AppDataSource.getRepository(ALWStation);
 
@@ -22,8 +23,9 @@ export class WorkstationController extends Controller {
 
         const where: FindOptionsWhere<ALWStation> = {};
 
-        if (filter) {
-            where.Name = Like(`%${filter}%`);
+        const sanitizedFilter = sanitizeLikeFilter(filter);
+        if (sanitizedFilter) {
+            where.Name = Like(`%${sanitizedFilter}%`);
         }
 
         const options: FindManyOptions<ALWStation> = {

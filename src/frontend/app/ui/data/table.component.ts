@@ -1,17 +1,19 @@
 
 
-import { AfterViewInit, ChangeDetectorRef, Component, computed, ContentChildren, EventEmitter, inject, Input, Output, QueryList, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, computed, ContentChildren, EventEmitter, inject, Input, OnDestroy, Output, QueryList, signal, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { catchError, filter, merge, Observable, of, startWith, Subject, switchMap } from 'rxjs';
-import { ApiMeta, ApiResponse, ApiResponseList, ApiResponseSingle } from '../../../../shared/api/ApiResponse';
+import { ApiMeta, ApiResponse, ApiResponseList, ApiResponseSingle, ApiError } from '../../../../shared/api/ApiResponse';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AppTableCellDefDirective } from './AppTableCellDefDirective';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { AppUiDialogYesNoComponent, YesNoDialogData } from '../dialog/yes-no.dialog.component';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 
@@ -35,22 +37,26 @@ export type FlatFetchFn<T> = () => Observable<ApiResponse<T[]> | ApiResponseList
         MatPaginatorModule,
         MatProgressSpinnerModule,
         MatCheckboxModule,
+        MatSnackBarModule,
+        MatIconModule,
         DatePipe,
         MatButtonModule
     ],
     styleUrls: ['./table.component.scss'],
 })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class AppUiDataTableComponent<T extends Record<string, any>> implements AfterViewInit {
+export class AppUiDataTableComponent<T extends Record<string, any>> implements AfterViewInit, OnDestroy {
 
     @Output() editAction = new EventEmitter<T>();
     @Output() deleteAction = new EventEmitter<T>();
     @Output() rowClick = new EventEmitter<{ row: T, selected: boolean }>();
+    @Output() errorOccurred = new EventEmitter<ApiError>();
+    @Output() dataLoadFailed = new EventEmitter<{ message: string; code?: number }>();
 
     @Input() refresh$ = new Subject<void>();
     @Input() pageSize = 10;
     @Input() displayedColumns: string[] = [];
-
+    @Input() showErrorNotification = true;
 
     private router = inject(Router);
     private route = inject(ActivatedRoute);
@@ -69,13 +75,18 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     @Input() externalCellDefs?: QueryList<AppTableCellDefDirective>;
     @Input({ required: true }) fetchFn!: PaginatedFetchFn<T> | FlatFetchFn<T>;
     readonly dialog = inject(MatDialog);
+    private snackBar = inject(MatSnackBar);
 
     selection = new SelectionModel<T>(true, []);
     private cdr = inject(ChangeDetectorRef);
     dataSource = new MatTableDataSource<T>([]);
     isLoading = true;
+    hasError = false;
+    errorMessage = '';
     totalElements = 0;
     selectedRowId: string | number | null = null;
+
+    private destroy$ = new Subject<void>();
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -131,7 +142,26 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
 
                 return stream$.pipe(
                     catchError((err): Observable<ApiResponseList<T>> => {
-                        console.error(err);
+                        const errorMessage = err?.error?.message || err?.message || 'Wystąpił błąd podczas ładowania danych';
+                        const errorCode = err?.status || err?.error?.code || 500;
+                        
+                        // Emit error event for parent components
+                        this.dataLoadFailed.emit({ message: errorMessage, code: errorCode });
+                        
+                        // Show snackbar notification
+                        if (this.showErrorNotification) {
+                            this.snackBar.open(`Błąd: ${errorMessage}`, 'Zamknij', {
+                                duration: 5000,
+                                panelClass: ['error-snackbar'],
+                                horizontalPosition: 'center',
+                                verticalPosition: 'bottom'
+                            });
+                        }
+                        
+                        // Set error state
+                        this.hasError = true;
+                        this.errorMessage = errorMessage;
+                        
                         return of({ data: [], meta: { page: 0, limit: 0, total: 0 } } as ApiResponseList<T>);
                     })
                 );
@@ -140,10 +170,26 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
         ).subscribe((data: ApiResponse<T> | ApiResponse<T[]>) => {
 
             if ('message' in data && !('data' in data)) {
-                console.error('Błąd API:', data.message);
+                const apiError = data as unknown as ApiError;
+                this.errorOccurred.emit(apiError);
+                this.hasError = true;
+                this.errorMessage = apiError.message;
+                
+                if (this.showErrorNotification) {
+                    this.snackBar.open(`Błąd API: ${apiError.message}`, 'Zamknij', {
+                        duration: 5000,
+                        panelClass: ['error-snackbar']
+                    });
+                }
+                
                 this.isLoading = false;
+                this.cdr.detectChanges();
                 return;
             }
+            
+            // Clear error state on successful load
+            this.hasError = false;
+            this.errorMessage = '';
 
             const response = data as ApiResponseList<T> | ApiResponseSingle<T> | ApiResponseSingle<T[]>;
             this.meta = 'meta' in response ? response.meta : undefined;
@@ -252,5 +298,10 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
                 resolve([row, result]);
             });
         });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

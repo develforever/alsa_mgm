@@ -62,4 +62,9 @@ export interface User {
   userAvatar: string;
   accessToken: string;
   role: string;
+  // Extended fields from DB
+  avatarUrl?: string;
+  isActive?: boolean;
+  lastLoginAt?: string;
+  createdAt?: string;
 }

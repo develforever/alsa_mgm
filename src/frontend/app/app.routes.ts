@@ -17,6 +17,13 @@ const menuItems = [
     link: '/audit-logs',
     icon: 'receipt',
     requiresAuth: true
+  },
+  {
+    label: 'Zarządzanie użytkownikami',
+    link: '/users',
+    icon: 'people',
+    requiresAuth: true,
+    requiresAdmin: true
   }
 ];
 

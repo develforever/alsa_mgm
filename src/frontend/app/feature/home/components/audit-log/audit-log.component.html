@@ -1,7 +1,104 @@
 <div class="audit-container">
+  <!-- Filter Card -->
+  <mat-card class="filter-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>filter_list</mat-icon>
+        Filtry logów audytu
+      </mat-card-title>
+    </mat-card-header>
 
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filter-form">
+        <div class="filter-row">
+          <!-- Entity Name Filter -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Encja</mat-label>
+            <mat-select formControlName="entityName">
+              <mat-option value="">Wszystkie</mat-option>
+              @for (entity of entityNames(); track entity) {
+                <mat-option [value]="entity">{{ entity }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
-  <app-ui-data-table-component [fetchFn]="fetchLogs" [displayedColumns]="displayedColumns" [pageSize]="10">
-  </app-ui-data-table-component>
+          <!-- Action Filter -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Akcja</mat-label>
+            <mat-select formControlName="action">
+              <mat-option value="">Wszystkie</mat-option>
+              @for (action of actions(); track action) {
+                <mat-option [value]="action">{{ action }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
+          <!-- User Email Filter -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Użytkownik (email)</mat-label>
+            <input matInput formControlName="userEmail" placeholder="np. user@example.com">
+          </mat-form-field>
+        </div>
+
+        <div class="filter-row">
+          <!-- Date From -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Data od</mat-label>
+            <input matInput [matDatepicker]="pickerFrom" formControlName="dateFrom">
+            <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFrom></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Date To -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Data do</mat-label>
+            <input matInput [matDatepicker]="pickerTo" formControlName="dateTo">
+            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #pickerTo></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Action Buttons -->
+          <div class="filter-actions">
+            <button mat-raised-button color="primary" (click)="applyFilters()">
+              <mat-icon>search</mat-icon>
+              Zastosuj
+            </button>
+            <button mat-button (click)="clearFilters()">
+              <mat-icon>clear</mat-icon>
+              Wyczyść
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Active Filters Chips -->
+      @if (activeFilters().length > 0) {
+        <div class="active-filters">
+          <span class="active-filters-label">Aktywne filtry:</span>
+          <mat-chip-set>
+            @for (filter of activeFilters(); track filter) {
+              <mat-chip (removed)="removeFilter(filter)">
+                {{ filter }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            }
+          </mat-chip-set>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Data Table -->
+  <mat-card class="table-card">
+    <mat-card-content>
+      <app-ui-data-table-component 
+        [fetchFn]="fetchLogs" 
+        [displayedColumns]="displayedColumns" 
+        [pageSize]="10"
+        [refresh$]="refresh$">
+      </app-ui-data-table-component>
+    </mat-card-content>
+  </mat-card>
 </div>

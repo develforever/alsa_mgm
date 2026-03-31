@@ -10,6 +10,7 @@ import { LayoutComponent } from "./smart-list/layout.component";
 import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
 import { MatButtonModule } from "@angular/material/button";
 import { SmartListService } from "./smart-list/smart-list.service";
+import { ExportButtonComponent, ExportableColumn } from "../../export-button/export-button.component";
 
 export interface INotifyChangeService {
 
@@ -67,7 +68,8 @@ export interface ICrudService<T extends object> extends ITableDataService<T>, IN
         LayoutComponent,
         AppUiDataTableComponent,
         RouterLink,
-        MatButtonModule
+        MatButtonModule,
+        ExportButtonComponent
     ],
 })
 export class SmartListLayoutComponent<T extends object> implements OnInit, AfterViewInit {
@@ -77,6 +79,9 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
     @Output() rowClicked = new EventEmitter<{ row: T, selected: boolean }>();
 
     @Input() dataService!: ICrudService<T>;
+    @Input() exportData: T[] = [];
+    @Input() exportColumns: ExportableColumn<T>[] = [];
+    @Input() exportFilename = 'export.csv';
 
     tableRefresh$ = new Subject<void>();
 
