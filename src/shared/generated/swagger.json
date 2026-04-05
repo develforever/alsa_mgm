@@ -176,6 +176,616 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"Product": {
+				"properties": {
+					"_executorEmail": {
+						"type": "string"
+					},
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Active": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"assemblyLines": {
+						"items": {
+							"$ref": "#/components/schemas/ALAssLine"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"ProductID",
+					"Name",
+					"Active",
+					"createdAt",
+					"updatedAt",
+					"assemblyLines"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ALAssLineStatus": {
+				"enum": [
+					1,
+					2,
+					3
+				],
+				"type": "number"
+			},
+			"ALAssLine": {
+				"properties": {
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ProductID": {
+						"type": "number",
+						"format": "double"
+					},
+					"product": {
+						"$ref": "#/components/schemas/Product"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/ALAssLineStatus"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"allocations": {
+						"items": {
+							"$ref": "#/components/schemas/ALAssLineWStationAllocation"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"ALAssLineID",
+					"ProductID",
+					"product",
+					"Name",
+					"Status",
+					"createdAt",
+					"updatedAt",
+					"allocations"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ALAssLineWStationAllocation": {
+				"properties": {
+					"_executorEmail": {
+						"type": "string"
+					},
+					"ALAssLineWStationAllocationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALAssLineID": {
+						"type": "number",
+						"format": "double"
+					},
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Sort": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"assemblyLine": {
+						"$ref": "#/components/schemas/ALAssLine"
+					},
+					"workstation": {
+						"$ref": "#/components/schemas/ALWStation"
+					}
+				},
+				"required": [
+					"ALAssLineWStationAllocationID",
+					"ALAssLineID",
+					"ALWStationID",
+					"Sort",
+					"createdAt",
+					"updatedAt",
+					"assemblyLine",
+					"workstation"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ALWStation": {
+				"properties": {
+					"_executorEmail": {
+						"type": "string"
+					},
+					"ALWStationID": {
+						"type": "number",
+						"format": "double"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"ShortName": {
+						"type": "string"
+					},
+					"PCName": {
+						"type": "string"
+					},
+					"AutoStart": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"allocations": {
+						"items": {
+							"$ref": "#/components/schemas/ALAssLineWStationAllocation"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"ALWStationID",
+					"Name",
+					"ShortName",
+					"PCName",
+					"AutoStart",
+					"createdAt",
+					"updatedAt",
+					"allocations"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ProductionPlanStatus": {
+				"enum": [
+					"draft",
+					"scheduled",
+					"in_progress",
+					"completed",
+					"cancelled"
+				],
+				"type": "string"
+			},
+			"ProductionPriority": {
+				"enum": [
+					1,
+					2,
+					3,
+					4
+				],
+				"type": "number"
+			},
+			"ProductionPlan": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"productId": {
+						"type": "number",
+						"format": "double"
+					},
+					"product": {
+						"$ref": "#/components/schemas/Product"
+					},
+					"assemblyLineId": {
+						"type": "number",
+						"format": "double"
+					},
+					"assemblyLine": {
+						"$ref": "#/components/schemas/ALAssLine"
+					},
+					"workstations": {
+						"items": {
+							"$ref": "#/components/schemas/ALWStation"
+						},
+						"type": "array"
+					},
+					"plannedStartDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"plannedEndDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"plannedQuantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"actualStartDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"actualEndDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"actualQuantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"$ref": "#/components/schemas/ProductionPlanStatus"
+					},
+					"priority": {
+						"$ref": "#/components/schemas/ProductionPriority"
+					},
+					"notes": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdBy": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"creator": {
+						"$ref": "#/components/schemas/User"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"productId",
+					"product",
+					"assemblyLineId",
+					"assemblyLine",
+					"workstations",
+					"plannedStartDate",
+					"plannedEndDate",
+					"plannedQuantity",
+					"actualStartDate",
+					"actualEndDate",
+					"actualQuantity",
+					"status",
+					"priority",
+					"notes",
+					"createdBy",
+					"creator",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseSingle_ProductionPlan-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ProductionPlan"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_ProductionPlan-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/ProductionPlan"
+							},
+							"type": "array"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseInfo": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_ProductionPlan-Array_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_ProductionPlan-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_ProductionPlan-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_ProductionPlan_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/ProductionPlan"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreateProductionPlanRequest": {
+				"properties": {
+					"productId": {
+						"type": "number",
+						"format": "double"
+					},
+					"assemblyLineId": {
+						"type": "number",
+						"format": "double"
+					},
+					"workstationIds": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"plannedStartDate": {
+						"type": "string"
+					},
+					"plannedEndDate": {
+						"type": "string"
+					},
+					"plannedQuantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"priority": {
+						"$ref": "#/components/schemas/ProductionPriority"
+					},
+					"notes": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"productId",
+					"assemblyLineId",
+					"plannedStartDate",
+					"plannedEndDate",
+					"plannedQuantity"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateProductionPlanRequest": {
+				"properties": {
+					"productId": {
+						"type": "number",
+						"format": "double"
+					},
+					"assemblyLineId": {
+						"type": "number",
+						"format": "double"
+					},
+					"workstationIds": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"plannedStartDate": {
+						"type": "string"
+					},
+					"plannedEndDate": {
+						"type": "string"
+					},
+					"plannedQuantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"$ref": "#/components/schemas/ProductionPlanStatus"
+					},
+					"priority": {
+						"$ref": "#/components/schemas/ProductionPriority"
+					},
+					"notes": {
+						"type": "string"
+					},
+					"actualStartDate": {
+						"type": "string"
+					},
+					"actualEndDate": {
+						"type": "string"
+					},
+					"actualQuantity": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Record_string.number_": {
+				"properties": {},
+				"additionalProperties": {
+					"type": "number",
+					"format": "double"
+				},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
+			"ApiResponseSingle__total-number--byStatus-Record_string.number_--upcoming-number__": {
+				"properties": {
+					"data": {
+						"properties": {
+							"upcoming": {
+								"type": "number",
+								"format": "double"
+							},
+							"byStatus": {
+								"$ref": "#/components/schemas/Record_string.number_"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"upcoming",
+							"byStatus",
+							"total"
+						],
+						"type": "object"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList__total-number--byStatus-Record_string.number_--upcoming-number__": {
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"upcoming": {
+									"type": "number",
+									"format": "double"
+								},
+								"byStatus": {
+									"$ref": "#/components/schemas/Record_string.number_"
+								},
+								"total": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"upcoming",
+								"byStatus",
+								"total"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse__total-number--byStatus-Record_string.number_--upcoming-number__": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle__total-number--byStatus-Record_string.number_--upcoming-number__"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList__total-number--byStatus-Record_string.number_--upcoming-number__"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
 			"AuditLog": {
 				"properties": {
 					"id": {
@@ -470,18 +1080,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseInfo": {
-				"properties": {
-					"message": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
 			"ApiResponse_GetWorkstationsSchema_": {
 				"anyOf": [
 					{
@@ -549,218 +1147,6 @@
 						"$ref": "#/components/schemas/ApiMeta"
 					}
 				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ALAssLine": {
-				"properties": {
-					"ALAssLineID": {
-						"type": "number",
-						"format": "double"
-					},
-					"ProductID": {
-						"type": "number",
-						"format": "double"
-					},
-					"product": {
-						"$ref": "#/components/schemas/Product"
-					},
-					"Name": {
-						"type": "string"
-					},
-					"Status": {
-						"$ref": "#/components/schemas/ALAssLineStatus"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"deletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"allocations": {
-						"items": {
-							"$ref": "#/components/schemas/ALAssLineWStationAllocation"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"ALAssLineID",
-					"ProductID",
-					"product",
-					"Name",
-					"Status",
-					"createdAt",
-					"updatedAt",
-					"allocations"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"Product": {
-				"properties": {
-					"_executorEmail": {
-						"type": "string"
-					},
-					"ProductID": {
-						"type": "number",
-						"format": "double"
-					},
-					"Name": {
-						"type": "string"
-					},
-					"Active": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"deletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"assemblyLines": {
-						"items": {
-							"$ref": "#/components/schemas/ALAssLine"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"ProductID",
-					"Name",
-					"Active",
-					"createdAt",
-					"updatedAt",
-					"assemblyLines"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ALAssLineStatus": {
-				"enum": [
-					1,
-					2,
-					3
-				],
-				"type": "number"
-			},
-			"ALAssLineWStationAllocation": {
-				"properties": {
-					"_executorEmail": {
-						"type": "string"
-					},
-					"ALAssLineWStationAllocationID": {
-						"type": "number",
-						"format": "double"
-					},
-					"ALAssLineID": {
-						"type": "number",
-						"format": "double"
-					},
-					"ALWStationID": {
-						"type": "number",
-						"format": "double"
-					},
-					"Sort": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"deletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"assemblyLine": {
-						"$ref": "#/components/schemas/ALAssLine"
-					},
-					"workstation": {
-						"$ref": "#/components/schemas/ALWStation"
-					}
-				},
-				"required": [
-					"ALAssLineWStationAllocationID",
-					"ALAssLineID",
-					"ALWStationID",
-					"Sort",
-					"createdAt",
-					"updatedAt",
-					"assemblyLine",
-					"workstation"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ALWStation": {
-				"properties": {
-					"_executorEmail": {
-						"type": "string"
-					},
-					"ALWStationID": {
-						"type": "number",
-						"format": "double"
-					},
-					"Name": {
-						"type": "string"
-					},
-					"ShortName": {
-						"type": "string"
-					},
-					"PCName": {
-						"type": "string"
-					},
-					"AutoStart": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"deletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"allocations": {
-						"items": {
-							"$ref": "#/components/schemas/ALAssLineWStationAllocation"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"ALWStationID",
-					"Name",
-					"ShortName",
-					"PCName",
-					"AutoStart",
-					"createdAt",
-					"updatedAt",
-					"allocations"
-				],
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -2026,6 +2412,448 @@
 				},
 				"tags": [
 					"Users"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/production-plans": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ProductionPlan-Array_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all production plans with pagination and filtering",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "productId",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "assemblyLineId",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/ProductionPlanStatus"
+						}
+					},
+					{
+						"in": "query",
+						"name": "startDateFrom",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "startDateTo",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_ProductionPlan_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict - overlapping plan exists",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new production plan",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateProductionPlanRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/production-plans/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_ProductionPlan_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single production plan by ID",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_ProductionPlan_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict - overlapping plan exists",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update a production plan",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateProductionPlanRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"204": {
+						"description": "No Content",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete a production plan",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/production-plans/calendar/range": {
+			"get": {
+				"operationId": "GetByDateRange",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiResponse_ProductionPlan-Array_"
+										},
+										{
+											"$ref": "#/components/schemas/ApiError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get production plans within a date range (for calendar view)",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/production-plans/upcoming/list": {
+			"get": {
+				"operationId": "GetUpcoming",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ProductionPlan-Array_"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get upcoming production plans",
+				"tags": [
+					"Production Plans"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/production-plans/stats/overview": {
+			"get": {
+				"operationId": "GetStats",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse__total-number--byStatus-Record_string.number_--upcoming-number__"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get production plan statistics",
+				"tags": [
+					"Production Plans"
 				],
 				"security": [],
 				"parameters": []

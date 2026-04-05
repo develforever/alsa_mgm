@@ -1,0 +1,145 @@
+<mat-card class="production-plan-list">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>calendar_month</mat-icon>
+      Plany produkcji
+    </mat-card-title>
+    <button mat-raised-button color="primary" [routerLink]="['/production-plans/new']">
+      <mat-icon>add</mat-icon>
+      Nowy plan
+    </button>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Filters -->
+    <div class="filters-section">
+      <form [formGroup]="filterForm" class="filters-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Produkt</mat-label>
+          <mat-select formControlName="productId">
+            <mat-option value="">Wszystkie</mat-option>
+            <!-- Product options will be populated dynamically -->
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Linia montażowa</mat-label>
+          <mat-select formControlName="assemblyLineId">
+            <mat-option value="">Wszystkie</mat-option>
+            <!-- Assembly line options will be populated dynamically -->
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="">Wszystkie</mat-option>
+            <mat-option [value]="planStatus.Draft">Szkic</mat-option>
+            <mat-option [value]="planStatus.Scheduled">Zaplanowane</mat-option>
+            <mat-option [value]="planStatus.InProgress">W trakcie</mat-option>
+            <mat-option [value]="planStatus.Completed">Zakończone</mat-option>
+            <mat-option [value]="planStatus.Cancelled">Anulowane</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data od</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDateFrom">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data do</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="startDateTo">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="filter-actions">
+          <button mat-stroked-button (click)="applyFilters()">
+            <mat-icon>search</mat-icon>
+            Szukaj
+          </button>
+          <button mat-stroked-button (click)="clearFilters()">
+            <mat-icon>clear</mat-icon>
+            Wyczyść
+          </button>
+        </div>
+      </form>
+
+      <!-- Active filters chips -->
+      <div class="active-filters" *ngIf="activeFilters().length > 0">
+        <mat-chip-listbox>
+          <mat-chip *ngFor="let filter of activeFilters()" (removed)="removeFilter(filter)">
+            {{ filter }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+        </mat-chip-listbox>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <app-ui-data-table-component
+      [fetchFn]="fetchPlans"
+      [displayedColumns]="displayedColumns"
+      [refresh$]="refresh$"
+      [pageSize]="10">
+      
+      <!-- Product Column -->
+      <ng-template appTableCellDef="product" let-row>
+        <span *ngIf="row.product">{{ row.product.Name }}</span>
+        <span *ngIf="!row.product">-</span>
+      </ng-template>
+
+      <!-- Assembly Line Column -->
+      <ng-template appTableCellDef="assemblyLine" let-row>
+        <span *ngIf="row.assemblyLine">{{ row.assemblyLine.Name }}</span>
+        <span *ngIf="!row.assemblyLine">-</span>
+      </ng-template>
+
+      <!-- Planned Start Date Column -->
+      <ng-template appTableCellDef="plannedStartDate" let-row>
+        {{ row.plannedStartDate | date:'dd.MM.yyyy HH:mm' }}
+      </ng-template>
+
+      <!-- Planned End Date Column -->
+      <ng-template appTableCellDef="plannedEndDate" let-row>
+        {{ row.plannedEndDate | date:'dd.MM.yyyy HH:mm' }}
+      </ng-template>
+
+      <!-- Status Column -->
+      <ng-template appTableCellDef="status" let-row>
+        <mat-chip [color]="getStatusColor(row.status)" selected>
+          {{ row.status | productionPlanStatus }}
+        </mat-chip>
+      </ng-template>
+
+      <!-- Priority Column -->
+      <ng-template appTableCellDef="priority" let-row>
+        <mat-chip [color]="getPriorityColor(row.priority)" selected>
+          {{ row.priority | productionPriority }}
+        </mat-chip>
+      </ng-template>
+
+      <!-- Actions Column -->
+      <ng-template appTableCellDef="actions" let-row>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/production-plans', row.id]">
+            <mat-icon>edit</mat-icon>
+            <span>Edytuj</span>
+          </button>
+          <button mat-menu-item (click)="deletePlan(row)">
+            <mat-icon>delete</mat-icon>
+            <span>Usuń</span>
+          </button>
+        </mat-menu>
+      </ng-template>
+    </app-ui-data-table-component>
+  </mat-card-content>
+</mat-card>

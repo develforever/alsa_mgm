@@ -25,7 +25,9 @@ import { FormsModule } from '@angular/forms';
         <mat-form-field class="full-width" appearance="outline">
           <mat-label>Konfiguracja (JSON)</mat-label>
           <textarea matInput rows="10" [(ngModel)]="jsonConfig" (ngModelChange)="onConfigChange()"></textarea>
-          <mat-error *ngIf="error()">Nieprawidłowy format JSON</mat-error>
+          @if (error()) {
+            <mat-error>Nieprawidłowy format JSON</mat-error>
+          }
         </mat-form-field>
       </div>
     </mat-dialog-content>

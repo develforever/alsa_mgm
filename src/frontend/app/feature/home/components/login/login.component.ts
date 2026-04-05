@@ -14,11 +14,12 @@ import { Router } from '@angular/router';
         <button (click)="onLogin()" style="padding: 10px 20px; cursor: pointer; width: 200px;">
           Zaloguj z GitHub
         </button>
-        
-        <button *ngIf="devMode" (click)="onDevLogin()" 
-                style="padding: 10px 20px; cursor: pointer; width: 200px; background-color: #ffd700; border: 1px solid #ccac00;">
-          [DEV] Logowanie Mock
-        </button>
+        @if (devMode) {
+          <button (click)="onDevLogin()" 
+                  style="padding: 10px 20px; cursor: pointer; width: 200px; background-color: #ffd700; border: 1px solid #ccac00;">
+            [DEV] Logowanie Mock
+          </button>
+        }
       </div>
     </div>
   `

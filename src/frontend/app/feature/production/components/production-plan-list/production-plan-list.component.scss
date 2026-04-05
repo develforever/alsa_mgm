@@ -1,0 +1,43 @@
+.production-plan-list {
+  margin: 1rem;
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+  }
+
+  .filters-section {
+    margin-bottom: 1.5rem;
+
+    .filters-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+
+      mat-form-field {
+        min-width: 200px;
+        flex: 1;
+      }
+
+      .filter-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .active-filters {
+      margin-top: 1rem;
+    }
+  }
+}

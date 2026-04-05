@@ -68,3 +68,40 @@ export interface User {
   lastLoginAt?: string;
   createdAt?: string;
 }
+
+export enum ProductionPlanStatus {
+  Draft = 'draft',
+  Scheduled = 'scheduled',
+  InProgress = 'in_progress',
+  Completed = 'completed',
+  Cancelled = 'cancelled'
+}
+
+export enum ProductionPriority {
+  Low = 1,
+  Normal = 2,
+  High = 3,
+  Critical = 4
+}
+
+export interface ProductionPlan {
+  id: number;
+  productId: number;
+  product?: Product;
+  assemblyLineId: number;
+  assemblyLine?: ALAssLine;
+  workstations?: ALWStation[];
+  plannedStartDate: string;
+  plannedEndDate: string;
+  plannedQuantity: number;
+  actualStartDate?: string | null;
+  actualEndDate?: string | null;
+  actualQuantity: number;
+  status: ProductionPlanStatus;
+  priority: ProductionPriority;
+  notes?: string | null;
+  createdBy: number;
+  creator?: User;
+  createdAt: string;
+  updatedAt: string;
+}

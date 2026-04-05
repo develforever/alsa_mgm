@@ -16,7 +16,8 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
     MatChipsModule
   ],
   template: `
-    <div class="line-status-widget" *ngIf="statusData.length > 0">
+  @if(statusData.length > 0){
+    <div class="line-status-widget">
       <h3 class="widget-title">
         <mat-icon>donut_large</mat-icon>
         Status linii montażowych
@@ -59,11 +60,13 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
         </div>
       </div>
     </div>
-
-    <div class="empty-state" *ngIf="statusData.length === 0">
+  }
+  @else {
+    <div class="empty-state">
       <mat-icon>info</mat-icon>
       <p>Brak danych o liniach montażowych</p>
     </div>
+  }
   `,
   styles: [`
     .line-status-widget {

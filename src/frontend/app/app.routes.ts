@@ -3,12 +3,14 @@ import { Routes } from "@angular/router";
 import { getRoute as homeRoute } from "./feature/home/home.routes";
 import { getRoute as assemblyLineRoute } from "./feature/assembly/assembly.routes";
 import { getRoute as dashboardRoute } from "./feature/dashboard/dashboard.routes";
+import { getRoute as productionRoute } from "./feature/production/production.routes";
 
 const home = homeRoute();
 
 const children = [
   dashboardRoute(),
-  assemblyLineRoute()
+  assemblyLineRoute(),
+  productionRoute(),
 ];
 
 const menuItems = [

@@ -16,7 +16,8 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
     MatProgressBarModule
   ],
   template: `
-    <div class="stats-widget" *ngIf="metrics">
+  @if(metrics){
+    <div class="stats-widget">
       <div class="stats-grid">
         <!-- Products Stats -->
         <div class="stat-item">
@@ -82,8 +83,9 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
         </div>
       </div>
 
+      @if(metrics.recentActivity) {
       <!-- Recent Activity -->
-      <div class="activity-section" *ngIf="metrics.recentActivity">
+      <div class="activity-section">
         <h4>Ostatnia aktywność (audit)</h4>
         <div class="activity-stats">
           <div class="activity-item">
@@ -100,7 +102,9 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
           </div>
         </div>
       </div>
+      }
     </div>
+  }
   `,
   styles: [`
     .stats-widget {
@@ -197,9 +201,9 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
 export class StatsWidgetComponent implements OnInit, IDashboardWidget {
   private metricsService = inject(DashboardMetricsService);
   private cdr = inject(ChangeDetectorRef);
-  
+
   metrics: DashboardMetrics | null = null;
-  
+
   @Input() widgetConfig: Record<string, unknown> = {};
 
   static metadata: WidgetMetadata = {

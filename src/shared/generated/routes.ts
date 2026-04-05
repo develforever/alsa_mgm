@@ -8,6 +8,8 @@ import { AuthController } from './../../backend/controllers/api/authController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../../backend/controllers/api/feature/users/userController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ProductionPlanController } from './../../backend/controllers/api/feature/production/productionPlanController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuditLogController } from './../../backend/controllers/api/feature/home/auditLogController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DashboardController } from './../../backend/controllers/api/feature/dashboard/dashboardController';
@@ -98,6 +100,219 @@ const models: TsoaRoute.Models = {
             "isActive": {"dataType":"boolean"},
         },
         "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Product": {
+        "dataType": "refObject",
+        "properties": {
+            "_executorEmail": {"dataType":"string"},
+            "ProductID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Active": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "deletedAt": {"dataType":"datetime"},
+            "assemblyLines": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ALAssLineStatus": {
+        "dataType": "refEnum",
+        "enums": [1,2,3],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ALAssLine": {
+        "dataType": "refObject",
+        "properties": {
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ProductID": {"dataType":"double","required":true},
+            "product": {"ref":"Product","required":true},
+            "Name": {"dataType":"string","required":true},
+            "Status": {"ref":"ALAssLineStatus","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "deletedAt": {"dataType":"datetime"},
+            "allocations": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ALAssLineWStationAllocation": {
+        "dataType": "refObject",
+        "properties": {
+            "_executorEmail": {"dataType":"string"},
+            "ALAssLineWStationAllocationID": {"dataType":"double","required":true},
+            "ALAssLineID": {"dataType":"double","required":true},
+            "ALWStationID": {"dataType":"double","required":true},
+            "Sort": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "deletedAt": {"dataType":"datetime"},
+            "assemblyLine": {"ref":"ALAssLine","required":true},
+            "workstation": {"ref":"ALWStation","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ALWStation": {
+        "dataType": "refObject",
+        "properties": {
+            "_executorEmail": {"dataType":"string"},
+            "ALWStationID": {"dataType":"double","required":true},
+            "Name": {"dataType":"string","required":true},
+            "ShortName": {"dataType":"string","required":true},
+            "PCName": {"dataType":"string","required":true},
+            "AutoStart": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "deletedAt": {"dataType":"datetime"},
+            "allocations": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProductionPlanStatus": {
+        "dataType": "refEnum",
+        "enums": ["draft","scheduled","in_progress","completed","cancelled"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProductionPriority": {
+        "dataType": "refEnum",
+        "enums": [1,2,3,4],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProductionPlan": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "productId": {"dataType":"double","required":true},
+            "product": {"ref":"Product","required":true},
+            "assemblyLineId": {"dataType":"double","required":true},
+            "assemblyLine": {"ref":"ALAssLine","required":true},
+            "workstations": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
+            "plannedStartDate": {"dataType":"datetime","required":true},
+            "plannedEndDate": {"dataType":"datetime","required":true},
+            "plannedQuantity": {"dataType":"double","required":true},
+            "actualStartDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
+            "actualEndDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
+            "actualQuantity": {"dataType":"double","required":true},
+            "status": {"ref":"ProductionPlanStatus","required":true},
+            "priority": {"ref":"ProductionPriority","required":true},
+            "notes": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "createdBy": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},
+            "creator": {"ref":"User","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_ProductionPlan-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ProductionPlan"}},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_ProductionPlan-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"ProductionPlan"}},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseInfo": {
+        "dataType": "refObject",
+        "properties": {
+            "message": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_ProductionPlan-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ProductionPlan-Array_"},{"ref":"ApiResponseList_ProductionPlan-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_ProductionPlan_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"ref":"ProductionPlan"},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateProductionPlanRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "productId": {"dataType":"double","required":true},
+            "assemblyLineId": {"dataType":"double","required":true},
+            "workstationIds": {"dataType":"array","array":{"dataType":"double"}},
+            "plannedStartDate": {"dataType":"string","required":true},
+            "plannedEndDate": {"dataType":"string","required":true},
+            "plannedQuantity": {"dataType":"double","required":true},
+            "priority": {"ref":"ProductionPriority"},
+            "notes": {"dataType":"string"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateProductionPlanRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "productId": {"dataType":"double"},
+            "assemblyLineId": {"dataType":"double"},
+            "workstationIds": {"dataType":"array","array":{"dataType":"double"}},
+            "plannedStartDate": {"dataType":"string"},
+            "plannedEndDate": {"dataType":"string"},
+            "plannedQuantity": {"dataType":"double"},
+            "status": {"ref":"ProductionPlanStatus"},
+            "priority": {"ref":"ProductionPriority"},
+            "notes": {"dataType":"string"},
+            "actualStartDate": {"dataType":"string"},
+            "actualEndDate": {"dataType":"string"},
+            "actualQuantity": {"dataType":"double"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Record_string.number_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"double"},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle__total-number--byStatus-Record_string.number_--upcoming-number__": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"upcoming":{"dataType":"double","required":true},"byStatus":{"ref":"Record_string.number_","required":true},"total":{"dataType":"double","required":true}}},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList__total-number--byStatus-Record_string.number_--upcoming-number__": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"upcoming":{"dataType":"double","required":true},"byStatus":{"ref":"Record_string.number_","required":true},"total":{"dataType":"double","required":true}}},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse__total-number--byStatus-Record_string.number_--upcoming-number__": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle__total-number--byStatus-Record_string.number_--upcoming-number__"},{"ref":"ApiResponseList__total-number--byStatus-Record_string.number_--upcoming-number__"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AuditLog": {
@@ -191,14 +406,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseInfo": {
-        "dataType": "refObject",
-        "properties": {
-            "message": {"dataType":"string","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponse_GetWorkstationsSchema_": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetWorkstationsSchema_"},{"ref":"ApiResponseList_GetWorkstationsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
@@ -224,76 +431,6 @@ const models: TsoaRoute.Models = {
             "data": {"ref":"GetWorkstationSchema"},
             "error": {"ref":"ApiError"},
             "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ALAssLine": {
-        "dataType": "refObject",
-        "properties": {
-            "ALAssLineID": {"dataType":"double","required":true},
-            "ProductID": {"dataType":"double","required":true},
-            "product": {"ref":"Product","required":true},
-            "Name": {"dataType":"string","required":true},
-            "Status": {"ref":"ALAssLineStatus","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "deletedAt": {"dataType":"datetime"},
-            "allocations": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Product": {
-        "dataType": "refObject",
-        "properties": {
-            "_executorEmail": {"dataType":"string"},
-            "ProductID": {"dataType":"double","required":true},
-            "Name": {"dataType":"string","required":true},
-            "Active": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "deletedAt": {"dataType":"datetime"},
-            "assemblyLines": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ALAssLineStatus": {
-        "dataType": "refEnum",
-        "enums": [1,2,3],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ALAssLineWStationAllocation": {
-        "dataType": "refObject",
-        "properties": {
-            "_executorEmail": {"dataType":"string"},
-            "ALAssLineWStationAllocationID": {"dataType":"double","required":true},
-            "ALAssLineID": {"dataType":"double","required":true},
-            "ALWStationID": {"dataType":"double","required":true},
-            "Sort": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "deletedAt": {"dataType":"datetime"},
-            "assemblyLine": {"ref":"ALAssLine","required":true},
-            "workstation": {"ref":"ALWStation","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ALWStation": {
-        "dataType": "refObject",
-        "properties": {
-            "_executorEmail": {"dataType":"string"},
-            "ALWStationID": {"dataType":"double","required":true},
-            "Name": {"dataType":"string","required":true},
-            "ShortName": {"dataType":"string","required":true},
-            "PCName": {"dataType":"string","required":true},
-            "AutoStart": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "deletedAt": {"dataType":"datetime"},
-            "allocations": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLineWStationAllocation"},"required":true},
         },
         "additionalProperties": true,
     },
@@ -979,6 +1116,253 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
+                page: {"default":0,"in":"query","name":"page","dataType":"double"},
+                size: {"default":10,"in":"query","name":"size","dataType":"double"},
+                productId: {"in":"query","name":"productId","dataType":"double"},
+                assemblyLineId: {"in":"query","name":"assemblyLineId","dataType":"double"},
+                status: {"in":"query","name":"status","ref":"ProductionPlanStatus"},
+                startDateFrom: {"in":"query","name":"startDateFrom","dataType":"string"},
+                startDateTo: {"in":"query","name":"startDateTo","dataType":"string"},
+        };
+        app.get('/api/production-plans',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.getAll)),
+
+            async function ProductionPlanController_getAll(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_getAll, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'getAll',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
+        };
+        app.get('/api/production-plans/:id',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.getOne)),
+
+            async function ProductionPlanController_getOne(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_getOne, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'getOne',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_create: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"body","name":"request","required":true,"ref":"CreateProductionPlanRequest"},
+        };
+        app.post('/api/production-plans',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.create)),
+
+            async function ProductionPlanController_create(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_create, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'create',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_update: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
+                request: {"in":"body","name":"request","required":true,"ref":"UpdateProductionPlanRequest"},
+        };
+        app.put('/api/production-plans/:id',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.update)),
+
+            async function ProductionPlanController_update(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_update, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'update',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
+        };
+        app.delete('/api/production-plans/:id',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.delete)),
+
+            async function ProductionPlanController_delete(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_delete, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'delete',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 204,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_getByDateRange: Record<string, TsoaRoute.ParameterSchema> = {
+                startDate: {"in":"query","name":"startDate","required":true,"dataType":"string"},
+                endDate: {"in":"query","name":"endDate","required":true,"dataType":"string"},
+        };
+        app.get('/api/production-plans/calendar/range',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.getByDateRange)),
+
+            async function ProductionPlanController_getByDateRange(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_getByDateRange, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'getByDateRange',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_getUpcoming: Record<string, TsoaRoute.ParameterSchema> = {
+                limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
+        };
+        app.get('/api/production-plans/upcoming/list',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.getUpcoming)),
+
+            async function ProductionPlanController_getUpcoming(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_getUpcoming, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'getUpcoming',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsProductionPlanController_getStats: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/api/production-plans/stats/overview',
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController)),
+            ...(fetchMiddlewares<RequestHandler>(ProductionPlanController.prototype.getStats)),
+
+            async function ProductionPlanController_getStats(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductionPlanController_getStats, request, response });
+
+                const controller = new ProductionPlanController();
+
+              await templateService.apiHandler({
+                methodName: 'getStats',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);
