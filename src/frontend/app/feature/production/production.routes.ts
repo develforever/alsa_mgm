@@ -1,13 +1,11 @@
 import { Route } from "@angular/router";
 import { authGuard } from "../../guards/auth.guard";
+import { ProductionPlanListComponent } from "./components/production-plan-list/production-plan-list.component";
+import { ProductionPlanFormComponent } from "./components/production-plan-form/production-plan-form.component";
 
 export const getRoute = (): Route => {
   return {
-    path: "production",
-    loadComponent: () =>
-      import("./components/production-plan-list/production-plan-list.component").then(
-        (m) => m.ProductionPlanListComponent
-      ),
+    path: "production-plans",
     canActivate: [authGuard],
     title: "Plany produkcji",
     data: {
@@ -15,32 +13,23 @@ export const getRoute = (): Route => {
       manuItem: {
         label: "Plany produkcji",
         icon: "calendar_month",
-        link: "/production",
+        link: "/production-plans",
         menuItems: [],
       },
     },
     children: [
       {
         path: "",
-        loadComponent: () =>
-          import("./components/production-plan-list/production-plan-list.component").then(
-            (m) => m.ProductionPlanListComponent
-          ),
+        component: ProductionPlanListComponent,
       },
       {
-        path: "plans/new",
-        loadComponent: () =>
-          import("./components/production-plan-form/production-plan-form.component").then(
-            (m) => m.ProductionPlanFormComponent
-          ),
+        path: "new",
+        component: ProductionPlanFormComponent,
         title: "Nowy plan produkcji",
       },
       {
-        path: "plans/:id",
-        loadComponent: () =>
-          import("./components/production-plan-form/production-plan-form.component").then(
-            (m) => m.ProductionPlanFormComponent
-          ),
+        path: ":id",
+        component: ProductionPlanFormComponent,
         title: "Edycja planu produkcji",
       },
     ],

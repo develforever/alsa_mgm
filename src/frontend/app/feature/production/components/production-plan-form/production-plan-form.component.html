@@ -13,22 +13,34 @@
           <mat-label>Produkt</mat-label>
           <mat-select formControlName="productId" required>
             <mat-option value="">Wybierz produkt</mat-option>
-            <!-- Product options will be populated dynamically -->
+            @for (product of products; track product.ProductID) {
+              <mat-option [value]="product.ProductID">
+                {{ product.Name }}
+              </mat-option>
+            }
           </mat-select>
-          <mat-error *ngIf="planForm.get('productId')?.hasError('required')">
-            Produkt jest wymagany
-          </mat-error>
+          @if (planForm.get('productId')?.hasError('required')) {
+            <mat-error>
+              Produkt jest wymagany
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Linia montażowa</mat-label>
           <mat-select formControlName="assemblyLineId" required>
             <mat-option value="">Wybierz linię</mat-option>
-            <!-- Assembly line options will be populated dynamically -->
+            @for (line of assemblyLines; track line.ALAssLineID) {
+              <mat-option [value]="line.ALAssLineID">
+                {{ line.Name }}
+              </mat-option>
+            }
           </mat-select>
-          <mat-error *ngIf="planForm.get('assemblyLineId')?.hasError('required')">
-            Linia montażowa jest wymagana
-          </mat-error>
+          @if (planForm.get('assemblyLineId')?.hasError('required')) {
+            <mat-error>
+              Linia montażowa jest wymagana
+            </mat-error>
+          }
         </mat-form-field>
       </div>
 
@@ -38,9 +50,11 @@
           <input matInput [matDatepicker]="startPicker" formControlName="plannedStartDate" required>
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
           <mat-datepicker #startPicker></mat-datepicker>
-          <mat-error *ngIf="planForm.get('plannedStartDate')?.hasError('required')">
-            Data rozpoczęcia jest wymagana
-          </mat-error>
+          @if (planForm.get('plannedStartDate')?.hasError('required')) {
+            <mat-error>
+              Data rozpoczęcia jest wymagana
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -48,9 +62,11 @@
           <input matInput [matDatepicker]="endPicker" formControlName="plannedEndDate" required>
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
           <mat-datepicker #endPicker></mat-datepicker>
-          <mat-error *ngIf="planForm.get('plannedEndDate')?.hasError('required')">
-            Data zakończenia jest wymagana
-          </mat-error>
+          @if (planForm.get('plannedEndDate')?.hasError('required')) {
+            <mat-error>
+              Data zakończenia jest wymagana
+            </mat-error>
+          }
         </mat-form-field>
       </div>
 
@@ -58,37 +74,43 @@
         <mat-form-field appearance="outline">
           <mat-label>Ilość planowana</mat-label>
           <input matInput type="number" formControlName="plannedQuantity" required min="1">
-          <mat-error *ngIf="planForm.get('plannedQuantity')?.hasError('required')">
-            Ilość jest wymagana
-          </mat-error>
-          <mat-error *ngIf="planForm.get('plannedQuantity')?.hasError('min')">
-            Ilość musi być większa od 0
-          </mat-error>
+          @if (planForm.get('plannedQuantity')?.hasError('required')) {
+            <mat-error>
+              Ilość jest wymagana
+            </mat-error>
+          }
+          @if (planForm.get('plannedQuantity')?.hasError('min')) {
+            <mat-error>
+              Ilość musi być większa od 0
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Priorytet</mat-label>
           <mat-select formControlName="priority" required>
-            <mat-option [value]="priorities[0]">Niski</mat-option>
-            <mat-option [value]="priorities[1]">Normalny</mat-option>
-            <mat-option [value]="priorities[2]">Wysoki</mat-option>
-            <mat-option [value]="priorities[3]">Krytyczny</mat-option>
+            <mat-option [value]="1">Niski</mat-option>
+            <mat-option [value]="2">Normalny</mat-option>
+            <mat-option [value]="3">Wysoki</mat-option>
+            <mat-option [value]="4">Krytyczny</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
-      <div class="form-row" *ngIf="isEdit">
-        <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status">
-            <mat-option [value]="'draft'">Szkic</mat-option>
-            <mat-option [value]="'scheduled'">Zaplanowane</mat-option>
-            <mat-option [value]="'in_progress'">W trakcie</mat-option>
-            <mat-option [value]="'completed'">Zakończone</mat-option>
-            <mat-option [value]="'cancelled'">Anulowane</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      @if (isEdit) {
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option [value]="'draft'">Szkic</mat-option>
+              <mat-option [value]="'scheduled'">Zaplanowane</mat-option>
+              <mat-option [value]="'in_progress'">W trakcie</mat-option>
+              <mat-option [value]="'completed'">Zakończone</mat-option>
+              <mat-option [value]="'cancelled'">Anulowane</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      }
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="full-width">

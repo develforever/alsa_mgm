@@ -16,7 +16,6 @@ import { Subject } from 'rxjs';
 import { AppUiDataTableComponent, TableFetchOptions } from '../../../../ui/data/table.component';
 import { DataUserService, UserRole, UpdateUserRequest } from '../../../../services/data/user.service';
 import { User } from '../../../../../../shared/models/types';
-import { authGuard } from '../../../../guards/auth.guard';
 
 @Component({
   selector: 'app-user-management',
@@ -151,14 +150,3 @@ export class UserManagementComponent implements OnInit {
     }
   }
 }
-
-// Route export
-export const userManagementRoute = {
-  path: 'users',
-  loadComponent: () => import('./user-management.component').then(m => m.UserManagementComponent),
-  canActivate: [authGuard],
-  title: 'Zarządzanie użytkownikami',
-  data: {
-    requiresAdmin: true
-  }
-};

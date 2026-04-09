@@ -5,7 +5,7 @@ import { AuditLogComponent } from "./components/audit-log/audit-log.component";
 import { HomeComponent } from "./components/home/home.component";
 import { MainHomeComponent } from "./components/main.component";
 import { codeRedirectGuard } from "../../guards/redirect.guard";
-import { userManagementRoute } from "../admin/components/user-management/user-management.component";
+import { getRoute as userManagementRoute } from "../admin/components/user-management/user-management.routes";
 
 
 export function getRoute(): Route {
@@ -30,7 +30,7 @@ export function getRoute(): Route {
                 canActivate: [authGuard],
                 title: "Logi audytu",
             },
-            userManagementRoute,
+            userManagementRoute(),
         ]
     };
 }

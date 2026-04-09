@@ -22,6 +22,10 @@ export class ProductionPlanRepository {
         size: number,
         filter?: ProductionPlanFilter
     ): Promise<[ProductionPlan[], number]> {
+        // Validate pagination parameters
+        if (page < 0) page = 0;
+        if (size <= 0) size = 10;
+
         const where: FindOptionsWhere<ProductionPlan> = {};
 
         if (filter) {

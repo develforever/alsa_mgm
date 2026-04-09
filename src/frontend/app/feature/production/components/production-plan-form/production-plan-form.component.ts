@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,7 +12,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductionPlanService } from '../../../../services/data/production-plan.service';
+import { DataProductService } from '../../../assembly/components/product-list/service/product.service';
+import { DataAssemblyLineService } from '../../../assembly/components/line-list/service/line.service';
 import { ProductionPlan, ProductionPlanStatus, ProductionPriority, ALWStation } from '../../../../../../shared/models/types';
 import { ApiResponseSingle } from '../../../../../../shared/api/ApiResponse';
 
@@ -42,11 +45,20 @@ export class ProductionPlanFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private productService = inject(DataProductService);
+  private lineService = inject(DataAssemblyLineService);
+  private destroyRef = inject(DestroyRef);
 
   planForm!: FormGroup;
   isEdit = false;
   planId?: number;
   loading = false;
+
+  // Data for dropdowns
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  products: any[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  assemblyLines: any[] = [];
 
   // Enums for template
   statuses = Object.values(ProductionPlanStatus);
@@ -54,13 +66,45 @@ export class ProductionPlanFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    
+    this.loadProducts();
+    this.loadAssemblyLines();
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit = true;
       this.planId = parseInt(id, 10);
       this.loadPlan(this.planId);
     }
+  }
+
+  private loadProducts(): void {
+    this.loading = true;
+    this.productService.getAll().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      next: (response: any) => {
+        this.products = response.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        this.snackBar.open('Błąd podczas ładowania produktów', 'Zamknij', { duration: 3000 });
+        this.loading = false;
+      },
+    });
+  }
+
+  private loadAssemblyLines(): void {
+    this.loading = true;
+    this.lineService.getAll().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      next: (response: any) => {
+        this.assemblyLines = response.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        this.snackBar.open('Błąd podczas ładowania linii montażowych', 'Zamknij', { duration: 3000 });
+        this.loading = false;
+      },
+    });
   }
 
   private initForm(): void {
@@ -79,7 +123,7 @@ export class ProductionPlanFormComponent implements OnInit {
 
   private loadPlan(id: number): void {
     this.loading = true;
-    this.service.getProductionPlan(id).subscribe({
+    this.service.getProductionPlan(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response: ApiResponseSingle<ProductionPlan>) => {
         if (response.data) {
           const plan = response.data;
@@ -118,7 +162,7 @@ export class ProductionPlanFormComponent implements OnInit {
     };
 
     if (this.isEdit && this.planId) {
-      this.service.updateProductionPlan(this.planId, request).subscribe({
+      this.service.updateProductionPlan(this.planId, request).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.snackBar.open('Plan zaktualizowany pomyślnie', 'Zamknij', { duration: 3000 });
           this.router.navigate(['/production-plans']);
@@ -128,7 +172,7 @@ export class ProductionPlanFormComponent implements OnInit {
         },
       });
     } else {
-      this.service.createProductionPlan(request).subscribe({
+      this.service.createProductionPlan(request).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.snackBar.open('Plan utworzony pomyślnie', 'Zamknij', { duration: 3000 });
           this.router.navigate(['/production-plans']);

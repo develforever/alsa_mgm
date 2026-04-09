@@ -1,7 +1,6 @@
 import { Route } from '@angular/router';
 import { authGuard } from '../../guards/auth.guard';
 
-
 export const getRoute = (): Route => {
   return {
     path: 'dashboard',

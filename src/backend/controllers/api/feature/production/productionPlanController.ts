@@ -11,9 +11,12 @@ import {
     Tags,
     Response,
     SuccessResponse,
+    Request,
 } from "tsoa";
 import { productionPlanRepo, ProductionPlanFilter } from "../../../../repositories/ProductionPlanRepository";
 import { ProductionPlan, ProductionPlanStatus, ProductionPriority } from "../../../../entity/ProductionPlan";
+import { AuditLog } from "../../../../entity/AuditLog";
+import { AppDataSource } from "../../../../config/data-source";
 import { ApiResponse, ApiResponseSingle, ApiError } from "../../../../../shared/api/ApiResponse";
 
 interface CreateProductionPlanRequest {
@@ -42,18 +45,27 @@ interface UpdateProductionPlanRequest {
     actualQuantity?: number;
 }
 
-interface ProductionPlanListResponse {
-    data: ProductionPlan[];
-    meta: {
-        page: number;
-        limit: number;
-        total: number;
-    };
-}
+const auditRepo = AppDataSource.getRepository(AuditLog);
 
 @Route("api/production-plans")
 @Tags("Production Plans")
 export class ProductionPlanController extends Controller {
+    private async logAudit(
+        action: string,
+        entityName: string,
+        entityId: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        details: any,
+        userEmail?: string
+    ): Promise<void> {
+        const auditLog = new AuditLog();
+        auditLog.action = action;
+        auditLog.entityName = entityName;
+        auditLog.entityId = entityId;
+        auditLog.details = details;
+        auditLog.userEmail = userEmail || 'unknown';
+        await auditRepo.save(auditLog);
+    }
     /**
      * Get all production plans with pagination and filtering
      */
@@ -74,8 +86,22 @@ export class ProductionPlanController extends Controller {
         if (productId) filter.productId = productId;
         if (assemblyLineId) filter.assemblyLineId = assemblyLineId;
         if (status) filter.status = status;
-        if (startDateFrom) filter.startDateFrom = new Date(startDateFrom);
-        if (startDateTo) filter.startDateTo = new Date(startDateTo);
+        if (startDateFrom) {
+            const date = new Date(startDateFrom);
+            if (isNaN(date.getTime())) {
+                this.setStatus(400);
+                return { message: "Invalid startDateFrom format", code: 400 };
+            }
+            filter.startDateFrom = date;
+        }
+        if (startDateTo) {
+            const date = new Date(startDateTo);
+            if (isNaN(date.getTime())) {
+                this.setStatus(400);
+                return { message: "Invalid startDateTo format", code: 400 };
+            }
+            filter.startDateTo = date;
+        }
 
         const [plans, total] = await productionPlanRepo.findAll(page, size, filter);
 
@@ -114,12 +140,18 @@ export class ProductionPlanController extends Controller {
     @Response<ApiError>(409, "Conflict - overlapping plan exists")
     @SuccessResponse(201, "Created")
     public async create(
+        @Request() req: { user?: { dbUser?: { id: number } } },
         @Body() request: CreateProductionPlanRequest
     ): Promise<ApiResponseSingle<ProductionPlan> | ApiError> {
         // Validate dates
         const startDate = new Date(request.plannedStartDate);
         const endDate = new Date(request.plannedEndDate);
-        
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            this.setStatus(400);
+            return { message: "Invalid date format", code: 400 };
+        }
+
         if (startDate >= endDate) {
             this.setStatus(400);
             return { message: "Planned end date must be after start date", code: 400 };
@@ -151,13 +183,19 @@ export class ProductionPlanController extends Controller {
         plan.notes = request.notes ?? null;
         plan.status = ProductionPlanStatus.Draft;
         plan.actualQuantity = 0;
-        plan.createdBy = 1; // TODO: Get from authenticated user
+        plan.createdBy = req.user?.dbUser?.id || null;
 
         // Workstations will be set via ManyToMany relation after save
 
         const saved = await productionPlanRepo.save(plan);
         
-        // TODO: Add audit logging
+        await this.logAudit(
+            'CREATE',
+            'ProductionPlan',
+            saved.id.toString(),
+            { productId: saved.productId, assemblyLineId: saved.assemblyLineId, status: saved.status },
+            req.user?.dbUser?.id.toString()
+        );
 
         this.setStatus(201);
         return { data: saved };
@@ -173,6 +211,7 @@ export class ProductionPlanController extends Controller {
     @SuccessResponse(200, "OK")
     public async update(
         @Path() id: number,
+        @Request() req: { user?: { dbUser?: { id: number } } },
         @Body() request: UpdateProductionPlanRequest
     ): Promise<ApiResponseSingle<ProductionPlan> | ApiError> {
         const existing = await productionPlanRepo.findById(id);
@@ -193,16 +232,42 @@ export class ProductionPlanController extends Controller {
         const updateData: Partial<ProductionPlan> = {};
 
         if (request.plannedStartDate) {
-            updateData.plannedStartDate = new Date(request.plannedStartDate);
+            const date = new Date(request.plannedStartDate);
+            if (isNaN(date.getTime())) {
+                this.setStatus(400);
+                return { message: "Invalid plannedStartDate format", code: 400 };
+            }
+            updateData.plannedStartDate = date;
         }
         if (request.plannedEndDate) {
-            updateData.plannedEndDate = new Date(request.plannedEndDate);
+            const date = new Date(request.plannedEndDate);
+            if (isNaN(date.getTime())) {
+                this.setStatus(400);
+                return { message: "Invalid plannedEndDate format", code: 400 };
+            }
+            updateData.plannedEndDate = date;
+        }
+        if (request.actualStartDate) {
+            const date = new Date(request.actualStartDate);
+            if (isNaN(date.getTime())) {
+                this.setStatus(400);
+                return { message: "Invalid actualStartDate format", code: 400 };
+            }
+            updateData.actualStartDate = date;
+        }
+        if (request.actualEndDate) {
+            const date = new Date(request.actualEndDate);
+            if (isNaN(date.getTime())) {
+                this.setStatus(400);
+                return { message: "Invalid actualEndDate format", code: 400 };
+            }
+            updateData.actualEndDate = date;
         }
 
         // Validate dates if both are set or one is being updated
         const newStartDate = updateData.plannedStartDate ?? existing.plannedStartDate;
         const newEndDate = updateData.plannedEndDate ?? existing.plannedEndDate;
-        
+
         if (newStartDate >= newEndDate) {
             this.setStatus(400);
             return { message: "Planned end date must be after start date", code: 400 };
@@ -242,7 +307,13 @@ export class ProductionPlanController extends Controller {
         
         const updated = await productionPlanRepo.findById(id);
         
-        // TODO: Add audit logging
+        await this.logAudit(
+            'UPDATE',
+            'ProductionPlan',
+            id.toString(),
+            updateData,
+            req.user?.dbUser?.id.toString()
+        );
 
         return { data: updated! };
     }
@@ -253,7 +324,10 @@ export class ProductionPlanController extends Controller {
     @Delete("{id}")
     @Response<ApiError>(404, "Not Found")
     @SuccessResponse(204, "No Content")
-    public async delete(@Path() id: number): Promise<void | ApiError> {
+    public async delete(
+        @Path() id: number,
+        @Request() req: { user?: { dbUser?: { id: number } } }
+    ): Promise<void | ApiError> {
         const existing = await productionPlanRepo.findById(id);
         
         if (!existing) {
@@ -262,14 +336,21 @@ export class ProductionPlanController extends Controller {
         }
 
         // Only allow deletion of draft or scheduled plans
-        if (existing.status === ProductionPlanStatus.InProgress) {
+        if (existing.status === ProductionPlanStatus.InProgress || 
+            existing.status === ProductionPlanStatus.Completed) {
             this.setStatus(400);
-            return { message: "Cannot delete in-progress plans. Cancel them first.", code: 400 };
+            return { message: "Cannot delete in-progress or completed plans. Cancel them first.", code: 400 };
         }
 
         await productionPlanRepo.delete(id);
         
-        // TODO: Add audit logging
+        await this.logAudit(
+            'DELETE',
+            'ProductionPlan',
+            id.toString(),
+            { status: existing.status },
+            req.user?.dbUser?.id.toString()
+        );
         
         this.setStatus(204);
     }
