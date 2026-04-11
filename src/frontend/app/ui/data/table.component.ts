@@ -1,6 +1,6 @@
 
 
-import { AfterViewInit, ChangeDetectorRef, Component, computed, ContentChildren, EventEmitter, inject, Input, OnDestroy, Output, QueryList, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, computed, ContentChildren, EventEmitter, inject, Input, OnDestroy, Output, QueryList, signal, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -16,6 +16,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { AppUiDialogYesNoComponent, YesNoDialogData } from '../dialog/yes-no.dialog.component';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import { ContextMenuServiceImpl } from '../context-menu/context-menu.service';
+import { ContextMenuContext } from '../context-menu/models/context.model';
+import { ContextMenuAction } from '../context-menu/models/action.model';
 
 export interface TableFetchOptions {
     page: number;
@@ -51,6 +54,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     @Output() deleteAction = new EventEmitter<T>();
     @Output() rowClick = new EventEmitter<{ row: T, selected: boolean }>();
     @Output() errorOccurred = new EventEmitter<ApiError>();
+    @Output() contextMenu = new EventEmitter<{ context: ContextMenuContext; actions: ContextMenuAction[]; position: { x: number; y: number } }>();
     @Output() dataLoadFailed = new EventEmitter<{ message: string; code?: number }>();
 
     @Input() refresh$ = new Subject<void>();
@@ -76,6 +80,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     @Input({ required: true }) fetchFn!: PaginatedFetchFn<T> | FlatFetchFn<T>;
     readonly dialog = inject(MatDialog);
     private snackBar = inject(MatSnackBar);
+    private contextMenuService = inject(ContextMenuServiceImpl);
 
     selection = new SelectionModel<T>(true, []);
     private cdr = inject(ChangeDetectorRef);
@@ -92,6 +97,8 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
 
     @ContentChildren(AppTableCellDefDirective)
     customCellDefs!: QueryList<AppTableCellDefDirective>;
+
+    elementRef = inject(ElementRef);
 
     private meta: ApiMeta | undefined;
 
@@ -215,6 +222,28 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
 
     rowClickHandler(row: T) {
         this.rowClick.emit({ row, selected: true });
+    }
+
+    onContextMenu(event: MouseEvent, row: T): void {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const context: ContextMenuContext = {
+            element: event.target as HTMLElement,
+            data: row,
+            type: 'table-row'
+        };
+
+        const actions = this.contextMenuService.getActionsForContext(context);
+        
+        console.log('[Table] Context menu triggered:', { context, actions, position: { x: event.clientX, y: event.clientY } });
+        
+        // Emit event for parent components to handle
+        this.contextMenu.emit({
+            context,
+            actions,
+            position: { x: event.clientX, y: event.clientY }
+        });
     }
 
     private initSelection() {

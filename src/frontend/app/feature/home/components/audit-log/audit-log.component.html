@@ -94,11 +94,15 @@
   <mat-card class="table-card">
     <mat-card-content>
       <app-ui-data-table-component 
+        #auditTable
         [fetchFn]="fetchLogs" 
         [displayedColumns]="displayedColumns" 
         [pageSize]="10"
-        [refresh$]="refresh$">
+        [refresh$]="refresh$"
+        (contextMenu)="handleContextMenu($event)">
       </app-ui-data-table-component>
     </mat-card-content>
   </mat-card>
+  
+  <app-simple-context-menu #contextMenu></app-simple-context-menu>
 </div>

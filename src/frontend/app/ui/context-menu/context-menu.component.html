@@ -1,0 +1,45 @@
+<ng-template #menuTemplate>
+    <mat-menu #menu="matMenu" [xPosition]="position.x" [yPosition]="position.y">
+        @for (action of visibleActions; track action.id; let last = $last) {
+            @if (!action.separator) {
+                <button mat-menu-item 
+                        [disabled]="isActionDisabled(action)"
+                        (click)="executeAction(action)">
+                    @if (action.icon) {
+                        <mat-icon>{{ action.icon }}</mat-icon>
+                    }
+                    <span>{{ action.label }}</span>
+                </button>
+            }
+            @if (action.separator && !last) {
+                <mat-divider></mat-divider>
+            }
+        }
+        
+        @if (hiddenActions.length > 0) {
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="toggleMoreMenu()">
+                <mat-icon>more_horiz</mat-icon>
+                <span>Więcej</span>
+            </button>
+        }
+    </mat-menu>
+    
+    <mat-menu #moreMenu="matMenu">
+        @for (action of hiddenActions; track action.id) {
+            @if (!action.separator) {
+                <button mat-menu-item 
+                        [disabled]="isActionDisabled(action)"
+                        (click)="executeAction(action)">
+                    @if (action.icon) {
+                        <mat-icon>{{ action.icon }}</mat-icon>
+                    }
+                    <span>{{ action.label }}</span>
+                </button>
+            }
+            @if (action.separator) {
+                <mat-divider></mat-divider>
+            }
+        }
+    </mat-menu>
+</ng-template>

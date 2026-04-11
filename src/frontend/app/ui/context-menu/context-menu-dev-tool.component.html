@@ -1,0 +1,80 @@
+<div class="dev-tool-container">
+    <div class="header">
+        <h2>ContextMenu Registry - Narzędzie Deweloperskie</h2>
+        <button mat-button (click)="refresh()">
+            <mat-icon>refresh</mat-icon>
+            Odśwież
+        </button>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <mat-icon class="stat-icon">extension</mat-icon>
+            <div class="stat-content">
+                <div class="stat-value">{{ providerCount() }}</div>
+                <div class="stat-label">Zarejestrowanych Providerów</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <mat-icon class="stat-icon">list</mat-icon>
+            <div class="stat-content">
+                <div class="stat-value">{{ totalActionCount() }}</div>
+                <div class="stat-label">Całkowita liczba akcji</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="filter-section">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Filtruj po typie kontekstu</mat-label>
+            <input matInput [(ngModel)]="filterText" placeholder="np. table-row, list-item...">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    
+    <div class="tree-container">
+        <mat-tree [dataSource]="dataSource">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+                <div class="node-content" [class.provider-node]="node.type === 'provider'" [class.action-node]="node.type === 'action'">
+                    @if (node.type === 'provider' && hasChild(0, node)) {
+                        <mat-icon>folder</mat-icon>
+                    }
+                    @if (node.type === 'action') {
+                        <mat-icon>description</mat-icon>
+                    }
+                    <span class="node-name">{{ node.name }}</span>
+                    @if (node.type === 'action') {
+                        <span class="node-type">{{ node.metadata?.action.contextType }}</span>
+                    }
+                </div>
+            </mat-tree-node>
+            
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodeToggle>
+                <div class="node-content provider-node">
+                    <mat-icon>folder_open</mat-icon>
+                    <span class="node-name">{{ node.name }}</span>
+                    <span class="action-count">{{ node.children?.length }} akcji</span>
+                </div>
+                
+                <mat-tree-node *matTreeNodeDef="let child; when: hasChild" matTreeNodeToggle>
+                    <div class="node-content provider-node">
+                        <mat-icon>folder_open</mat-icon>
+                        <span class="node-name">{{ child.name }}</span>
+                        <span class="action-count">{{ child.children?.length }} akcji</span>
+                    </div>
+                </mat-tree-node>
+                
+                <mat-tree-node *matTreeNodeDef="let action; when: isAction">
+                    <div class="node-content action-node">
+                        <mat-icon>description</mat-icon>
+                        <span class="node-name">{{ action.name }}</span>
+                        <span class="node-type">{{ action.metadata?.action.contextType }}</span>
+                        @if (action.metadata?.action.category) {
+                            <span class="node-category">{{ action.metadata?.action.category }}</span>
+                        }
+                    </div>
+                </mat-tree-node>
+            </mat-tree-node>
+        </mat-tree>
+    </div>
+</div>

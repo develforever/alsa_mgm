@@ -4,6 +4,7 @@ import { getRoute as homeRoute } from "./feature/home/home.routes";
 import { getRoute as assemblyLineRoute } from "./feature/assembly/assembly.routes";
 import { getRoute as dashboardRoute } from "./feature/dashboard/dashboard.routes";
 import { getRoute as productionRoute } from "./feature/production/production.routes";
+import { ContextMenuDevToolComponent } from "./ui/context-menu/context-menu-dev-tool.component";
 
 const home = homeRoute();
 
@@ -52,5 +53,10 @@ export const routes: Routes = [
     title: 'Home',
     data: { menuItems },
     children
+  },
+  {
+    path: 'dev/context-menu-registry',
+    component: ContextMenuDevToolComponent,
+    title: 'ContextMenu Registry - Dev Tool'
   }
 ];
