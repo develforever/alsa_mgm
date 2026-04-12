@@ -1,9 +1,24 @@
 <nav style="padding: 10px; background: #eee">
 
+
     <a mat-button class="menu-item" routerLink="/">
         <mat-icon>home</mat-icon>
         Home
     </a>
+    @if(authService.hasRole('admin')){
+    <a mat-button [matMenuTriggerFor]="adminMenu" class="menu-item">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Admin
+        <mat-icon>expand_more</mat-icon>
+    </a>
+    }
+
+    <mat-menu #adminMenu="matMenu">
+        <a mat-menu-item [routerLink]="'dev/context-menu-registry'">
+            <mat-icon>settings</mat-icon>
+            <span>Context Menu Registry</span>
+        </a>
+    </mat-menu>
 
     @for (item of filteredMenu(); track item.label) {
     @if (item.menuItems && item.menuItems.length > 0) {

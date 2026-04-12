@@ -22,6 +22,10 @@ export class AuthService {
     return this.user();
   }
 
+  hasRole(role: string) {
+    return this.user()?.role?.split(',').includes(role) ?? false;
+  }
+
   /**
    * Manualny refresh statusu (jeśli potrzebny), np. po akcjach zewnętrznych.
    * W nowym modelu rxResource zazwyczaj nie jest potrzebny manualny checkAuth.

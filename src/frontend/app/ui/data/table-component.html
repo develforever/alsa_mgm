@@ -64,7 +64,8 @@
 
         <tr mat-header-row *matHeaderRowDef="columnsToShow()"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToShow();" [class.active-row]="isRowActive(row)"
-            [class.selected-row]="selection.isSelected(row)" data-testid="table-row" (click)="rowClickHandler(row)">
+            [class.selected-row]="selection.isSelected(row)" data-testid="table-row" (click)="rowClickHandler(row)"
+            (contextmenu)="onContextMenu($event, row)">
         </tr>
     </table>
 

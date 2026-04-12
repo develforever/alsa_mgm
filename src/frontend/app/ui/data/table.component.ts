@@ -17,8 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppUiDialogYesNoComponent, YesNoDialogData } from '../dialog/yes-no.dialog.component';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { ContextMenuServiceImpl } from '../context-menu/context-menu.service';
+import { ContextMenuTriggerService } from '../context-menu/context-menu-trigger.service';
 import { ContextMenuContext } from '../context-menu/models/context.model';
-import { ContextMenuAction } from '../context-menu/models/action.model';
 
 export interface TableFetchOptions {
     page: number;
@@ -54,13 +54,13 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     @Output() deleteAction = new EventEmitter<T>();
     @Output() rowClick = new EventEmitter<{ row: T, selected: boolean }>();
     @Output() errorOccurred = new EventEmitter<ApiError>();
-    @Output() contextMenu = new EventEmitter<{ context: ContextMenuContext; actions: ContextMenuAction[]; position: { x: number; y: number } }>();
     @Output() dataLoadFailed = new EventEmitter<{ message: string; code?: number }>();
 
     @Input() refresh$ = new Subject<void>();
     @Input() pageSize = 10;
     @Input() displayedColumns: string[] = [];
     @Input() showErrorNotification = true;
+    @Input() contextType = 'table-row';
 
     private router = inject(Router);
     private route = inject(ActivatedRoute);
@@ -81,6 +81,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     readonly dialog = inject(MatDialog);
     private snackBar = inject(MatSnackBar);
     private contextMenuService = inject(ContextMenuServiceImpl);
+    private triggerService = inject(ContextMenuTriggerService);
 
     selection = new SelectionModel<T>(true, []);
     private cdr = inject(ChangeDetectorRef);
@@ -225,25 +226,24 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     }
 
     onContextMenu(event: MouseEvent, row: T): void {
-        event.preventDefault();
-        event.stopPropagation();
-
         const context: ContextMenuContext = {
             element: event.target as HTMLElement,
             data: row,
-            type: 'table-row'
+            type: this.contextType
         };
 
         const actions = this.contextMenuService.getActionsForContext(context);
-        
-        console.log('[Table] Context menu triggered:', { context, actions, position: { x: event.clientX, y: event.clientY } });
-        
-        // Emit event for parent components to handle
-        this.contextMenu.emit({
-            context,
-            actions,
-            position: { x: event.clientX, y: event.clientY }
-        });
+
+        if (actions.length > 0) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.triggerService.trigger({
+                context,
+                actions,
+                position: { x: event.clientX, y: event.clientY }
+            });
+        }
     }
 
     private initSelection() {

@@ -1,18 +1,18 @@
 import { Component, inject, computed } from '@angular/core';
-import { MatTreeModule, MatTreeNode, MatTreeNestedDataSource } from '@angular/material/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContextMenuServiceImpl } from './context-menu.service';
-import { ContextMenuActionMetadata } from './models/action.model';
+import { ContextMenuAction } from './models/action.model';
 
 interface TreeNode {
     name: string;
-    type: 'provider' | 'action';
-    metadata?: ContextMenuActionMetadata;
+    type: 'category' | 'action';
+    action?: ContextMenuAction;
     children?: TreeNode[];
 }
 
@@ -22,11 +22,11 @@ interface TreeNode {
     imports: [
         CommonModule,
         FormsModule,
-        MatTreeModule,
         MatButtonModule,
         MatIconModule,
         MatInputModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatExpansionModule
     ],
     template: `
         <div class="dev-tool-container">
@@ -37,13 +37,13 @@ interface TreeNode {
                     Odśwież
                 </button>
             </div>
-            
+
             <div class="stats">
                 <div class="stat-card">
                     <mat-icon class="stat-icon">extension</mat-icon>
                     <div class="stat-content">
-                        <div class="stat-value">{{ providerCount() }}</div>
-                        <div class="stat-label">Zarejestrowanych Providerów</div>
+                        <div class="stat-value">{{ categoryCount() }}</div>
+                        <div class="stat-label">Kategorii</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -54,57 +54,45 @@ interface TreeNode {
                     </div>
                 </div>
             </div>
-            
+
             <div class="filter-section">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Filtruj po typie kontekstu</mat-label>
-                    <input matInput [(ngModel)]="filterText" placeholder="np. table-row, list-item...">
+                    <input matInput [(ngModel)]="filterText" placeholder="np. table-row, audit-log-row...">
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
-            
+
             <div class="tree-container">
-                <mat-tree [dataSource]="dataSource">
-                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-                        <div class="node-content" [class.provider-node]="node.type === 'provider'" [class.action-node]="node.type === 'action'">
-                            <mat-icon *ngIf="node.type === 'provider' && hasChild(node.type, node)">
-                                folder
-                            </mat-icon>
-                            <mat-icon *ngIf="node.type === 'action'">
-                                description
-                            </mat-icon>
-                            <span class="node-name">{{ node.name }}</span>
-                            <span class="node-type" *ngIf="node.type === 'action'">{{ node.metadata?.action.contextType }}</span>
-                        </div>
-                    </mat-tree-node>
-                    
-                    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodeToggle>
-                        <div class="node-content provider-node">
-                            <mat-icon>folder_open</mat-icon>
-                            <span class="node-name">{{ node.name }}</span>
-                            <span class="action-count">{{ node.children?.length }} akcji</span>
-                        </div>
-                        
-                        <mat-tree-node *matTreeNodeDef="let child; when: hasChild" matTreeNodeToggle>
-                            <div class="node-content provider-node">
-                                <mat-icon>folder_open</mat-icon>
-                                <span class="node-name">{{ child.name }}</span>
-                                <span class="action-count">{{ child.children?.length }} akcji</span>
-                            </div>
-                        </mat-tree-node>
-                        
-                        <mat-tree-node *matTreeNodeDef="let action; when: isAction">
-                            <div class="node-content action-node">
-                                <mat-icon>description</mat-icon>
-                                <span class="node-name">{{ action.name }}</span>
-                                <span class="node-type">{{ action.metadata?.action.contextType }}</span>
-                                <span class="node-category" *ngIf="action.metadata?.action.category">
-                                    {{ action.metadata?.action.category }}
-                                </span>
-                            </div>
-                        </mat-tree-node>
-                    </mat-tree-node>
-                </mat-tree>
+                @for (node of treeData(); track node.name) {
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <div class="node-content category-node">
+                                        <mat-icon>extension</mat-icon>
+                                        <span class="node-name">{{ node.name }}</span>
+                                        <span class="action-count">{{ node.children?.length }} akcji</span>
+                                    </div>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            @for (action of node.children; track action.name) {
+                                <div class="node-content action-node">
+                                    <mat-icon>description</mat-icon>
+                                    <span class="node-name">{{ action.name }}</span>
+                                    @if (action.action?.contextType) {
+                                        <span class="node-type">{{ action.action?.contextType }}</span>
+                                    }
+                                    @if (action.action?.category) {
+                                        <span class="node-category">
+                                            {{ action.action?.category }}
+                                        </span>
+                                    }
+                                </div>
+                            }
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                }
             </div>
         </div>
     `,
@@ -114,26 +102,26 @@ interface TreeNode {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
         }
-        
+
         .header h2 {
             margin: 0;
             font-size: 24px;
             font-weight: 500;
         }
-        
+
         .stats {
             display: flex;
             gap: 16px;
             margin-bottom: 24px;
         }
-        
+
         .stat-card {
             display: flex;
             align-items: center;
@@ -144,36 +132,36 @@ interface TreeNode {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             flex: 1;
         }
-        
+
         .stat-icon {
             font-size: 32px;
             color: #1976d2;
         }
-        
+
         .stat-content {
             display: flex;
             flex-direction: column;
         }
-        
+
         .stat-value {
             font-size: 24px;
             font-weight: 500;
             color: #1976d2;
         }
-        
+
         .stat-label {
             font-size: 14px;
             color: rgba(0, 0, 0, 0.6);
         }
-        
+
         .filter-section {
             margin-bottom: 24px;
         }
-        
+
         .full-width {
             width: 100%;
         }
-        
+
         .tree-container {
             background: white;
             border-radius: 8px;
@@ -182,7 +170,7 @@ interface TreeNode {
             max-height: 600px;
             overflow-y: auto;
         }
-        
+
         .node-content {
             display: flex;
             align-items: center;
@@ -190,23 +178,23 @@ interface TreeNode {
             padding: 8px;
             border-radius: 4px;
         }
-        
+
         .node-content:hover {
             background: rgba(0, 0, 0, 0.04);
         }
-        
-        .provider-node {
+
+        .category-node {
             font-weight: 500;
         }
-        
+
         .action-node {
             margin-left: 24px;
         }
-        
+
         .node-name {
             flex: 1;
         }
-        
+
         .node-type {
             font-size: 12px;
             color: rgba(0, 0, 0, 0.6);
@@ -214,7 +202,7 @@ interface TreeNode {
             padding: 2px 8px;
             border-radius: 12px;
         }
-        
+
         .node-category {
             font-size: 12px;
             color: rgba(0, 0, 0, 0.6);
@@ -223,7 +211,7 @@ interface TreeNode {
             padding: 2px 8px;
             border-radius: 12px;
         }
-        
+
         .action-count {
             font-size: 12px;
             color: rgba(0, 0, 0, 0.6);
@@ -232,68 +220,48 @@ interface TreeNode {
 })
 export class ContextMenuDevToolComponent {
     private contextMenuService = inject(ContextMenuServiceImpl);
-    
+
     filterText = '';
-    dataSource = new MatTreeNestedDataSource<TreeNode>();
-    nestedNodeControl = new MatTreeNode();
-    
+
     treeData = computed(() => {
-        const actionsByProvider = this.contextMenuService.getActionsByProvider();
-        const providers = this.contextMenuService.getRegisteredProviders();
-        
-        const nodes: TreeNode[] = providers.map(provider => {
-            const providerId = provider.getProviderId();
-            const providerName = provider.getProviderName();
-            const actions = actionsByProvider.get(providerId) || [];
-            
-            const filteredActions = this.filterText 
-                ? actions.filter(a => a.contextType.includes(this.filterText))
-                : actions;
-            
-            const actionNodes: TreeNode[] = filteredActions.map(action => ({
-                name: action.label,
+        const allActions = this.contextMenuService.getActionsSignal()();
+
+        const filteredActions = this.filterText
+            ? allActions.filter(a => a.contextType.includes(this.filterText) || (a.category && a.category.includes(this.filterText)))
+            : allActions;
+
+        // Group by category
+        const categoryMap = new Map<string, ContextMenuAction[]>();
+        filteredActions.forEach(action => {
+            const category = action.category || action.contextType;
+            if (!categoryMap.has(category)) {
+                categoryMap.set(category, []);
+            }
+            categoryMap.get(category)!.push(action);
+        });
+
+        const nodes: TreeNode[] = [];
+        categoryMap.forEach((actions, category) => {
+            const actionNodes: TreeNode[] = actions.map(action => ({
+                name: `${action.label} (${action.id})`,
                 type: 'action' as const,
-                metadata: {
-                    action,
-                    providerId,
-                    providerName,
-                    registeredAt: new Date()
-                }
+                action
             }));
-            
-            return {
-                name: `${providerName} (${providerId})`,
-                type: 'provider' as const,
-                children: actionNodes.length > 0 ? actionNodes : undefined
-            };
-        }).filter(node => node.children && node.children.length > 0);
-        
+
+            nodes.push({
+                name: category,
+                type: 'category' as const,
+                children: actionNodes
+            });
+        });
+
         return nodes;
     });
-    
-    providerCount = computed(() => this.contextMenuService.getRegisteredProviders().length);
-    totalActionCount = computed(() => {
-        const actionsByProvider = this.contextMenuService.getActionsByProvider();
-        let total = 0;
-        actionsByProvider.forEach(actions => {
-            total += actions.length;
-        });
-        return total;
-    });
-    
-    constructor() {
-        this.dataSource.data = this.treeData();
-    }
-    
+
+    categoryCount = computed(() => this.treeData().length);
+    totalActionCount = computed(() => this.contextMenuService.getActionsSignal()().length);
+
     refresh(): void {
-        this.dataSource.data = this.treeData();
-    }
-    
-    hasChild(_: number, node: TreeNode): boolean {
-        return !!node.children && node.children.length > 0;
-    }
-    
-    isAction(_: number, node: TreeNode): boolean {
-        return node.type === 'action';
+        // Signals are reactive, no manual refresh needed
     }
 }

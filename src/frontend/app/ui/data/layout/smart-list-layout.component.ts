@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, computed, ContentChildren, EventEmitter, inject, Input, OnInit, Output, QueryList, ViewChild, OnDestroy } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, Subscription } from "rxjs";
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
@@ -11,12 +11,12 @@ import { AppUiDataTableComponent, TableFetchOptions } from "../table.component";
 import { MatButtonModule } from "@angular/material/button";
 import { SmartListService } from "./smart-list/smart-list.service";
 import { ExportButtonComponent, ExportableColumn } from "../../export-button/export-button.component";
-import { ContextMenuProvider, ContextMenuAction, ContextMenuContext } from "../../context-menu/context-menu-config.interface";
+import { ContextMenuActionEvent } from "../../context-menu/context-menu-config.interface";
+import { ContextMenuAction } from "../../context-menu/models/action.model";
+import { filter } from "rxjs/operators";
 import { ContextMenuServiceImpl } from "../../context-menu/context-menu.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ContextMenuDialogComponent, ContextMenuDialogData } from "../../context-menu/context-menu-dialog.component";
-import { SimpleContextMenuComponent } from "../../context-menu/simple-context-menu.component";
-import { ContextMenuTriggerService } from "../../context-menu/context-menu-trigger.service";
 
 export interface INotifyChangeService {
 
@@ -75,11 +75,10 @@ export interface ICrudService<T extends object> extends ITableDataService<T>, IN
         AppUiDataTableComponent,
         RouterLink,
         MatButtonModule,
-        ExportButtonComponent,
-        SimpleContextMenuComponent
+        ExportButtonComponent
     ],
 })
-export class SmartListLayoutComponent<T extends object> implements OnInit, AfterViewInit, OnDestroy, ContextMenuProvider {
+export class SmartListLayoutComponent<T extends object> implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('myTable') myTable!: AppUiDataTableComponent<T>;
     @ContentChildren(AppTableCellDefDirective) externalCellDefs?: QueryList<AppTableCellDefDirective>;
 
@@ -96,8 +95,9 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
     private smartListService = inject(SmartListService);
     private contextMenuService = inject(ContextMenuServiceImpl);
     private dialog = inject(MatDialog);
-    private triggerService = inject(ContextMenuTriggerService);
     private destroy$ = new Subject<void>();
+    private actionBusSubscription: Subscription | null = null;
+    private registeredActionIds: string[] = [];
 
 
     ngOnInit(): void {
@@ -111,8 +111,15 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
             this.tableRefresh$.next();
         });
 
-        // Register as context menu provider
-        this.contextMenuService.registerProvider(this);
+        // Register context menu actions dynamically
+        const actions = this.buildContextMenuActions();
+        this.registeredActionIds = actions.map(a => a.id);
+        this.contextMenuService.registerActions(actions);
+
+        // Subscribe to action execution bus
+        this.actionBusSubscription = this.contextMenuService.getActionBus()
+            .pipe(filter(event => this.registeredActionIds.includes(event.actionId)))
+            .subscribe(event => this.handleAction(event));
     }
 
     ngAfterViewInit(): void {
@@ -167,87 +174,79 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-        this.contextMenuService.unregisterProvider(this.getProviderId());
-    }
-
-    // ContextMenuProvider implementation
-    getProviderId(): string {
-        return `smart-list-${this.smartListService.baseRoute()}`;
-    }
-
-    getProviderName(): string {
-        return `SmartList: ${this.smartListService.baseRoute()}`;
-    }
-
-    getSupportedContextTypes(): string[] {
-        return ['table-row'];
-    }
-
-    getContextMenuActions(context: ContextMenuContext): ContextMenuAction[] {
-        if (context.type !== 'table-row' || !context.data) {
-            return [];
+        this.contextMenuService.unregisterActions(this.registeredActionIds);
+        if (this.actionBusSubscription) {
+            this.actionBusSubscription.unsubscribe();
         }
+    }
 
-        const row = context.data as T;
+    private buildContextMenuActions(): ContextMenuAction[] {
         const actions: ContextMenuAction[] = [];
 
-        // Add edit action if service supports it
         if ('getItemEditRoute' in this.dataService) {
             actions.push({
                 id: 'edit-row',
                 label: 'Edytuj',
                 icon: 'edit',
-                contextType: 'table-row',
-                handler: () => {
-                    const baseRoute = this.smartListService.baseRoute();
-                    const primaryKey = this.getPrimaryKey(row);
-                    if (primaryKey) {
-                        const id = (row as Record<string, unknown>)[primaryKey] as string | number;
-                        const editRoute = (this.dataService as ICrudService<T>).getItemEditRoute(id);
-                        this.router.navigate([baseRoute, { outlets: { sidebar: editRoute } }]);
-                    }
-                }
+                contextType: 'table-row'
             });
         }
 
-        // Add delete action
         actions.push({
             id: 'delete-row',
             label: 'Usuń',
             icon: 'delete',
-            contextType: 'table-row',
-            handler: async () => {
-                const primaryKey = this.getPrimaryKey(row);
-                if (primaryKey) {
-                    const id = (row as Record<string, unknown>)[primaryKey] as string | number;
-                    const dialogData: YesNoDialogData = {
-                        title: 'Potwierdzenie usunięcia',
-                        content: 'Czy na pewno chcesz usunąć ten element?'
-                    };
-                    
-                    const result = await this.openDialog(new Event('click'), row, dialogData);
-                    if (result[1]) {
-                        this.dataService.delete(id).subscribe(() => {
-                            this.tableRefresh$.next();
-                        });
-                    }
-                }
-            }
+            contextType: 'table-row'
         });
 
-        // Add configure menu action
         actions.push({
             id: 'configure-menu',
             label: 'Konfiguruj menu',
             icon: 'settings',
             contextType: 'table-row',
-            separator: true,
-            handler: () => {
-                this.openContextMenuDialog('table-row');
-            }
+            separator: true
         });
 
         return actions;
+    }
+
+    private handleAction(event: ContextMenuActionEvent): void {
+        const rowData = event.context.data as T;
+
+        switch (event.actionId) {
+            case 'edit-row': {
+                const baseRoute = this.smartListService.baseRoute();
+                const primaryKey = this.getPrimaryKey(rowData);
+                if (primaryKey) {
+                    const id = (rowData as Record<string, unknown>)[primaryKey] as string | number;
+                    const editRoute = (this.dataService as ICrudService<T>).getItemEditRoute(id);
+                    this.router.navigate([baseRoute, { outlets: { sidebar: editRoute } }]);
+                }
+                break;
+            }
+            case 'delete-row': {
+                const primaryKey = this.getPrimaryKey(rowData);
+                if (primaryKey) {
+                    const id = (rowData as Record<string, unknown>)[primaryKey] as string | number;
+                    const dialogData: YesNoDialogData = {
+                        title: 'Potwierdzenie usunięcia',
+                        content: 'Czy na pewno chcesz usunąć ten element?'
+                    };
+                    this.openDialog(new Event('click'), rowData, dialogData).then(result => {
+                        if (result[1]) {
+                            this.dataService.delete(id).subscribe(() => {
+                                this.tableRefresh$.next();
+                            });
+                        }
+                    });
+                }
+                break;
+            }
+            case 'configure-menu': {
+                this.openContextMenuDialog('table-row');
+                break;
+            }
+        }
     }
 
     private getPrimaryKey(row: T): string | null {
@@ -266,11 +265,7 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
     }
 
     private openContextMenuDialog(contextType: string): void {
-        const availableActions = this.getContextMenuActions({ 
-            element: document.createElement('div'), 
-            type: contextType,
-            data: null 
-        });
+        const availableActions = this.buildContextMenuActions().filter(a => a.contextType === contextType);
         
         const currentVisibleActions = this.contextMenuService.getActionsForContext({
             element: document.createElement('div'),
@@ -289,16 +284,6 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
             maxWidth: '90vw',
             data: dialogData
         });
-    }
-
-    handleContextMenu(detail: { context: ContextMenuContext; actions: ContextMenuAction[]; position: { x: number; y: number } }): void {
-        if (detail.actions.length > 0) {
-            this.triggerService.trigger({
-                context: detail.context,
-                actions: detail.actions,
-                position: { x: detail.position.x, y: detail.position.y }
-            });
-        }
     }
 
 }

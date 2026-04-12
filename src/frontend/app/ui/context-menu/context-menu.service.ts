@@ -1,116 +1,115 @@
-import { Injectable, signal, computed, inject } from '@angular/core';
-import { ContextMenuProvider, ContextMenuService } from './context-menu-config.interface';
+import { Injectable, inject, signal } from '@angular/core';
+import { ContextMenuService, CONTEXT_MENU_REGISTRY, ContextMenuActionEvent } from './context-menu-config.interface';
 import { ContextMenuAction, ContextMenuActionMetadata } from './models/action.model';
 import { ContextMenuContext } from './models/context.model';
 import { UserMenuPreferenceService } from './user-menu-preference.service';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ContextMenuServiceImpl implements ContextMenuService {
-    private providers = signal<Map<string, ContextMenuProvider>>(new Map());
-    private actionsMetadata = signal<Map<string, ContextMenuActionMetadata>>(new Map());
-    
-    private userMenuPreferenceService = inject(UserMenuPreferenceService);
-    
-    registeredProviders = computed(() => Array.from(this.providers().values()));
-    actionsByProvider = computed(() => {
-        const map = new Map<string, ContextMenuAction[]>();
-        this.providers().forEach((provider, providerId) => {
-            const actions = this.getAllActionsFromProvider(provider);
-            map.set(providerId, actions);
-        });
-        return map;
-    });
+    // Static actions collected from DI token at startup
+    private readonly contributions = inject(CONTEXT_MENU_REGISTRY, { optional: true }) ?? [];
+    private allActions: ContextMenuAction[] = this.contributions.flat();
 
-    registerProvider(provider: ContextMenuProvider): void {
-        const providerId = provider.getProviderId();
-        if (this.providers().has(providerId)) {
-            this.unregisterProvider(providerId);
-        }
-        
-        const newProviders = new Map(this.providers());
-        newProviders.set(providerId, provider);
-        this.providers.set(newProviders);
-        
-        // Register actions with metadata
-        const actions = provider.getContextMenuActions({ element: document.createElement('div'), type: 'dummy' });
-        const newMetadata = new Map(this.actionsMetadata());
-        actions.forEach(action => {
-            newMetadata.set(action.id, {
+    // Action metadata map
+    private actionsMetadata = new Map<string, ContextMenuActionMetadata>();
+
+    // Action execution bus - components subscribe to handle their actions
+    private actionBus$ = new Subject<ContextMenuActionEvent>();
+
+    // Signals for reactive UI
+    private actionsSignal = signal<ContextMenuAction[]>(this.allActions);
+
+    private userMenuPreferenceService = inject(UserMenuPreferenceService);
+
+    constructor() {
+        // Build metadata from all static actions
+        this.allActions.forEach(action => {
+            this.actionsMetadata.set(action.id, {
                 action,
-                providerId,
-                providerName: provider.getProviderName(),
+                category: action.category || action.contextType,
                 registeredAt: new Date()
             });
         });
-        this.actionsMetadata.set(newMetadata);
     }
 
-    unregisterProvider(providerId: string): void {
-        const newProviders = new Map(this.providers());
-        const provider = newProviders.get(providerId);
-        
-        if (provider) {
-            // Remove actions metadata
-            const actions = provider.getContextMenuActions({ element: document.createElement('div'), type: 'dummy' });
-            const newMetadata = new Map(this.actionsMetadata());
-            actions.forEach(action => {
-                newMetadata.delete(action.id);
+    registerActions(actions: ContextMenuAction[]): void {
+        actions.forEach(action => {
+            if (this.actionsMetadata.has(action.id)) return;
+            this.allActions.push(action);
+            this.actionsMetadata.set(action.id, {
+                action,
+                category: action.category || action.contextType,
+                registeredAt: new Date()
             });
-            this.actionsMetadata.set(newMetadata);
-            
-            newProviders.delete(providerId);
-            this.providers.set(newProviders);
-        }
+        });
+        this.actionsSignal.set([...this.allActions]);
+    }
+
+    unregisterActions(actionIds: string[]): void {
+        this.allActions = this.allActions.filter(a => !actionIds.includes(a.id));
+        actionIds.forEach(id => this.actionsMetadata.delete(id));
+        this.actionsSignal.set([...this.allActions]);
     }
 
     getActionsForContext(context: ContextMenuContext): ContextMenuAction[] {
-        const allActions: ContextMenuAction[] = [];
-        
-        this.providers().forEach(provider => {
-            const supportedTypes = provider.getSupportedContextTypes();
-            if (supportedTypes.includes(context.type) || supportedTypes.includes('*')) {
-                const actions = provider.getContextMenuActions(context);
-                allActions.push(...actions);
-            }
-        });
-        
-        // Filter actions based on visibility and user preferences
-        const visibleActions = allActions.filter(action => {
+        // Filter actions by context type
+        const matchingActions = this.allActions.filter(action =>
+            action.contextType === context.type || action.contextType === '*'
+        );
+
+        // Filter by visibility
+        const visibleActions = matchingActions.filter(action => {
             if (action.visible && !action.visible(context)) {
                 return false;
             }
             return true;
         });
-        
+
         // Apply user preferences
         const userPreferences = this.userMenuPreferenceService.getVisibleActions(context.type);
         if (userPreferences && userPreferences.length > 0) {
             return this.sortActionsByPreference(visibleActions, userPreferences as string[]);
         }
-        
+
         return visibleActions;
     }
 
-    getRegisteredProviders(): ContextMenuProvider[] {
-        return this.registeredProviders();
+    executeAction(actionId: string, context: ContextMenuContext): void {
+        // Check if action has a static handler
+        const action = this.allActions.find(a => a.id === actionId);
+        if (action?.handler) {
+            action.handler(context);
+        }
+
+        // Always emit on the bus so live components can handle it
+        this.actionBus$.next({ actionId, context });
     }
 
-    getActionsByProvider(): Map<string, ContextMenuAction[]> {
-        return this.actionsByProvider();
+    getActionBus() {
+        return this.actionBus$.asObservable();
+    }
+
+    getAllActions(): ContextMenuAction[] {
+        return this.actionsSignal();
+    }
+
+    getActionsByCategory(category: string): ContextMenuAction[] {
+        return this.allActions.filter(a => a.category === category || a.contextType === category);
     }
 
     getActionMetadata(actionId: string): ContextMenuActionMetadata | undefined {
-        return this.actionsMetadata().get(actionId);
+        return this.actionsMetadata.get(actionId);
     }
 
-    private getAllActionsFromProvider(provider: ContextMenuProvider): ContextMenuAction[] {
-        return provider.getContextMenuActions({ element: document.createElement('div'), type: 'dummy' });
+    getActionsSignal() {
+        return this.actionsSignal.asReadonly();
     }
 
     private sortActionsByPreference(actions: ContextMenuAction[], preferredActionIds: string[]): ContextMenuAction[] {
         const preferred: ContextMenuAction[] = [];
         const others: ContextMenuAction[] = [];
-        
+
         actions.forEach(action => {
             if (preferredActionIds.includes(action.id)) {
                 preferred.push(action);
@@ -118,14 +117,13 @@ export class ContextMenuServiceImpl implements ContextMenuService {
                 others.push(action);
             }
         });
-        
-        // Sort preferred actions by their order in preferences
+
         preferred.sort((a, b) => {
             const indexA = preferredActionIds.indexOf(a.id);
             const indexB = preferredActionIds.indexOf(b.id);
             return indexA - indexB;
         });
-        
+
         return [...preferred, ...others];
     }
 }

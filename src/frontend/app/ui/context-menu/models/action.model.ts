@@ -4,7 +4,7 @@ export interface ContextMenuAction {
     id: string;
     label: string;
     icon?: string;
-    handler: (context: ContextMenuContext) => void | Promise<void>;
+    handler?: (context: ContextMenuContext) => void | Promise<void>;
     category?: string;
     contextType: string;
     disabled?: (context: ContextMenuContext) => boolean;
@@ -14,7 +14,6 @@ export interface ContextMenuAction {
 
 export interface ContextMenuActionMetadata {
     action: ContextMenuAction;
-    providerId: string;
-    providerName: string;
+    category: string;
     registeredAt: Date;
 }

@@ -46,7 +46,7 @@ export class AppTopMenu {
 
     protected router = inject(Router);
     private route = inject(ActivatedRoute);
-    private authService = inject(AuthService);
+    protected authService = inject(AuthService);
     private appStore = inject(AppStoreService);
 
     dynamicMenu = toSignal(

@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppTopMenu } from "./ui/TopMenu";
 import { AppStoreService } from "./services/store.service";
 import { BreadcrumbComponent } from "./ui/breadcrumb.component";
+import { SimpleContextMenuComponent } from "./ui/context-menu/simple-context-menu.component";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @Component({
@@ -34,6 +35,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     MatIconModule,
     AppTopMenu,
     BreadcrumbComponent,
+    SimpleContextMenuComponent,
     MatSlideToggleModule
   ],
   templateUrl: "./app.html",

@@ -1,11 +1,14 @@
-import { Component, HostListener, inject, NgZone, OnDestroy } from '@angular/core';
+import { Component, inject, NgZone, OnDestroy, ViewContainerRef, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import { ContextMenuAction } from './models/action.model';
 import { ContextMenuContext } from './models/context.model';
 import { ContextMenuTriggerService } from './context-menu-trigger.service';
+import { ContextMenuServiceImpl } from './context-menu.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,8 +21,8 @@ import { Subscription } from 'rxjs';
         MatDividerModule
     ],
     template: `
-        <div class="context-menu-overlay" *ngIf="isOpen" (click)="close()">
-            <div class="context-menu" [style.left.px]="x" [style.top.px]="y" (click)="$event.stopPropagation()">
+        <ng-template #menuTemplate>
+            <div class="context-menu" (click)="$event.stopPropagation()">
                 @for (action of visibleActions; track $index) {
                     @if (!action.separator) {
                         <button mat-menu-item 
@@ -62,26 +65,15 @@ import { Subscription } from 'rxjs';
                     }
                 }
             </div>
-        </div>
+        </ng-template>
     `,
     styles: [`
-        .context-menu-overlay {
-            position: fixed !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            z-index: 99999 !important;
-            pointer-events: auto !important;
-            background: transparent;
-        }
-        
         .context-menu {
-            position: fixed !important;
             min-width: 200px;
             background: white;
             border-radius: 4px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             padding: 4px 0;
-            pointer-events: auto;
             border: 1px solid #e0e0e0;
         }
         
@@ -107,12 +99,15 @@ import { Subscription } from 'rxjs';
 })
 export class SimpleContextMenuComponent implements OnDestroy {
     private triggerService = inject(ContextMenuTriggerService);
+    private contextMenuService = inject(ContextMenuServiceImpl);
     private ngZone = inject(NgZone);
+    private overlay = inject(Overlay);
+    private viewContainerRef = inject(ViewContainerRef);
     private subscription: Subscription | null = null;
+    private overlayRef: OverlayRef | null = null;
     
-    isOpen = false;
-    x = 0;
-    y = 0;
+    @ViewChild('menuTemplate') menuTemplate!: TemplateRef<unknown>;
+    
     context: ContextMenuContext | null = null;
     visibleActions: ContextMenuAction[] = [];
     hiddenActions: ContextMenuAction[] = [];
@@ -125,9 +120,7 @@ export class SimpleContextMenuComponent implements OnDestroy {
                 if (triggerData) {
                     this.open(triggerData.context, triggerData.position, triggerData.actions);
                 } else {
-                    // Only close locally, don't call triggerService.close() to avoid infinite loop
-                    this.isOpen = false;
-                    this.showMore = false;
+                    this.close();
                 }
             });
         });
@@ -137,44 +130,70 @@ export class SimpleContextMenuComponent implements OnDestroy {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+        this.close();
     }
 
     open(context: ContextMenuContext, position: { x: number; y: number }, actions: ContextMenuAction[]): void {
-        this.context = context;
-        this.x = position.x;
-        this.y = position.y;
+        this.close();
         
-        // Use provided actions directly
+        this.context = context;
         this.visibleActions = actions.slice(0, this.maxVisibleActions);
         this.hiddenActions = actions.slice(this.maxVisibleActions);
-        
         this.showMore = false;
-        this.isOpen = true;
+
+        const positionStrategy = this.overlay.position()
+            .flexibleConnectedTo({ x: position.x, y: position.y })
+            .withPositions([{
+                originX: 'start',
+                originY: 'bottom',
+                overlayX: 'start',
+                overlayY: 'top'
+            }, {
+                originX: 'end',
+                originY: 'bottom',
+                overlayX: 'end',
+                overlayY: 'top'
+            }, {
+                originX: 'start',
+                originY: 'top',
+                overlayX: 'start',
+                overlayY: 'bottom'
+            }]);
+
+        this.overlayRef = this.overlay.create({
+            positionStrategy,
+            hasBackdrop: true,
+            backdropClass: 'cdk-overlay-transparent-backdrop',
+            scrollStrategy: this.overlay.scrollStrategies.close()
+        });
+
+        const portal = new TemplatePortal(this.menuTemplate, this.viewContainerRef);
+        this.overlayRef.attach(portal);
+
+        this.overlayRef.backdropClick().subscribe(() => this.close());
+        this.overlayRef.keydownEvents().subscribe(event => {
+            if (event.key === 'Escape') {
+                this.close();
+            }
+        });
     }
 
     close(): void {
-        this.isOpen = false;
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+        }
         this.showMore = false;
-        // Don't call triggerService.close() to avoid infinite loop
-        // The subscription handles state changes when trigger data is null
     }
 
     executeAction(action: ContextMenuAction): void {
-        if (!this.isActionDisabled(action) && action.handler && this.context) {
-            action.handler(this.context);
+        if (!this.isActionDisabled(action) && this.context) {
+            this.contextMenuService.executeAction(action.id, this.context);
         }
         this.close();
     }
 
     isActionDisabled(action: ContextMenuAction): boolean {
         return action.disabled && this.context ? action.disabled(this.context) : false;
-    }
-
-    @HostListener('document:click')
-    @HostListener('document:contextmenu')
-    onDocumentClick(): void {
-        if (this.isOpen) {
-            this.close();
-        }
     }
 }

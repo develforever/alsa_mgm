@@ -13,9 +13,7 @@
 
 <app-ui-data-layout-smart-list-layout>
     <app-ui-data-table-component #myTable [fetchFn]="fetchFn" [pageSize]="10" [refresh$]="tableRefresh$"
-        [externalCellDefs]="externalCellDefs" (rowClick)="onRowClick($event)" (contextMenu)="handleContextMenu($event)">
+        [externalCellDefs]="externalCellDefs" (rowClick)="onRowClick($event)">
         <ng-content></ng-content>
     </app-ui-data-table-component>
 </app-ui-data-layout-smart-list-layout>
-
-<app-simple-context-menu #contextMenu></app-simple-context-menu>
