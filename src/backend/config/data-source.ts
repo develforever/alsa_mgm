@@ -16,7 +16,7 @@ const subscribers = [AuditSubscriber];
 
 export type APP_DATA_SOURCE_TYPES = "mysql" | "cockroachdb" | "sqlite";
 
-function createDataSourceOptions(): DataSourceOptions {
+export function createDataSourceOptions(): DataSourceOptions {
     const dataSourceType: APP_DATA_SOURCE_TYPES = (config.APP_DATA_SOURCE_TYPE || "mysql") as APP_DATA_SOURCE_TYPES;
 
     switch (dataSourceType) {
