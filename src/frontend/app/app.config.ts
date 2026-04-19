@@ -14,6 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),
     provideHttpClient(withInterceptors([authInterceptor, apiErrorInterceptor])),
-    provideAllContextMenuProviders,
+    provideAllContextMenuProviders(),
   ],
 };

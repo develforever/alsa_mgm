@@ -3,6 +3,9 @@ import { provideAuditLogMenu } from "../feature/home/components/audit-log/audit-
 
 
 
-export const provideAllContextMenuProviders: Provider[] = [
-    provideAuditLogMenu
-];
+export const provideAllContextMenuProviders: () => Provider[] = () => {
+
+    return [
+        provideAuditLogMenu()
+    ]
+}

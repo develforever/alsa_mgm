@@ -25,8 +25,10 @@ const auditLogActions: ContextMenuAction[] = [
     }
 ];
 
-export const provideAuditLogMenu: Provider = {
-    provide: CONTEXT_MENU_REGISTRY,
-    useValue: auditLogActions,
-    multi: true
+export const provideAuditLogMenu: () => Provider = () => {
+    return {
+        provide: CONTEXT_MENU_REGISTRY,
+        useValue: auditLogActions,
+        multi: true
+    };
 };

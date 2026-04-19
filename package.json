@@ -19,7 +19,8 @@
     "test:dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"bgBlue,bgGreen\" \"npm run start:backend\" \"npm run ng -- serve --port 4201\"",
     "storybook": "ng run frontend:storybook",
     "build-storybook": "ng run frontend:build-storybook",
-    "build": "npm run n:build && npm run ng:build"
+    "build": "npm run n:build && npm run ng:build",
+    "start": "concurrently --kill-others -n \"BACKEND,FRONTEND\" -c \"bgBlue,bgGreen\" \"npm run n:start\" \"npm run ng:start\""
   },
   "dependencies": {
     "@angular/animations": "^21.1.0",

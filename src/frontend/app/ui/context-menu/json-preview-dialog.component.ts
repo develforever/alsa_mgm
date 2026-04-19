@@ -3,6 +3,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface JsonPreviewDialogData {
     title: string;
@@ -64,6 +65,7 @@ export interface JsonPreviewDialogData {
 export class JsonPreviewDialogComponent {
     data = inject<JsonPreviewDialogData>(MAT_DIALOG_DATA);
     private dialogRef = inject(MatDialogRef<JsonPreviewDialogComponent>);
+    private snackbar = inject(MatSnackBar);
 
     get formattedJson(): string {
         return JSON.stringify(this.data.data, null, 2);
@@ -71,7 +73,9 @@ export class JsonPreviewDialogComponent {
 
     copyToClipboard(): void {
         navigator.clipboard.writeText(this.formattedJson).then(() => {
-            // Could show a snackbar here
+            this.snackbar.open('Skopiowano do schowka', 'Zamknij', {
+                duration: 3000
+            });
         });
     }
 
