@@ -189,8 +189,7 @@
 						"type": "string"
 					},
 					"Active": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					},
 					"createdAt": {
 						"type": "string",
@@ -353,8 +352,7 @@
 						"type": "string"
 					},
 					"AutoStart": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					},
 					"createdAt": {
 						"type": "string",
@@ -1021,8 +1019,7 @@
 						"type": "string"
 					},
 					"AutoStart": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					},
 					"CreatedAt": {
 						"type": "string",
@@ -1112,8 +1109,7 @@
 						"type": "string"
 					},
 					"AutoStart": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					},
 					"CreatedAt": {
 						"type": "string",
@@ -1214,8 +1210,7 @@
 						"type": "string"
 					},
 					"AutoStart": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -1237,8 +1232,7 @@
 						"type": "string"
 					},
 					"AutoStart": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					}
 				},
 				"type": "object",
@@ -1254,8 +1248,7 @@
 						"type": "string"
 					},
 					"Active": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					},
 					"CreatedAt": {
 						"type": "string",
@@ -1338,8 +1331,7 @@
 						"type": "string"
 					},
 					"Active": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					},
 					"CreatedAt": {
 						"type": "string",
@@ -1433,8 +1425,7 @@
 						"type": "string"
 					},
 					"Active": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -1450,8 +1441,7 @@
 						"type": "string"
 					},
 					"Active": {
-						"type": "number",
-						"format": "double"
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -1724,8 +1714,7 @@
 							"product": {
 								"properties": {
 									"Active": {
-										"type": "number",
-										"format": "double"
+										"type": "boolean"
 									},
 									"Name": {
 										"type": "string"
@@ -1769,8 +1758,7 @@
 					"workstation": {
 						"properties": {
 							"AutoStart": {
-								"type": "number",
-								"format": "double"
+								"type": "boolean"
 							},
 							"PCName": {
 								"type": "string"
@@ -1889,8 +1877,7 @@
 							"product": {
 								"properties": {
 									"Active": {
-										"type": "number",
-										"format": "double"
+										"type": "boolean"
 									},
 									"Name": {
 										"type": "string"
@@ -1934,8 +1921,7 @@
 					"workstation": {
 						"properties": {
 							"AutoStart": {
-								"type": "number",
-								"format": "double"
+								"type": "boolean"
 							},
 							"PCName": {
 								"type": "string"

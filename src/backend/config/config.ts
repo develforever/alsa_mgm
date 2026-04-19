@@ -11,6 +11,11 @@ interface Config {
   DATABASE_USER: string;
   DATABASE_PASSWORD: string;
   DATABASE_NAME: string;
+  COCKROACH_DB_USER: string;
+  COCKROACH_DB_PASSWORD: string;
+  COCKROACH_DB_NAME: string;
+  COCKROACH_DB_URL: string;
+  APP_DATA_SOURCE_TYPE: string;
 }
 
 const config: Config = {
@@ -25,6 +30,11 @@ const config: Config = {
   DATABASE_USER: process.env.DATABASE_USER || 'user',
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || 'user_password',
   DATABASE_NAME: process.env.DATABASE_NAME || 'alsa',
+  COCKROACH_DB_USER: process.env.COCKROACH_DB_USER || '',
+  COCKROACH_DB_PASSWORD: process.env.COCKROACH_DB_PASSWORD || '',
+  COCKROACH_DB_NAME: process.env.COCKROACH_DB_NAME || '',
+  COCKROACH_DB_URL: process.env.COCKROACH_DB_URL || '',
+  APP_DATA_SOURCE_TYPE: process.env.APP_DATA_SOURCE_TYPE || 'mysql',
 };
 
 export default config;

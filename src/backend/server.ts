@@ -2,8 +2,7 @@ import * as dotenv from 'dotenv-flow';
 dotenv.config();
 import config from './config/config';
 import app from './app';
-
-import { AppDataSource } from "./config/data-source";
+import { AppDataSource } from './config/data-source';
 
 AppDataSource.initialize()
   .then(() => {

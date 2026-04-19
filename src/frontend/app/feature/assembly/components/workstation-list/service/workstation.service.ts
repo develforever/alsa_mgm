@@ -54,14 +54,14 @@ export class DataWorkstationService extends AbstractCrudService<GetWorkstationsS
   mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {
     return {
       ...value,
-      AutoStart: value['AutoStart'] ? 1 : 0,
+      AutoStart: !!value['AutoStart'],
     };
   }
 
   mapModelToForm(item: GetWorkstationsSchema): Record<string, unknown> {
     return {
       ...(item as unknown as Record<string, unknown>),
-      AutoStart: item.AutoStart === 1
+      AutoStart: !!item.AutoStart
     };
   }
 }

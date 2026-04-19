@@ -33,7 +33,7 @@ export class ALAssLine {
     @Column({ type: "varchar", length: 255 })
     Name: string;
 
-    @Column({ type: "tinyint" })
+    @Column({ type: "smallint" })
     Status: ALAssLineStatus;
 
     @CreateDateColumn({ name: "CreatedAt" })

@@ -18,8 +18,8 @@ export class Product extends BaseAuditEntity {
     @Column({ type: "varchar", length: 255 })
     Name!: string;
 
-    @Column({ type: "tinyint", width: 1, default: 1 })
-    Active!: number;
+    @Column({ type: "boolean", default: true })
+    Active!: boolean;
 
     @CreateDateColumn({ name: "CreatedAt" })
     createdAt!: Date;

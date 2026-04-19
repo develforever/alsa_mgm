@@ -13,7 +13,7 @@ export interface GetAllocationSchema {
         product?: {
             ProductID: number;
             Name: string;
-            Active: number;
+            Active: boolean;
         };
     };
     workstation?: {
@@ -21,7 +21,7 @@ export interface GetAllocationSchema {
         Name: string;
         ShortName: string;
         PCName?: string;
-        AutoStart: number;
+        AutoStart: boolean;
     };
 }
 
@@ -40,7 +40,7 @@ export interface GetAllocationsSchema {
         product?: {
             ProductID: number;
             Name: string;
-            Active: number;
+            Active: boolean;
         };
     };
     workstation?: {
@@ -48,7 +48,7 @@ export interface GetAllocationsSchema {
         Name: string;
         ShortName: string;
         PCName?: string;
-        AutoStart: number;
+        AutoStart: boolean;
     };
 }
 

@@ -3,7 +3,7 @@
 export interface GetProductSchema {
     ProductID: number;
     Name: string;
-    Active: number;
+    Active: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
@@ -11,17 +11,17 @@ export interface GetProductSchema {
 export interface GetProductsSchema {
     ProductID: number;
     Name: string;
-    Active: number;
+    Active: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
 
 export interface PostProductsSchema {
     Name: string;
-    Active: number;
+    Active: boolean;
 }
 
 export interface PatchProductsSchema {
     Name: string;
-    Active: number;
+    Active: boolean;
 }

@@ -24,8 +24,8 @@ export class ALWStation extends BaseAuditEntity {
   @Column({ type: "varchar", length: 255, nullable: true })
   PCName: string;
 
-  @Column({ type: "tinyint", width: 1, default: 0 })
-  AutoStart: number;
+  @Column({ type: "boolean", default: false })
+  AutoStart: boolean;
 
   @CreateDateColumn({ name: "CreatedAt" })
   createdAt!: Date;

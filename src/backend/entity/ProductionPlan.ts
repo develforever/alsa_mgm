@@ -60,19 +60,19 @@ export class ProductionPlan {
     })
     workstations!: ALWStation[];
 
-    @Column({ type: "datetime" })
+    @Column({ type: "timestamp" })
     plannedStartDate!: Date;
 
-    @Column({ type: "datetime" })
+    @Column({ type: "timestamp" })
     plannedEndDate!: Date;
 
     @Column({ type: "int" })
     plannedQuantity!: number;
 
-    @Column({ type: "datetime", nullable: true })
+    @Column({ type: "timestamp", nullable: true })
     actualStartDate!: Date | null;
 
-    @Column({ type: "datetime", nullable: true })
+    @Column({ type: "timestamp", nullable: true })
     actualEndDate!: Date | null;
 
     @Column({ type: "int", default: 0 })

@@ -14,9 +14,9 @@ const seed = async () => {
         const stationRepo = AppDataSource.getRepository(ALWStation);
 
         console.log("📦 Dodaję produkty...");
-        const p1 = productRepo.create({ Name: "8DAB - Control Unit", Active: 1 });
-        const p2 = productRepo.create({ Name: "8DJH - Power Module", Active: 1 });
-        const p3 = productRepo.create({ Name: "SIMOSEC - Switchgear", Active: 1 });
+        const p1 = productRepo.create({ Name: "8DAB - Control Unit", Active: true });
+        const p2 = productRepo.create({ Name: "8DJH - Power Module", Active: true });
+        const p3 = productRepo.create({ Name: "SIMOSEC - Switchgear", Active: true });
         await productRepo.save([p1, p2, p3]);
 
 
@@ -28,11 +28,11 @@ const seed = async () => {
 
         console.log("🛠️ Dodaję stacje robocze...");
         await stationRepo.save([
-            { Name: "Laser welding", ShortName: "LW", PCName: "PC-TRANS-01", AutoStart: 1 },
-            { Name: "Screwing station", ShortName: "SS", PCName: "PC-TRANS-02", AutoStart: 0 },
-            { Name: "HV/PD Diagnostic", ShortName: "HVD", PCName: "PC-TEST-05", AutoStart: 1 },
-            { Name: "Final Inspection", ShortName: "FI", PCName: "PC-QUALITY-01", AutoStart: 0 },
-            { Name: "Packaging Unit", ShortName: "PK", PCName: "PC-LOG-10", AutoStart: 1 }
+            { Name: "Laser welding", ShortName: "LW", PCName: "PC-TRANS-01", AutoStart: true },
+            { Name: "Screwing station", ShortName: "SS", PCName: "PC-TRANS-02", AutoStart: false },
+            { Name: "HV/PD Diagnostic", ShortName: "HVD", PCName: "PC-TEST-05", AutoStart: true },
+            { Name: "Final Inspection", ShortName: "FI", PCName: "PC-QUALITY-01", AutoStart: false },
+            { Name: "Packaging Unit", ShortName: "PK", PCName: "PC-LOG-10", AutoStart: true }
         ]);
 
         console.log("✅ Seedowanie zakończone sukcesem!");

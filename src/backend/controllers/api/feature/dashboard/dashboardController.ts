@@ -81,13 +81,13 @@ export class DashboardController extends Controller {
       auditRepo.count({ where: { timestamp: Between(last30d, now) } })
     ]);
 
-    const activeProducts = products.filter((p: Product) => p.Active === 1).length;
+    const activeProducts = products.filter((p: Product) => p.Active === true).length;
     
     const activeLines = assemblyLines.filter((l: ALAssLine) => l.Status === ALAssLineStatus.Active).length;
     const lockedLines = assemblyLines.filter((l: ALAssLine) => l.Status === ALAssLineStatus.Locked).length;
     const closedLines = assemblyLines.filter((l: ALAssLine) => l.Status === ALAssLineStatus.Closed).length;
     
-    const autoStartWorkstations = workstations.filter((w: ALWStation) => w.AutoStart === 1).length;
+    const autoStartWorkstations = workstations.filter((w: ALWStation) => w.AutoStart === true).length;
 
     return {
       products: {

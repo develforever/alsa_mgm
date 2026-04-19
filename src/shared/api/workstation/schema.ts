@@ -3,7 +3,7 @@ export interface GetWorkstationSchema {
     Name: string;
     ShortName: string;
     PCName?: string;
-    AutoStart: number;
+    AutoStart: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
@@ -13,7 +13,7 @@ export interface GetWorkstationsSchema {
     Name: string;
     ShortName: string;
     PCName?: string;
-    AutoStart: number;
+    AutoStart: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
@@ -22,12 +22,12 @@ export interface PostWorkstationsSchema {
     Name: string;
     ShortName: string;
     PCName?: string;
-    AutoStart?: number;
+    AutoStart?: boolean;
 }
 
 export interface PatchWorkstationsSchema {
     Name?: string;
     ShortName?: string;
     PCName?: string;
-    AutoStart?: number;
+    AutoStart?: boolean;
 }

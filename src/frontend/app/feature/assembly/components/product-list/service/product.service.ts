@@ -55,14 +55,14 @@ export class DataProductService extends AbstractCrudService<GetProductsSchema, P
   mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {
     return {
       ...value,
-      Active: value['Active'] ? 1 : 0,
+      Active: !!value['Active'],
     };
   }
 
   mapModelToForm(item: GetProductsSchema): Record<string, unknown> {
     return {
       ...(item as unknown as Record<string, unknown>),
-      Active: item.Active === 1
+      Active: !!item.Active
     };
   }
 }
