@@ -15,7 +15,7 @@ export class AuditLog {
     @Column({ nullable: true })
     entityId!: string;
 
-    @Column({ type: "json", nullable: true })
+    @Column({ type: "simple-json", nullable: true })
     details!: any; 
 
     @Column({ nullable: true })

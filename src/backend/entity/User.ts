@@ -33,7 +33,7 @@ export class User {
     avatarUrl!: string;
 
     @Column({
-        type: "enum",
+        type: "simple-enum",
         enum: UserRole,
         default: UserRole.Viewer
     })

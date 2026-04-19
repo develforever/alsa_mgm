@@ -23,7 +23,7 @@ export class ALAssLineWStationAllocation extends BaseAuditEntity {
     @Column()
     ALWStationID!: number;
 
-    @Column({ type: "smallint" }) 
+    @Column({ type: "integer" }) 
     Sort!: number;
 
     @CreateDateColumn({ name: "CreatedAt" })

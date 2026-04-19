@@ -8,3 +8,4 @@ public/*
 mysql_data
 .env
 .env.local
+*.sqlite*

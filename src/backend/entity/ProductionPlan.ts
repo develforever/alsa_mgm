@@ -60,33 +60,33 @@ export class ProductionPlan {
     })
     workstations!: ALWStation[];
 
-    @Column({ type: "timestamp" })
+    @Column({ type: "datetime" })
     plannedStartDate!: Date;
 
-    @Column({ type: "timestamp" })
+    @Column({ type: "datetime" })
     plannedEndDate!: Date;
 
-    @Column({ type: "int" })
+    @Column({ type: "integer" })
     plannedQuantity!: number;
 
-    @Column({ type: "timestamp", nullable: true })
+    @Column({ type: "datetime", nullable: true })
     actualStartDate!: Date | null;
 
-    @Column({ type: "timestamp", nullable: true })
+    @Column({ type: "datetime", nullable: true })
     actualEndDate!: Date | null;
 
-    @Column({ type: "int", default: 0 })
+    @Column({ type: "integer", default: 0 })
     actualQuantity!: number;
 
     @Column({
-        type: "enum",
+        type: "simple-enum",
         enum: ProductionPlanStatus,
         default: ProductionPlanStatus.Draft
     })
     status!: ProductionPlanStatus;
 
     @Column({
-        type: "enum",
+        type: "simple-enum",
         enum: ProductionPriority,
         default: ProductionPriority.Normal
     })

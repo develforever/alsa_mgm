@@ -65,6 +65,11 @@ export function createDataSourceOptions(): DataSourceOptions {
                 entities,
                 subscribers,
                 migrations: [],
+                prepareDatabase: (db: any) => {
+                    db.pragma('journal_mode = WAL');
+                    db.pragma('synchronous = NORMAL');
+                    db.pragma('busy_timeout = 5000');
+                },
             };
         default:
             throw new Error(`Unsupported data source type: ${dataSourceType}`);

@@ -22,4 +22,4 @@ np run seed
 
 ### Usage
 
-Open `http://localhost:3000/`, login with gihub account, manage assembly lines, workstations and so on.
+Open `http://localhost:4200/`, login with gihub account, manage assembly lines, workstations and so on.
