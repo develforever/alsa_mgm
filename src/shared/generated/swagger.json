@@ -1003,96 +1003,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"GetWorkstationsSchema": {
-				"properties": {
-					"ALWStationID": {
-						"type": "number",
-						"format": "double"
-					},
-					"Name": {
-						"type": "string"
-					},
-					"ShortName": {
-						"type": "string"
-					},
-					"PCName": {
-						"type": "string"
-					},
-					"AutoStart": {
-						"type": "boolean"
-					},
-					"CreatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"UpdatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"ALWStationID",
-					"Name",
-					"ShortName",
-					"AutoStart",
-					"CreatedAt",
-					"UpdatedAt"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_GetWorkstationsSchema_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/GetWorkstationsSchema"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_GetWorkstationsSchema_": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/GetWorkstationsSchema"
-						},
-						"type": "array"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponse_GetWorkstationsSchema_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationsSchema_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_GetWorkstationsSchema_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseInfo"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
-			},
 			"GetWorkstationSchema": {
 				"properties": {
 					"ALWStationID": {
@@ -1131,41 +1041,32 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_GetWorkstationSchema_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/GetWorkstationSchema"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_ALWStation_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/ALWStation"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_ALWStation_": {
+			"ApiResponseSingle_GetWorkstationSchema-Array_": {
 				"properties": {
 					"data": {
 						"items": {
-							"$ref": "#/components/schemas/ALWStation"
+							"$ref": "#/components/schemas/GetWorkstationSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetWorkstationSchema-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/GetWorkstationSchema"
+							},
+							"type": "array"
 						},
 						"type": "array"
 					},
@@ -1182,13 +1083,65 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponse_ALWStation_": {
+			"ApiResponse_GetWorkstationSchema-Array_": {
 				"anyOf": [
 					{
-						"$ref": "#/components/schemas/ApiResponseSingle_ALWStation_"
+						"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationSchema-Array_"
 					},
 					{
-						"$ref": "#/components/schemas/ApiResponseList_ALWStation_"
+						"$ref": "#/components/schemas/ApiResponseList_GetWorkstationSchema-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_GetWorkstationSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetWorkstationSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetWorkstationSchema_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GetWorkstationSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_GetWorkstationSchema_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_GetWorkstationSchema_"
 					},
 					{
 						"$ref": "#/components/schemas/ApiResponseInfo"
@@ -1238,89 +1191,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"GetProductsSchema": {
-				"properties": {
-					"ProductID": {
-						"type": "number",
-						"format": "double"
-					},
-					"Name": {
-						"type": "string"
-					},
-					"Active": {
-						"type": "boolean"
-					},
-					"CreatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"UpdatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"ProductID",
-					"Name",
-					"Active",
-					"CreatedAt",
-					"UpdatedAt"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_GetProductsSchema_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/GetProductsSchema"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_GetProductsSchema_": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/GetProductsSchema"
-						},
-						"type": "array"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponse_GetProductsSchema_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_GetProductsSchema_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_GetProductsSchema_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseInfo"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
-			},
 			"GetProductSchema": {
 				"properties": {
 					"ProductID": {
@@ -1352,41 +1222,32 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_GetProductSchema_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/GetProductSchema"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_Product_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/Product"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_Product_": {
+			"ApiResponseSingle_GetProductSchema-Array_": {
 				"properties": {
 					"data": {
 						"items": {
-							"$ref": "#/components/schemas/Product"
+							"$ref": "#/components/schemas/GetProductSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetProductSchema-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/GetProductSchema"
+							},
+							"type": "array"
 						},
 						"type": "array"
 					},
@@ -1403,13 +1264,65 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponse_Product_": {
+			"ApiResponse_GetProductSchema-Array_": {
 				"anyOf": [
 					{
-						"$ref": "#/components/schemas/ApiResponseSingle_Product_"
+						"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema-Array_"
 					},
 					{
-						"$ref": "#/components/schemas/ApiResponseList_Product_"
+						"$ref": "#/components/schemas/ApiResponseList_GetProductSchema-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_GetProductSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetProductSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetProductSchema_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GetProductSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_GetProductSchema_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_GetProductSchema_"
 					},
 					{
 						"$ref": "#/components/schemas/ApiResponseInfo"
@@ -1451,95 +1364,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"GetLinesSchema": {
-				"properties": {
-					"ALAssLineID": {
-						"type": "number",
-						"format": "double"
-					},
-					"ProductID": {
-						"type": "number",
-						"format": "double"
-					},
-					"Name": {
-						"type": "string"
-					},
-					"Status": {
-						"type": "number",
-						"format": "double"
-					},
-					"CreatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"UpdatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"ALAssLineID",
-					"ProductID",
-					"Name",
-					"Status",
-					"CreatedAt",
-					"UpdatedAt"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_GetLinesSchema_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/GetLinesSchema"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_GetLinesSchema_": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/GetLinesSchema"
-						},
-						"type": "array"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponse_GetLinesSchema_": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ApiResponseSingle_GetLinesSchema_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseList_GetLinesSchema_"
-					},
-					{
-						"$ref": "#/components/schemas/ApiResponseInfo"
-					},
-					{
-						"$ref": "#/components/schemas/ApiError"
-					}
-				]
-			},
 			"GetLineSchema": {
 				"properties": {
 					"ALAssLineID": {
@@ -1577,41 +1401,32 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponseSingle_GetLineSchema_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/GetLineSchema"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseSingle_ALAssLine_": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/ALAssLine"
-					},
-					"error": {
-						"$ref": "#/components/schemas/ApiError"
-					},
-					"meta": {
-						"$ref": "#/components/schemas/ApiMeta"
-					}
-				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ApiResponseList_ALAssLine_": {
+			"ApiResponseSingle_GetLineSchema-Array_": {
 				"properties": {
 					"data": {
 						"items": {
-							"$ref": "#/components/schemas/ALAssLine"
+							"$ref": "#/components/schemas/GetLineSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetLineSchema-Array_": {
+				"properties": {
+					"data": {
+						"items": {
+							"items": {
+								"$ref": "#/components/schemas/GetLineSchema"
+							},
+							"type": "array"
 						},
 						"type": "array"
 					},
@@ -1628,13 +1443,65 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ApiResponse_ALAssLine_": {
+			"ApiResponse_GetLineSchema-Array_": {
 				"anyOf": [
 					{
-						"$ref": "#/components/schemas/ApiResponseSingle_ALAssLine_"
+						"$ref": "#/components/schemas/ApiResponseSingle_GetLineSchema-Array_"
 					},
 					{
-						"$ref": "#/components/schemas/ApiResponseList_ALAssLine_"
+						"$ref": "#/components/schemas/ApiResponseList_GetLineSchema-Array_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseInfo"
+					},
+					{
+						"$ref": "#/components/schemas/ApiError"
+					}
+				]
+			},
+			"ApiResponseSingle_GetLineSchema_": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/GetLineSchema"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponseList_GetLineSchema_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GetLineSchema"
+						},
+						"type": "array"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ApiError"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/ApiMeta"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ApiResponse_GetLineSchema_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ApiResponseSingle_GetLineSchema_"
+					},
+					{
+						"$ref": "#/components/schemas/ApiResponseList_GetLineSchema_"
 					},
 					{
 						"$ref": "#/components/schemas/ApiResponseInfo"
@@ -3052,14 +2919,14 @@
 		},
 		"/api/workstations": {
 			"get": {
-				"operationId": "GetAll",
+				"operationId": "GetAllWorkstations",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_GetWorkstationsSchema_"
+									"$ref": "#/components/schemas/ApiResponse_GetWorkstationSchema-Array_"
 								}
 							}
 						}
@@ -3101,14 +2968,14 @@
 				]
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateWorkstation",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALWStation_"
+									"$ref": "#/components/schemas/ApiResponse_GetWorkstationSchema_"
 								}
 							}
 						}
@@ -3133,7 +3000,7 @@
 		},
 		"/api/workstations/{id}": {
 			"get": {
-				"operationId": "GetOne",
+				"operationId": "GetWorkstation",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3142,10 +3009,10 @@
 								"schema": {
 									"anyOf": [
 										{
-											"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationSchema_"
+											"$ref": "#/components/schemas/ApiError"
 										},
 										{
-											"$ref": "#/components/schemas/ApiError"
+											"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationSchema_"
 										}
 									]
 								}
@@ -3170,14 +3037,21 @@
 				]
 			},
 			"patch": {
-				"operationId": "Update",
+				"operationId": "UpdateWorkstation",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALWStation_"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiError"
+										},
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetWorkstationSchema_"
+										}
+									]
 								}
 							}
 						}
@@ -3210,7 +3084,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "Delete",
+				"operationId": "DeleteWorkstation",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3242,14 +3116,14 @@
 		},
 		"/api/products": {
 			"get": {
-				"operationId": "GetAll",
+				"operationId": "GetAllProducts",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_GetProductsSchema_"
+									"$ref": "#/components/schemas/ApiResponse_GetProductSchema-Array_"
 								}
 							}
 						}
@@ -3291,14 +3165,14 @@
 				]
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateProduct",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_Product_"
+									"$ref": "#/components/schemas/ApiResponse_GetProductSchema_"
 								}
 							}
 						}
@@ -3323,7 +3197,7 @@
 		},
 		"/api/products/{id}": {
 			"get": {
-				"operationId": "GetOne",
+				"operationId": "GetProduct",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3332,10 +3206,10 @@
 								"schema": {
 									"anyOf": [
 										{
-											"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
+											"$ref": "#/components/schemas/ApiError"
 										},
 										{
-											"$ref": "#/components/schemas/ApiError"
+											"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
 										}
 									]
 								}
@@ -3360,14 +3234,21 @@
 				]
 			},
 			"patch": {
-				"operationId": "Update",
+				"operationId": "UpdateProduct",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_Product_"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiError"
+										},
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetProductSchema_"
+										}
+									]
 								}
 							}
 						}
@@ -3400,7 +3281,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "Delete",
+				"operationId": "DeleteProduct",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3432,14 +3313,14 @@
 		},
 		"/api/lines": {
 			"get": {
-				"operationId": "GetAll",
+				"operationId": "GetAllLines",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_GetLinesSchema_"
+									"$ref": "#/components/schemas/ApiResponse_GetLineSchema-Array_"
 								}
 							}
 						}
@@ -3481,14 +3362,14 @@
 				]
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateLine",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALAssLine_"
+									"$ref": "#/components/schemas/ApiResponse_GetLineSchema_"
 								}
 							}
 						}
@@ -3513,7 +3394,7 @@
 		},
 		"/api/lines/{id}": {
 			"get": {
-				"operationId": "GetOne",
+				"operationId": "GetLine",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3522,10 +3403,10 @@
 								"schema": {
 									"anyOf": [
 										{
-											"$ref": "#/components/schemas/ApiResponseSingle_GetLineSchema_"
+											"$ref": "#/components/schemas/ApiError"
 										},
 										{
-											"$ref": "#/components/schemas/ApiError"
+											"$ref": "#/components/schemas/ApiResponseSingle_GetLineSchema_"
 										}
 									]
 								}
@@ -3550,14 +3431,21 @@
 				]
 			},
 			"patch": {
-				"operationId": "Update",
+				"operationId": "UpdateLine",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiResponse_ALAssLine_"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ApiError"
+										},
+										{
+											"$ref": "#/components/schemas/ApiResponseSingle_GetLineSchema_"
+										}
+									]
 								}
 							}
 						}
@@ -3590,7 +3478,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "Delete",
+				"operationId": "DeleteLine",
 				"responses": {
 					"200": {
 						"description": "Ok",
