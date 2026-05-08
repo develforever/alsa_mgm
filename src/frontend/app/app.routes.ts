@@ -16,13 +16,13 @@ const children = [
 
 const menuItems = [
   {
-    label: 'Logi audytu',
+    label: 'MENU.AUDIT_LOGS',
     link: '/audit-logs',
     icon: 'receipt',
     requiresAuth: true
   },
   {
-    label: 'Zarządzanie użytkownikami',
+    label: 'MENU.USER_MANAGEMENT',
     link: '/users',
     icon: 'people',
     requiresAuth: true,
@@ -50,13 +50,13 @@ children.push(home);
 export const routes: Routes = [
   {
     path: '',
-    title: 'Home',
+    title: 'MENU.HOME',
     data: { menuItems },
     children
   },
   {
     path: 'dev/context-menu-registry',
     component: ContextMenuDevToolComponent,
-    title: 'ContextMenu Registry - Dev Tool'
+    title: 'DEV_TOOL.TITLE'
   }
 ];

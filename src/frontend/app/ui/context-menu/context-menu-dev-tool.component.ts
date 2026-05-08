@@ -16,6 +16,8 @@ interface TreeNode {
     children?: TreeNode[];
 }
 
+import { TranslocoModule } from '@jsverse/transloco';
+
 @Component({
     selector: 'app-context-menu-dev-tool',
     standalone: true,
@@ -26,15 +28,16 @@ interface TreeNode {
         MatIconModule,
         MatInputModule,
         MatFormFieldModule,
-        MatExpansionModule
+        MatExpansionModule,
+        TranslocoModule
     ],
     template: `
         <div class="dev-tool-container">
             <div class="header">
-                <h2>ContextMenu Registry - Narzędzie Deweloperskie</h2>
+                <h2>{{ 'DEV_TOOL.TITLE' | transloco }}</h2>
                 <button mat-button (click)="refresh()">
                     <mat-icon>refresh</mat-icon>
-                    Odśwież
+                    {{ 'DEV_TOOL.REFRESH' | transloco }}
                 </button>
             </div>
 
@@ -43,22 +46,22 @@ interface TreeNode {
                     <mat-icon class="stat-icon">extension</mat-icon>
                     <div class="stat-content">
                         <div class="stat-value">{{ categoryCount() }}</div>
-                        <div class="stat-label">Kategorii</div>
+                        <div class="stat-label">{{ 'DEV_TOOL.CATEGORIES' | transloco }}</div>
                     </div>
                 </div>
                 <div class="stat-card">
                     <mat-icon class="stat-icon">list</mat-icon>
                     <div class="stat-content">
                         <div class="stat-value">{{ totalActionCount() }}</div>
-                        <div class="stat-label">Całkowita liczba akcji</div>
+                        <div class="stat-label">{{ 'DEV_TOOL.TOTAL_ACTIONS' | transloco }}</div>
                     </div>
                 </div>
             </div>
 
             <div class="filter-section">
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Filtruj po typie kontekstu</mat-label>
-                    <input matInput [(ngModel)]="filterText" placeholder="np. table-row, audit-log-row...">
+                    <mat-label>{{ 'DEV_TOOL.FILTER_LABEL' | transloco }}</mat-label>
+                    <input matInput [(ngModel)]="filterText" [placeholder]="'DEV_TOOL.FILTER_PLACEHOLDER' | transloco">
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
@@ -72,7 +75,7 @@ interface TreeNode {
                                     <div class="node-content category-node">
                                         <mat-icon>extension</mat-icon>
                                         <span class="node-name">{{ node.name }}</span>
-                                        <span class="action-count">{{ node.children?.length }} akcji</span>
+                                        <span class="action-count">{{ 'DEV_TOOL.ACTIONS_COUNT' | transloco: { count: node.children?.length } }}</span>
                                     </div>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>

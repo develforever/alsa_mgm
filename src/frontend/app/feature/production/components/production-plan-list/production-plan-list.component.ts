@@ -19,6 +19,7 @@ import { ProductionPlanService, ProductionPlanFilter } from '../../../../service
 import { ProductionPlan, ProductionPlanStatus, ProductionPriority } from '../../../../../../shared/models/types';
 import { ProductionPlanStatusPipe } from '../../pipes/production-plan-status.pipe';
 import { ProductionPriorityPipe } from '../../pipes/production-priority.pipe';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-production-plan-list',
@@ -41,6 +42,7 @@ import { ProductionPriorityPipe } from '../../pipes/production-priority.pipe';
     AppUiDataTableComponent,
     ProductionPlanStatusPipe,
     ProductionPriorityPipe,
+    TranslocoModule
   ],
   templateUrl: './production-plan-list.component.html',
   styleUrls: ['./production-plan-list.component.scss'],
@@ -49,6 +51,7 @@ export class ProductionPlanListComponent implements OnInit {
   private service = inject(ProductionPlanService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private transloco = inject(TranslocoService);
 
   filterForm!: FormGroup;
   refresh$ = new Subject<void>();
@@ -131,26 +134,27 @@ export class ProductionPlanListComponent implements OnInit {
     const formValue = this.filterForm.value;
     const filters: string[] = [];
 
-    if (formValue.productId) filters.push(`Produkt: ${formValue.productId}`);
-    if (formValue.assemblyLineId) filters.push(`Linia: ${formValue.assemblyLineId}`);
-    if (formValue.status) filters.push(`Status: ${formValue.status}`);
-    if (formValue.startDateFrom) filters.push(`Od: ${formValue.startDateFrom}`);
-    if (formValue.startDateTo) filters.push(`Do: ${formValue.startDateTo}`);
+    if (formValue.productId) filters.push(`${this.transloco.translate('PRODUCTION_PLAN.FILTER_PRODUCT')}: ${formValue.productId}`);
+    if (formValue.assemblyLineId) filters.push(`${this.transloco.translate('PRODUCTION_PLAN.FILTER_ASSEMBLY_LINE')}: ${formValue.assemblyLineId}`);
+    if (formValue.status) filters.push(`${this.transloco.translate('PRODUCTION_PLAN.FILTER_STATUS')}: ${this.transloco.translate('ENUM.PLAN_STATUS.' + formValue.status.toUpperCase() )}`);
+    if (formValue.startDateFrom) filters.push(`${this.transloco.translate('PRODUCTION_PLAN.FILTER_DATE_FROM')}: ${formValue.startDateFrom}`);
+    if (formValue.startDateTo) filters.push(`${this.transloco.translate('PRODUCTION_PLAN.FILTER_DATE_TO')}: ${formValue.startDateTo}`);
 
     this.activeFilters.set(filters);
   }
 
   removeFilter(filter: string): void {
-    if (filter.startsWith('Produkt:')) this.filterForm.patchValue({ productId: '' });
-    if (filter.startsWith('Linia:')) this.filterForm.patchValue({ assemblyLineId: '' });
-    if (filter.startsWith('Status:')) this.filterForm.patchValue({ status: '' });
-    if (filter.startsWith('Od:')) this.filterForm.patchValue({ startDateFrom: '' });
-    if (filter.startsWith('Do:')) this.filterForm.patchValue({ startDateTo: '' });
+    if (filter.startsWith(this.transloco.translate('PRODUCTION_PLAN.FILTER_PRODUCT'))) this.filterForm.patchValue({ productId: '' });
+    if (filter.startsWith(this.transloco.translate('PRODUCTION_PLAN.FILTER_ASSEMBLY_LINE'))) this.filterForm.patchValue({ assemblyLineId: '' });
+    if (filter.startsWith(this.transloco.translate('PRODUCTION_PLAN.FILTER_STATUS'))) this.filterForm.patchValue({ status: '' });
+    if (filter.startsWith(this.transloco.translate('PRODUCTION_PLAN.FILTER_DATE_FROM'))) this.filterForm.patchValue({ startDateFrom: '' });
+    if (filter.startsWith(this.transloco.translate('PRODUCTION_PLAN.FILTER_DATE_TO'))) this.filterForm.patchValue({ startDateTo: '' });
     this.refresh$.next();
   }
 
   deletePlan(plan: ProductionPlan): void {
-    if (confirm(`Czy na pewno chcesz usunąć plan produkcji #${plan.id}?`)) {
+    const msg = this.transloco.translate('PRODUCTION_PLAN.CONFIRM_DELETE', { id: plan.id });
+    if (confirm(msg)) {
       this.service.deleteProductionPlan(plan.id).subscribe(() => {
         this.refresh$.next();
       });

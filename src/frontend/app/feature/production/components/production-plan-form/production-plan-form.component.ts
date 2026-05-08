@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { ProductionPlanService } from '../../../../services/data/production-plan.service';
 import { DataProductService } from '../../../assembly/components/product-list/service/product.service';
 import { DataAssemblyLineService } from '../../../assembly/components/line-list/service/line.service';
@@ -35,6 +36,7 @@ import { ApiResponseSingle } from '../../../../../../shared/api/ApiResponse';
     MatNativeDateModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    TranslocoModule
   ],
   templateUrl: './production-plan-form.component.html',
   styleUrls: ['./production-plan-form.component.scss'],
@@ -48,6 +50,7 @@ export class ProductionPlanFormComponent implements OnInit {
   private productService = inject(DataProductService);
   private lineService = inject(DataAssemblyLineService);
   private destroyRef = inject(DestroyRef);
+  private transloco = inject(TranslocoService);
 
   planForm!: FormGroup;
   isEdit = false;
@@ -86,7 +89,7 @@ export class ProductionPlanFormComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        this.snackBar.open('Błąd podczas ładowania produktów', 'Zamknij', { duration: 3000 });
+        this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.LOAD_PRODUCTS_ERROR'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
         this.loading = false;
       },
     });
@@ -101,7 +104,7 @@ export class ProductionPlanFormComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        this.snackBar.open('Błąd podczas ładowania linii montażowych', 'Zamknij', { duration: 3000 });
+        this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.LOAD_LINES_ERROR'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
         this.loading = false;
       },
     });
@@ -142,7 +145,7 @@ export class ProductionPlanFormComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        this.snackBar.open('Błąd podczas ładowania planu', 'Zamknij', { duration: 3000 });
+        this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.LOAD_PLAN_ERROR'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
         this.loading = false;
       },
     });
@@ -164,21 +167,21 @@ export class ProductionPlanFormComponent implements OnInit {
     if (this.isEdit && this.planId) {
       this.service.updateProductionPlan(this.planId, request).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
-          this.snackBar.open('Plan zaktualizowany pomyślnie', 'Zamknij', { duration: 3000 });
+          this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.UPDATE_SUCCESS'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
           this.router.navigate(['/production-plans']);
         },
         error: () => {
-          this.snackBar.open('Błąd podczas aktualizacji planu', 'Zamknij', { duration: 3000 });
+          this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.UPDATE_ERROR'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
         },
       });
     } else {
       this.service.createProductionPlan(request).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
-          this.snackBar.open('Plan utworzony pomyślnie', 'Zamknij', { duration: 3000 });
+          this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.CREATE_SUCCESS'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
           this.router.navigate(['/production-plans']);
         },
         error: () => {
-          this.snackBar.open('Błąd podczas tworzenia planu', 'Zamknij', { duration: 3000 });
+          this.snackBar.open(this.transloco.translate('PRODUCTION_PLAN.MESSAGES.CREATE_ERROR'), this.transloco.translate('COMMON.CLOSE'), { duration: 3000 });
         },
       });
     }

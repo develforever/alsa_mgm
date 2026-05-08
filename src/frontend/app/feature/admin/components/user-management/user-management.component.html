@@ -4,15 +4,15 @@
     <mat-card-header>
       <mat-card-title>
         <mat-icon>filter_list</mat-icon>
-        Filtry użytkowników
+        {{ 'USER_MANAGEMENT.FILTER_TITLE' | transloco }}
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="filterForm" class="filter-form">
         <mat-form-field appearance="outline">
-          <mat-label>Rola</mat-label>
+          <mat-label>{{ 'USER_MANAGEMENT.ROLE' | transloco }}</mat-label>
           <mat-select formControlName="role">
-            <mat-option value="">Wszystkie</mat-option>
+            <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
             @for (role of availableRoles(); track role) {
               <mat-option [value]="role">{{ role }}</mat-option>
             }
@@ -20,29 +20,29 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FILTER_STATUS' | transloco }}</mat-label>
           <mat-select formControlName="isActive">
-            <mat-option value="">Wszystkie</mat-option>
-            <mat-option [value]="true">Aktywni</mat-option>
-            <mat-option [value]="false">Nieaktywni</mat-option>
+            <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
+            <mat-option [value]="true">{{ 'USER_MANAGEMENT.STATUS_ACTIVE' | transloco }}</mat-option>
+            <mat-option [value]="false">{{ 'USER_MANAGEMENT.STATUS_INACTIVE' | transloco }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <div class="filter-actions">
           <button mat-raised-button color="primary" (click)="applyFilters()">
             <mat-icon>search</mat-icon>
-            Zastosuj
+            {{ 'COMMON.APPLY' | transloco }}
           </button>
           <button mat-button (click)="clearFilters()">
             <mat-icon>clear</mat-icon>
-            Wyczyść
+            {{ 'COMMON.CLEAR' | transloco }}
           </button>
         </div>
       </form>
 
       @if (activeFilters().length > 0) {
         <div class="active-filters">
-          <span>Aktywne filtry:</span>
+          <span>{{ 'USER_MANAGEMENT.ACTIVE_FILTERS' | transloco }}</span>
           <mat-chip-set>
             @for (filter of activeFilters(); track filter) {
               <mat-chip (removed)="removeFilter(filter)">
@@ -74,7 +74,7 @@
 
         <ng-template appTableCellDef="role" let-row>
           <mat-chip [color]="getRoleColor(row.role)" selected>
-            {{ row.role }}
+            {{ 'ENUM.ROLE.' + (row.role | uppercase) | transloco: { defaultValue: row.role } }}
           </mat-chip>
         </ng-template>
 
@@ -92,20 +92,20 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="updateUserRole(row, userRole.Admin)">
               <mat-icon>admin_panel_settings</mat-icon>
-              <span>Ustaw jako Admin</span>
+              <span>{{ 'USER_MANAGEMENT.SET_AS_ADMIN' | transloco }}</span>
             </button>
             <button mat-menu-item (click)="updateUserRole(row, userRole.Operator)">
               <mat-icon>build</mat-icon>
-              <span>Ustaw jako Operator</span>
+              <span>{{ 'USER_MANAGEMENT.SET_AS_OPERATOR' | transloco }}</span>
             </button>
             <button mat-menu-item (click)="updateUserRole(row, userRole.Viewer)">
               <mat-icon>visibility</mat-icon>
-              <span>Ustaw jako Viewer</span>
+              <span>{{ 'USER_MANAGEMENT.SET_AS_VIEWER' | transloco }}</span>
             </button>
             <mat-divider></mat-divider>
             <button mat-menu-item (click)="deleteUser(row)" class="delete-action">
               <mat-icon color="warn">delete</mat-icon>
-              <span>Usuń użytkownika</span>
+              <span>{{ 'USER_MANAGEMENT.DELETE_USER' | transloco }}</span>
             </button>
           </mat-menu>
         </ng-template>

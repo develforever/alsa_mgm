@@ -6,7 +6,7 @@
       [href]="item.url"
       (click)="!$last && navigate($event, item.url)"
       [attr.aria-current]="$last ? 'page' : null"
-    >{{ item.title }}</a>
+    >{{ item.title | transloco }}</a>
     @if (!$last) {
       <span class="breadcrumb__sep" aria-hidden="true">›</span>
     }

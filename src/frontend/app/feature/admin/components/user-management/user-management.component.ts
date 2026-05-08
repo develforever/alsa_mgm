@@ -14,8 +14,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { Subject } from 'rxjs';
 import { AppUiDataTableComponent, TableFetchOptions } from '../../../../ui/data/table.component';
-import { DataUserService, UserRole, UpdateUserRequest } from '../../../../services/data/user.service';
 import { User } from '../../../../../../shared/models/types';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
+import { DataUserService, UserRole, UpdateUserRequest } from '../../../../services/data/user.service';
 
 @Component({
   selector: 'app-user-management',
@@ -35,6 +36,7 @@ import { User } from '../../../../../../shared/models/types';
     MatMenuModule,
     MatDividerModule,
     AppUiDataTableComponent,
+    TranslocoModule
   ],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss'],
@@ -43,6 +45,7 @@ export class UserManagementComponent implements OnInit {
   private dataService = inject(DataUserService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private transloco = inject(TranslocoService);
 
   filterForm!: FormGroup;
   refresh$ = new Subject<void>();
@@ -105,17 +108,18 @@ export class UserManagementComponent implements OnInit {
     const formValue = this.filterForm.value;
     const filters: string[] = [];
 
-    if (formValue.role) filters.push(`Rola: ${formValue.role}`);
+    if (formValue.role) filters.push(`${this.transloco.translate('USER_MANAGEMENT.ROLE')}: ${formValue.role}`);
     if (formValue.isActive !== '' && formValue.isActive !== null) {
-      filters.push(`Status: ${formValue.isActive ? 'Aktywny' : 'Nieaktywny'}`);
+      const activeStr = formValue.isActive ? this.transloco.translate('USER_MANAGEMENT.STATUS_ACTIVE') : this.transloco.translate('USER_MANAGEMENT.STATUS_INACTIVE');
+      filters.push(`${this.transloco.translate('PRODUCTION_PLAN.FILTER_STATUS')}: ${activeStr}`);
     }
 
     this.activeFilters.set(filters);
   }
 
   removeFilter(filter: string): void {
-    if (filter.startsWith('Rola:')) this.filterForm.patchValue({ role: '' });
-    if (filter.startsWith('Status:')) this.filterForm.patchValue({ isActive: '' });
+    if (filter.startsWith(this.transloco.translate('USER_MANAGEMENT.ROLE'))) this.filterForm.patchValue({ role: '' });
+    if (filter.startsWith(this.transloco.translate('PRODUCTION_PLAN.FILTER_STATUS'))) this.filterForm.patchValue({ isActive: '' });
     this.refresh$.next();
   }
 
@@ -134,7 +138,8 @@ export class UserManagementComponent implements OnInit {
   }
 
   deleteUser(user: User): void {
-    if (confirm(`Czy na pewno chcesz usunąć użytkownika ${user.username}?`)) {
+    const msg = this.transloco.translate('USER_MANAGEMENT.CONFIRM_DELETE', { username: user.username });
+    if (confirm(msg)) {
       this.dataService.deleteUser(user.id!).subscribe(() => {
         this.refresh$.next();
       });

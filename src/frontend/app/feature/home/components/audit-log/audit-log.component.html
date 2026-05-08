@@ -4,7 +4,7 @@
     <mat-card-header>
       <mat-card-title>
         <mat-icon>filter_list</mat-icon>
-        Filtry logów audytu
+        {{ 'AUDIT.FILTER_TITLE' | transloco }}
       </mat-card-title>
     </mat-card-header>
 
@@ -13,9 +13,9 @@
         <div class="filter-row">
           <!-- Entity Name Filter -->
           <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Encja</mat-label>
+            <mat-label>{{ 'AUDIT.ENTITY' | transloco }}</mat-label>
             <mat-select formControlName="entityName">
-              <mat-option value="">Wszystkie</mat-option>
+              <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
               @for (entity of entityNames(); track entity) {
                 <mat-option [value]="entity">{{ entity }}</mat-option>
               }
@@ -24,9 +24,9 @@
 
           <!-- Action Filter -->
           <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Akcja</mat-label>
+            <mat-label>{{ 'AUDIT.ACTION' | transloco }}</mat-label>
             <mat-select formControlName="action">
-              <mat-option value="">Wszystkie</mat-option>
+              <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
               @for (action of actions(); track action) {
                 <mat-option [value]="action">{{ action }}</mat-option>
               }
@@ -35,7 +35,7 @@
 
           <!-- User Email Filter -->
           <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Użytkownik (email)</mat-label>
+            <mat-label>{{ 'AUDIT.USER_EMAIL' | transloco }}</mat-label>
             <input matInput formControlName="userEmail" placeholder="np. user@example.com">
           </mat-form-field>
         </div>
@@ -43,7 +43,7 @@
         <div class="filter-row">
           <!-- Date From -->
           <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Data od</mat-label>
+            <mat-label>{{ 'AUDIT.DATE_FROM' | transloco }}</mat-label>
             <input matInput [matDatepicker]="pickerFrom" formControlName="dateFrom">
             <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
             <mat-datepicker #pickerFrom></mat-datepicker>
@@ -51,7 +51,7 @@
 
           <!-- Date To -->
           <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Data do</mat-label>
+            <mat-label>{{ 'AUDIT.DATE_TO' | transloco }}</mat-label>
             <input matInput [matDatepicker]="pickerTo" formControlName="dateTo">
             <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
             <mat-datepicker #pickerTo></mat-datepicker>
@@ -61,11 +61,11 @@
           <div class="filter-actions">
             <button mat-raised-button color="primary" (click)="applyFilters()">
               <mat-icon>search</mat-icon>
-              Zastosuj
+              {{ 'COMMON.APPLY' | transloco }}
             </button>
             <button mat-button (click)="clearFilters()">
               <mat-icon>clear</mat-icon>
-              Wyczyść
+              {{ 'COMMON.CLEAR' | transloco }}
             </button>
           </div>
         </div>
@@ -74,7 +74,7 @@
       <!-- Active Filters Chips -->
       @if (activeFilters().length > 0) {
         <div class="active-filters">
-          <span class="active-filters-label">Aktywne filtry:</span>
+          <span class="active-filters-label">{{ 'USER_MANAGEMENT.ACTIVE_FILTERS' | transloco }}</span>
           <mat-chip-set>
             @for (filter of activeFilters(); track filter) {
               <mat-chip (removed)="removeFilter(filter)">

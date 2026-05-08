@@ -1,0 +1,261 @@
+{
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "LOADING": "Loading...",
+    "SEARCH": "Search",
+    "APPLY": "Apply",
+    "CLEAR": "Clear",
+    "ALL": "All",
+    "NEW": "New",
+    "CLOSE": "Close",
+    "YES": "Yes",
+    "NO": "No",
+    "DETAILS": "Details",
+    "ERROR": "Error",
+    "CLOSE_ERROR": "Close",
+    "DATA_LOAD_ERROR": "Error occurred while loading data"
+  },
+  "SMART_LIST": {
+    "SELECT_ITEM": "Select an item",
+    "SELECT_HINT": "Select something from the list to see details.",
+    "CONTEXT_EDIT": "Edit",
+    "CONTEXT_DELETE": "Delete",
+    "CONTEXT_CONFIG_MENU": "Configure menu",
+    "DELETE_CONFIRM_TITLE": "Confirm deletion",
+    "DELETE_CONFIRM_CONTENT": "Are you sure you want to delete this item?"
+  },
+  "ASSEMBLY": {
+    "MANAGEMENT_TITLE": "Assembly Management",
+    "ADD_PRODUCT": "Add Product",
+    "ADD_LINE": "Add Line",
+    "ADD_WORKSTATION": "Add Workstation",
+    "ADD_ALLOCATION": "Add Allocation",
+    "FORM": {
+      "LINE_NAME": "Line Name",
+      "LINE_NAME_REQUIRED": "Production line name is required",
+      "LINE_STATUS": "Active Status",
+      "LINE_PRODUCT": "Product",
+      "LINE_PRODUCT_REQUIRED": "Selecting a product is mandatory",
+      "ALLOC_LINE": "Assembly Line",
+      "ALLOC_LINE_REQUIRED": "Selecting an assembly line is mandatory",
+      "ALLOC_STATION": "Workstation",
+      "ALLOC_STATION_REQUIRED": "Selecting a workstation is mandatory",
+      "ALLOC_SORT": "Order",
+      "ALLOC_SORT_REQUIRED": "Order is required"
+    }
+  },
+  "AUTH": {
+    "LOGIN_TITLE": "Login",
+    "LOGIN_SUBTITLE": "Log in to access the dashboard",
+    "LOGIN_GITHUB": "Log in with GitHub",
+    "LOGIN_DEV_MOCK": "[DEV] Mock Login",
+    "LOGIN": "Log in",
+    "LOGOUT": "Log out",
+    "CONFIRM_LOGOUT": "Are you sure you want to log out?"
+  },
+  "PRODUCTION_PLAN": {
+    "TITLE": "Production Plans",
+    "NEW_PLAN": "New Plan",
+    "FILTER_PRODUCT": "Product",
+    "FILTER_ASSEMBLY_LINE": "Assembly Line",
+    "FILTER_STATUS": "Status",
+    "FILTER_DATE_FROM": "Date from",
+    "FILTER_DATE_TO": "Date to",
+    "CONFIRM_DELETE": "Are you sure you want to delete plan #{{id}}?",
+    "FORM": {
+      "TITLE_NEW": "New Production Plan",
+      "TITLE_EDIT": "Edit Production Plan",
+      "PRODUCT": "Product",
+      "PRODUCT_PLACEHOLDER": "Select product",
+      "PRODUCT_REQUIRED": "Product is required",
+      "LINE": "Assembly Line",
+      "LINE_PLACEHOLDER": "Select line",
+      "LINE_REQUIRED": "Assembly line is required",
+      "START_DATE": "Start Date",
+      "START_DATE_REQUIRED": "Start date is required",
+      "END_DATE": "End Date",
+      "END_DATE_REQUIRED": "End date is required",
+      "QUANTITY": "Planned Quantity",
+      "QUANTITY_REQUIRED": "Quantity is required",
+      "QUANTITY_MIN": "Quantity must be greater than 0",
+      "PRIORITY": "Priority",
+      "STATUS": "Status",
+      "NOTES": "Notes",
+      "SAVE": "Save",
+      "CREATE": "Create"
+    },
+    "MESSAGES": {
+      "LOAD_PRODUCTS_ERROR": "Error loading products",
+      "LOAD_LINES_ERROR": "Error loading assembly lines",
+      "LOAD_PLAN_ERROR": "Error loading production plan",
+      "UPDATE_SUCCESS": "Plan updated successfully",
+      "UPDATE_ERROR": "Error updating plan",
+      "CREATE_SUCCESS": "Plan created successfully",
+      "CREATE_ERROR": "Error creating plan"
+    }
+  },
+  "AUDIT": {
+    "FILTER_TITLE": "Audit Log Filters",
+    "ENTITY": "Entity",
+    "ACTION": "Action",
+    "USER_EMAIL": "User (email)",
+    "DATE_FROM": "Date from",
+    "DATE_TO": "Date to",
+    "DIALOG_TITLE": "Audit Log Entry Details",
+    "FILTER_PREFIX_ENTITY": "Entity",
+    "FILTER_PREFIX_ACTION": "Action",
+    "FILTER_PREFIX_USER": "User",
+    "FILTER_PREFIX_FROM": "From",
+    "FILTER_PREFIX_TO": "To"
+  },
+  "USER_MANAGEMENT": {
+    "FILTER_TITLE": "User Filters",
+    "ROLE": "Role",
+    "STATUS_ACTIVE": "Active",
+    "STATUS_INACTIVE": "Inactive",
+    "ACTIVE_FILTERS": "Active filters:",
+    "SET_AS_ADMIN": "Set as Admin",
+    "SET_AS_OPERATOR": "Set as Operator",
+    "SET_AS_VIEWER": "Set as Viewer",
+    "DELETE_USER": "Delete User",
+    "CONFIRM_DELETE": "Are you sure you want to delete user {{username}}?"
+  },
+  "ENUM": {
+    "PLAN_STATUS": {
+      "DRAFT": "Draft",
+      "SCHEDULED": "Scheduled",
+      "IN_PROGRESS": "In Progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "PRIORITY": {
+      "LOW": "Low",
+      "NORMAL": "Normal",
+      "HIGH": "High",
+      "CRITICAL": "Critical"
+    },
+    "ROLE": {
+      "ADMIN": "Admin",
+      "OPERATOR": "Operator",
+      "VIEWER": "Viewer"
+    }
+  },
+  "API": {
+    "ERROR_INVALID_PRODUCTION_STATUS": "Invalid status transition: from {{from}} to {{to}}."
+  },
+  "MENU": {
+    "HOME": "Home",
+    "ADMIN": "Admin",
+    "CONTEXT_MENU_REGISTRY": "Context Menu Registry",
+    "AUDIT_LOGS": "Audit Logs",
+    "USER_MANAGEMENT": "User Management",
+    "DASHBOARD": "Dashboard",
+    "ASSEMBLY": "Assembly",
+    "ASSEMBLY_MANAGEMENT": "Assembly Management",
+    "PRODUCTS": "Products",
+    "ALLOCATIONS": "Allocations",
+    "LINES": "Assembly Lines",
+    "WORKSTATIONS": "Workstations",
+    "PRODUCTION_PLANS": "Production Plans",
+    "NEW_PRODUCTION_PLAN": "New Production Plan",
+    "EDIT_PRODUCTION_PLAN": "Edit Production Plan"
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items per page:",
+    "NEXT_PAGE": "Next page",
+    "PREVIOUS_PAGE": "Previous page",
+    "FIRST_PAGE": "First page",
+    "LAST_PAGE": "Last page",
+    "RANGE_LABEL": "{{start}} – {{end}} of {{length}}"
+  },
+  "TABLE_HEADERS": {
+    "NAME": "Name",
+    "SHORTNAME": "Short Name",
+    "PCNAME": "PC Name",
+    "AUTOSTART": "Autostart",
+    "CREATEDAT": "Created At",
+    "UPDATEDAT": "Updated At",
+    "ALWSTATIONID": "Station ID",
+    "PRODUCTID": "Product ID",
+    "LINEID": "Line ID",
+    "ALLOCATIONID": "Allocation ID",
+    "ACTIONS": "Actions",
+    "SORTORDER": "Sort Order",
+    "STATIONNAME": "Station Name",
+    "LINENAME": "Line Name",
+    "PRODUCTNAME": "Product Name",
+    "AVATARURL": "Avatar",
+    "USERNAME": "Username",
+    "EMAIL": "Email",
+    "ROLE": "Role",
+    "ISACTIVE": "Active",
+    "LASTLOGINAT": "Last Login",
+    "TIMESTAMP": "Timestamp",
+    "USEREMAIL": "User Email",
+    "ACTION": "Action",
+    "ENTITYNAME": "Entity Name",
+    "DETAILS": "Details",
+    "ID": "ID",
+    "PRODUCT": "Product",
+    "ASSEMBLYLINE": "Assembly Line",
+    "PLANNEDSTARTDATE": "Planned Start",
+    "PLANNEDENDDATE": "Planned End",
+    "PLANNEDQUANTITY": "Quantity",
+    "STATUS": "Status",
+    "PRIORITY": "Priority"
+  },
+  "DEV_TOOL": {
+    "TITLE": "ContextMenu Registry - Developer Tool",
+    "REFRESH": "Refresh",
+    "CATEGORIES": "Categories",
+    "TOTAL_ACTIONS": "Total Actions",
+    "FILTER_LABEL": "Filter by context type",
+    "FILTER_PLACEHOLDER": "e.g. table-row, audit-log-row...",
+    "ACTIONS_COUNT": "{{count}} actions"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard",
+    "EDIT": "Edit",
+    "SAVE": "Save",
+    "TOGGLE_SIDENAV": "Toggle Sidenav",
+    "RESET_LAYOUT": "Reset Layout",
+    "AVAILABLE_WIDGETS": "Available Widgets",
+    "MOVING_WIDGET": "Moving Widget..."
+  },
+  "WIDGETS": {
+    "RECENT_PRODUCTS": {
+      "TITLE": "Recent Products",
+      "DESC": "Recently added products",
+      "ERROR": "Error fetching products.",
+      "DATE": "Date:",
+      "EMPTY": "No products found"
+    },
+    "STATS": {
+      "TITLE": "System Statistics",
+      "DESC": "Displays basic stats of products, lines, and workstations",
+      "PRODUCTS": "Products",
+      "ACTIVE": "active",
+      "ASSEMBLY_LINES": "Assembly Lines",
+      "LOCKED": "locked",
+      "WORKSTATIONS": "Workstations",
+      "AUTO_START": "with auto-start",
+      "ALLOCATIONS": "Allocations",
+      "ALLOCATIONS_DESC": "WS → Line assignments",
+      "RECENT_ACTIVITY": "Recent activity (audit)",
+      "H24": "24h",
+      "D7": "7 days",
+      "D30": "30 days"
+    },
+    "LINE_STATUS": {
+      "TITLE": "Assembly Lines Status",
+      "DESC": "Displays distribution of assembly line statuses (active, locked, closed)",
+      "ACTIVE": "Active",
+      "LOCKED": "Locked",
+      "CLOSED": "Closed",
+      "NO_DATA": "No assembly line data found"
+    }
+  }
+}

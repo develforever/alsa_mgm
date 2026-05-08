@@ -15,6 +15,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from "../services/auth.service";
 import { AppStoreService } from "../services/store.service";
 
@@ -38,7 +39,8 @@ export interface MenuItem {
         RouterLinkActive,
         MatMenuModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        TranslocoModule
     ],
     templateUrl: "./TopMenu.html",
 })

@@ -25,7 +25,9 @@
         @for (column of columnsToShow(); track column) {
         @if (column !== 'select') {
         <ng-container [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
+            <th mat-header-cell *matHeaderCellDef> 
+                {{ ('TABLE_HEADERS.' + (column | uppercase)) | transloco: { defaultValue: (column | titlecase) } }} 
+            </th>
             <td mat-cell *matCellDef="let element">
 
                 @if (getCustomTemplate(column)) {
@@ -39,7 +41,7 @@
                 <span title="{{ element[column] }}">{{ element[column] | date:'short' }}</span>
                 }
                 @case ('boolean') {
-                {{ element[column] ? 'Tak' : 'Nie' }}
+                {{ element[column] ? ('COMMON.YES' | transloco) : ('COMMON.NO' | transloco) }}
                 }
                 @case ('number') {
                 {{ element[column] | number }}
@@ -47,9 +49,9 @@
 
                 @case ('action_delete_edit') {
                 <button mat-button color="primary"
-                    (click)="$event.stopPropagation(); editAction.emit(element)">Edytuj</button>
+                    (click)="$event.stopPropagation(); editAction.emit(element)">{{ 'COMMON.EDIT' | transloco }}</button>
                 <button mat-button color="warn"
-                    (click)="$event.stopPropagation(); deleteAction.emit(element)">Usuń</button>
+                    (click)="$event.stopPropagation(); deleteAction.emit(element)">{{ 'COMMON.DELETE' | transloco }}</button>
                 }
                 @default {
                 {{ element[column] }}

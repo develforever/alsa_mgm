@@ -21,14 +21,14 @@ export function getRoute(): Route {
             {
                 path: "login",
                 component: LoginComponent,
-                title: "Logowanie do systemu",
+                title: "AUTH.LOGIN_TITLE",
                 canActivate: [codeRedirectGuard],
             },
             {
                 path: "audit-logs",
                 component: AuditLogComponent,
                 canActivate: [authGuard],
-                title: "Logi audytu",
+                title: "MENU.AUDIT_LOGS",
             },
             userManagementRoute(),
         ]

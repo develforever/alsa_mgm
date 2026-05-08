@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, computed, ContentChildren, EventEmitter, inject, Input, OnInit, Output, QueryList, ViewChild, OnDestroy } from "@angular/core";
-import { Observable, Subject, Subscription } from "rxjs";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { Observable, Subject, Subscription, startWith } from "rxjs";
 import { ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
 import { YesNoDialogData } from "../../dialog/yes-no.dialog.component";
 import { AppTableCellDefDirective } from "../AppTableCellDefDirective";
@@ -17,6 +18,7 @@ import { filter } from "rxjs/operators";
 import { ContextMenuServiceImpl } from "../../context-menu/context-menu.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ContextMenuDialogComponent, ContextMenuDialogData } from "../../context-menu/context-menu-dialog.component";
+import { TranslocoService } from '@jsverse/transloco';
 
 export interface INotifyChangeService {
 
@@ -95,6 +97,7 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
     private smartListService = inject(SmartListService);
     private contextMenuService = inject(ContextMenuServiceImpl);
     private dialog = inject(MatDialog);
+    private transloco = inject(TranslocoService);
     private destroy$ = new Subject<void>();
     private actionBusSubscription: Subscription | null = null;
     private registeredActionIds: string[] = [];
@@ -131,7 +134,10 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
         });
     }
 
+    private langSignal = toSignal(this.transloco.langChanges$.pipe(startWith(this.transloco.getActiveLang())));
+
     addLabel = computed(() => {
+        this.langSignal(); // Force dependency on language changes
         if ('getAddLabel' in this.dataService) {
             return (this.dataService as unknown as ITableDataRowAddNavigationData).getAddLabel();
         }
@@ -186,7 +192,7 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
         if ('getItemEditRoute' in this.dataService) {
             actions.push({
                 id: 'edit-row',
-                label: 'Edytuj',
+                label: this.transloco.translate('SMART_LIST.CONTEXT_EDIT'),
                 icon: 'edit',
                 contextType: 'table-row'
             });
@@ -194,14 +200,14 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
 
         actions.push({
             id: 'delete-row',
-            label: 'Usuń',
+            label: this.transloco.translate('SMART_LIST.CONTEXT_DELETE'),
             icon: 'delete',
             contextType: 'table-row'
         });
 
         actions.push({
             id: 'configure-menu',
-            label: 'Konfiguruj menu',
+            label: this.transloco.translate('SMART_LIST.CONTEXT_CONFIG_MENU'),
             icon: 'settings',
             contextType: 'table-row',
             separator: true
@@ -229,8 +235,8 @@ export class SmartListLayoutComponent<T extends object> implements OnInit, After
                 if (primaryKey) {
                     const id = (rowData as Record<string, unknown>)[primaryKey] as string | number;
                     const dialogData: YesNoDialogData = {
-                        title: 'Potwierdzenie usunięcia',
-                        content: 'Czy na pewno chcesz usunąć ten element?'
+                        title: this.transloco.translate('SMART_LIST.DELETE_CONFIRM_TITLE'),
+                        content: this.transloco.translate('SMART_LIST.DELETE_CONFIRM_CONTENT')
                     };
                     this.openDialog(new Event('click'), rowData, dialogData).then(result => {
                         if (result[1]) {

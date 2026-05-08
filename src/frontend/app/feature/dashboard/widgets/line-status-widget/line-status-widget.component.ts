@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DashboardMetricsService, AssemblyLineStatusDistribution } from '../../services/dashboard-metrics.service';
 import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.service';
 
@@ -13,14 +14,15 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
     CommonModule,
     MatCardModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    TranslocoModule
   ],
   template: `
   @if(statusData.length > 0){
     <div class="line-status-widget">
       <h3 class="widget-title">
         <mat-icon>donut_large</mat-icon>
-        Status linii montażowych
+        {{ 'WIDGETS.LINE_STATUS.TITLE' | transloco }}
       </h3>
       
       <div class="status-list">
@@ -46,13 +48,13 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
           <div class="status-footer">
             <mat-chip [ngSwitch]="status.status">
               <span *ngSwitchCase="'Active'" class="chip-content">
-                <mat-icon>check_circle</mat-icon> Aktywne
+                <mat-icon>check_circle</mat-icon> {{ 'WIDGETS.LINE_STATUS.ACTIVE' | transloco }}
               </span>
               <span *ngSwitchCase="'Locked'" class="chip-content">
-                <mat-icon>lock</mat-icon> Zablokowane
+                <mat-icon>lock</mat-icon> {{ 'WIDGETS.LINE_STATUS.LOCKED' | transloco }}
               </span>
               <span *ngSwitchCase="'Closed'" class="chip-content">
-                <mat-icon>cancel</mat-icon> Zamknięte
+                <mat-icon>cancel</mat-icon> {{ 'WIDGETS.LINE_STATUS.CLOSED' | transloco }}
               </span>
             </mat-chip>
             <span class="percentage">{{ status.percentage }}%</span>
@@ -64,7 +66,7 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
   @else {
     <div class="empty-state">
       <mat-icon>info</mat-icon>
-      <p>Brak danych o liniach montażowych</p>
+      <p>{{ 'WIDGETS.LINE_STATUS.NO_DATA' | transloco }}</p>
     </div>
   }
   `,
@@ -216,9 +218,9 @@ export class LineStatusWidgetComponent implements OnInit, IDashboardWidget {
   @Input() widgetConfig: Record<string, unknown> = {};
 
   static metadata: WidgetMetadata = {
-    label: 'Status linii montażowych',
+    label: 'WIDGETS.LINE_STATUS.TITLE',
     icon: 'donut_large',
-    description: 'Wyświetla rozkład statusów linii montażowych (aktywne, zablokowane, zamknięte)'
+    description: 'WIDGETS.LINE_STATUS.DESC'
   };
 
   ngOnInit(): void {
@@ -237,7 +239,7 @@ export class LineStatusWidgetComponent implements OnInit, IDashboardWidget {
     return {};
   }
 
-  setConfig(): void {
+  setConfig(_config: Record<string, unknown>): void {
     // No config needed for this widget
   }
 

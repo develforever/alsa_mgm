@@ -5,7 +5,7 @@
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
-
+      <app-language-selector></app-language-selector>
       @if (authService.isLoggedIn()) {
       <button mat-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>
@@ -15,12 +15,12 @@
         <a mat-menu-item (click)="onLogout()" role="menuitem" tabindex="0" (keyup.enter)="onLogout()"
           (keyup.space)="onLogout()">
           <mat-icon>logout</mat-icon>
-          <span>Wyloguj</span>
+          <span>{{ 'AUTH.LOGOUT' | transloco }}</span>
         </a>
       </mat-menu>
 
       } @else if(router.url !== '/login') {
-      <a mat-button routerLink="/login">Zaloguj się</a>
+      <a mat-button routerLink="/login">{{ 'AUTH.LOGIN' | transloco }}</a>
       }
     </div>
   </div>

@@ -5,11 +5,11 @@ export const getRoute = (): Route => {
   return {
     path: 'dashboard',
     loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent),
-    title: 'Dashboard',
+    title: 'MENU.DASHBOARD',
     canActivate: [authGuard],
     data: {
       manuItem: {
-        label: 'Dashboard',
+        label: 'MENU.DASHBOARD',
         link: '/dashboard',
         icon: 'dashboard',
         menuItems: []

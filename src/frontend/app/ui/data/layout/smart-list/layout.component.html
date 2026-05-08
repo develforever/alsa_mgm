@@ -5,8 +5,8 @@
 <div class="placeholder">
     <ng-content select="[sidebarPlaceholder]">
         <mat-card appearance="outlined">
-            <mat-card-header>Wybierz element</mat-card-header>
-            <mat-card-content>Zaznacz coś z listy, aby zobaczyć szczegóły.</mat-card-content>
+            <mat-card-header>{{ 'SMART_LIST.SELECT_ITEM' | transloco }}</mat-card-header>
+            <mat-card-content>{{ 'SMART_LIST.SELECT_HINT' | transloco }}</mat-card-content>
         </mat-card>
     </ng-content>
 </div>

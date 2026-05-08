@@ -4,6 +4,8 @@ import { GetProductSchema, PatchProductsSchema, PostProductsSchema } from '../..
 import { ICrudService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AbstractCrudService } from '../../../../../services/crud.service';
+import { TranslocoService } from '@jsverse/transloco';
+import { inject } from '@angular/core';
 
 
 @Injectable({
@@ -12,6 +14,8 @@ import { AbstractCrudService } from '../../../../../services/crud.service';
 export class DataProductService extends AbstractCrudService<GetProductSchema, PostProductsSchema, PatchProductsSchema> implements ICrudService<GetProductSchema>,
   ITableDataRowClickNavigationData<GetProductSchema>,
   ITableDataRowAddNavigationData {
+
+  private transloco = inject(TranslocoService);
 
   constructor() {
     super('/products');
@@ -49,7 +53,7 @@ export class DataProductService extends AbstractCrudService<GetProductSchema, Po
   }
 
   getAddLabel(): string {
-    return 'Add Product';
+    return this.transloco.translate('ASSEMBLY.ADD_PRODUCT');
   }
 
   mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {

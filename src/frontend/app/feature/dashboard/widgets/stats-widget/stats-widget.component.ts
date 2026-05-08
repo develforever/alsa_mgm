@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DashboardMetricsService, DashboardMetrics } from '../../services/dashboard-metrics.service';
 import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.service';
 
@@ -13,7 +14,8 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
     CommonModule,
     MatCardModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    TranslocoModule
   ],
   template: `
   @if(metrics){
@@ -23,11 +25,11 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
         <div class="stat-item">
           <div class="stat-header">
             <mat-icon>inventory_2</mat-icon>
-            <span class="stat-label">Produkty</span>
+            <span class="stat-label">{{ 'WIDGETS.STATS.PRODUCTS' | transloco }}</span>
           </div>
           <div class="stat-value">{{ metrics.products.total }}</div>
           <div class="stat-subtext">
-            {{ metrics.products.active }} aktywnych
+            {{ metrics.products.active }} {{ 'WIDGETS.STATS.ACTIVE' | transloco }}
           </div>
           <mat-progress-bar 
             mode="determinate" 
@@ -39,12 +41,12 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
         <div class="stat-item">
           <div class="stat-header">
             <mat-icon>precision_manufacturing</mat-icon>
-            <span class="stat-label">Linie montażowe</span>
+            <span class="stat-label">{{ 'WIDGETS.STATS.ASSEMBLY_LINES' | transloco }}</span>
           </div>
           <div class="stat-value">{{ metrics.assemblyLines.total }}</div>
           <div class="stat-subtext">
-            {{ metrics.assemblyLines.active }} aktywnych / 
-            {{ metrics.assemblyLines.locked }} zablokowanych
+            {{ metrics.assemblyLines.active }} {{ 'WIDGETS.STATS.ACTIVE' | transloco }} / 
+            {{ metrics.assemblyLines.locked }} {{ 'WIDGETS.STATS.LOCKED' | transloco }}
           </div>
           <mat-progress-bar 
             mode="determinate" 
@@ -57,11 +59,11 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
         <div class="stat-item">
           <div class="stat-header">
             <mat-icon>computer</mat-icon>
-            <span class="stat-label">Stanowiska</span>
+            <span class="stat-label">{{ 'WIDGETS.STATS.WORKSTATIONS' | transloco }}</span>
           </div>
           <div class="stat-value">{{ metrics.workstations.total }}</div>
           <div class="stat-subtext">
-            {{ metrics.workstations.autoStartEnabled }} z auto-startem
+            {{ metrics.workstations.autoStartEnabled }} {{ 'WIDGETS.STATS.AUTO_START' | transloco }}
           </div>
           <mat-progress-bar 
             mode="determinate" 
@@ -74,11 +76,11 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
         <div class="stat-item">
           <div class="stat-header">
             <mat-icon>swap_horiz</mat-icon>
-            <span class="stat-label">Alokacje</span>
+            <span class="stat-label">{{ 'WIDGETS.STATS.ALLOCATIONS' | transloco }}</span>
           </div>
           <div class="stat-value">{{ metrics.allocations.total }}</div>
           <div class="stat-subtext">
-            Przypisania WS → Linie
+            {{ 'WIDGETS.STATS.ALLOCATIONS_DESC' | transloco }}
           </div>
         </div>
       </div>
@@ -86,19 +88,19 @@ import { IDashboardWidget, WidgetMetadata } from '../../services/dashboard.servi
       @if(metrics.recentActivity) {
       <!-- Recent Activity -->
       <div class="activity-section">
-        <h4>Ostatnia aktywność (audit)</h4>
+        <h4>{{ 'WIDGETS.STATS.RECENT_ACTIVITY' | transloco }}</h4>
         <div class="activity-stats">
           <div class="activity-item">
             <span class="activity-value">{{ metrics.recentActivity.last24h }}</span>
-            <span class="activity-label">24h</span>
+            <span class="activity-label">{{ 'WIDGETS.STATS.H24' | transloco }}</span>
           </div>
           <div class="activity-item">
             <span class="activity-value">{{ metrics.recentActivity.last7d }}</span>
-            <span class="activity-label">7 dni</span>
+            <span class="activity-label">{{ 'WIDGETS.STATS.D7' | transloco }}</span>
           </div>
           <div class="activity-item">
             <span class="activity-value">{{ metrics.recentActivity.last30d }}</span>
-            <span class="activity-label">30 dni</span>
+            <span class="activity-label">{{ 'WIDGETS.STATS.D30' | transloco }}</span>
           </div>
         </div>
       </div>
@@ -207,9 +209,9 @@ export class StatsWidgetComponent implements OnInit, IDashboardWidget {
   @Input() widgetConfig: Record<string, unknown> = {};
 
   static metadata: WidgetMetadata = {
-    label: 'Statystyki systemu',
+    label: 'WIDGETS.STATS.TITLE',
     icon: 'dashboard',
-    description: 'Wyświetla podstawowe statystyki produktów, linii i stanowisk'
+    description: 'WIDGETS.STATS.DESC'
   };
 
   ngOnInit(): void {
@@ -228,7 +230,7 @@ export class StatsWidgetComponent implements OnInit, IDashboardWidget {
     return {};
   }
 
-  setConfig(config: Record<string, unknown>): void {
+  setConfig(_config: Record<string, unknown>): void {
     // No config needed for this widget
   }
 

@@ -1,25 +1,25 @@
 <div class="dashboard-header">
-    <h1>Dashboard</h1>
+    <h1>{{ 'DASHBOARD.TITLE' | transloco }}</h1>
     <div class="flex flex-gap-1">
         @if (dashboardService.isDashboardActive() && authService.isLoggedIn()) {
         <div class="edit-mode-controls flex flex-gap-1 items-center" style="margin-right: 16px;">
             <mat-slide-toggle [checked]="dashboardService.isEditMode()" (change)="dashboardService.toggleEditMode()"
                 color="primary">
-                Edytuj
+                {{ 'DASHBOARD.EDIT' | transloco }}
             </mat-slide-toggle>
 
             @if (dashboardService.isEditMode()) {
             <button mat-flat-button color="accent" (click)="dashboardService.saveChanges()">
-                <mat-icon>save</mat-icon> Zapisz
+                <mat-icon>save</mat-icon> {{ 'DASHBOARD.SAVE' | transloco }}
             </button>
             }
         </div>
         }
-        <button type="button" matButton (click)="drawer.toggle()">
-            Toggle sidenav
+        <button type="button" mat-button (click)="drawer.toggle()">
+            {{ 'DASHBOARD.TOGGLE_SIDENAV' | transloco }}
         </button>
         <button mat-flat-button color="primary" (click)="resetLayout()">
-            <mat-icon>restore</mat-icon> Reset Layout
+            <mat-icon>restore</mat-icon> {{ 'DASHBOARD.RESET_LAYOUT' | transloco }}
         </button>
     </div>
 </div>
@@ -30,7 +30,7 @@
     <mat-drawer #drawer class="dashboard-sidenav" mode="side">
         <div class="sidenav-wrapper">
             <div class="sidenav-header">
-                <h3>Dostępne Widgety</h3>
+                <h3>{{ 'DASHBOARD.AVAILABLE_WIDGETS' | transloco }}</h3>
                 <button mat-icon-button (click)="drawer.close()">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -42,8 +42,8 @@
                     [cdkDragDisabled]="!dashboardService.isEditMode()">
                     <mat-icon class="widget-icon">{{ widget.metadata.icon }}</mat-icon>
                     <div class="widget-info">
-                        <span class="widget-label">{{ widget.metadata.label }}</span>
-                        <span class="widget-desc">{{ widget.metadata.description }}</span>
+                        <span class="widget-label">{{ widget.metadata.label | transloco }}</span>
+                        <span class="widget-desc">{{ widget.metadata.description | transloco }}</span>
                     </div>
                     <mat-icon class="drag-handle">drag_indicator</mat-icon>
                 </div>
@@ -84,7 +84,7 @@
                         <div *cdkDragPreview class="widget-drag-preview">
                             <div class="widget-drag-preview-content">
                                 <mat-icon>drag_indicator</mat-icon>
-                                <span>Moving Widget...</span>
+                                <span>{{ 'DASHBOARD.MOVING_WIDGET' | transloco }}</span>
                             </div>
                         </div>
                     </div>

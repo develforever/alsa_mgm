@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>
       <mat-icon>{{ isEdit ? 'edit' : 'add' }}</mat-icon>
-      {{ isEdit ? 'Edytuj plan produkcji' : 'Nowy plan produkcji' }}
+      {{ (isEdit ? 'PRODUCTION_PLAN.FORM.TITLE_EDIT' : 'PRODUCTION_PLAN.FORM.TITLE_NEW') | transloco }}
     </mat-card-title>
   </mat-card-header>
 
@@ -10,9 +10,9 @@
     <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>Produkt</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FORM.PRODUCT' | transloco }}</mat-label>
           <mat-select formControlName="productId" required>
-            <mat-option value="">Wybierz produkt</mat-option>
+            <mat-option value="">{{ 'PRODUCTION_PLAN.FORM.PRODUCT_PLACEHOLDER' | transloco }}</mat-option>
             @for (product of products; track product.ProductID) {
               <mat-option [value]="product.ProductID">
                 {{ product.Name }}
@@ -21,15 +21,15 @@
           </mat-select>
           @if (planForm.get('productId')?.hasError('required')) {
             <mat-error>
-              Produkt jest wymagany
+              {{ 'PRODUCTION_PLAN.FORM.PRODUCT_REQUIRED' | transloco }}
             </mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Linia montażowa</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FORM.LINE' | transloco }}</mat-label>
           <mat-select formControlName="assemblyLineId" required>
-            <mat-option value="">Wybierz linię</mat-option>
+            <mat-option value="">{{ 'PRODUCTION_PLAN.FORM.LINE_PLACEHOLDER' | transloco }}</mat-option>
             @for (line of assemblyLines; track line.ALAssLineID) {
               <mat-option [value]="line.ALAssLineID">
                 {{ line.Name }}
@@ -38,7 +38,7 @@
           </mat-select>
           @if (planForm.get('assemblyLineId')?.hasError('required')) {
             <mat-error>
-              Linia montażowa jest wymagana
+              {{ 'PRODUCTION_PLAN.FORM.LINE_REQUIRED' | transloco }}
             </mat-error>
           }
         </mat-form-field>
@@ -46,25 +46,25 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>Data rozpoczęcia</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FORM.START_DATE' | transloco }}</mat-label>
           <input matInput [matDatepicker]="startPicker" formControlName="plannedStartDate" required>
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
           <mat-datepicker #startPicker></mat-datepicker>
           @if (planForm.get('plannedStartDate')?.hasError('required')) {
             <mat-error>
-              Data rozpoczęcia jest wymagana
+              {{ 'PRODUCTION_PLAN.FORM.START_DATE_REQUIRED' | transloco }}
             </mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Data zakończenia</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FORM.END_DATE' | transloco }}</mat-label>
           <input matInput [matDatepicker]="endPicker" formControlName="plannedEndDate" required>
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
           <mat-datepicker #endPicker></mat-datepicker>
           @if (planForm.get('plannedEndDate')?.hasError('required')) {
             <mat-error>
-              Data zakończenia jest wymagana
+              {{ 'PRODUCTION_PLAN.FORM.END_DATE_REQUIRED' | transloco }}
             </mat-error>
           }
         </mat-form-field>
@@ -72,27 +72,27 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>Ilość planowana</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FORM.QUANTITY' | transloco }}</mat-label>
           <input matInput type="number" formControlName="plannedQuantity" required min="1">
           @if (planForm.get('plannedQuantity')?.hasError('required')) {
             <mat-error>
-              Ilość jest wymagana
+              {{ 'PRODUCTION_PLAN.FORM.QUANTITY_REQUIRED' | transloco }}
             </mat-error>
           }
           @if (planForm.get('plannedQuantity')?.hasError('min')) {
             <mat-error>
-              Ilość musi być większa od 0
+              {{ 'PRODUCTION_PLAN.FORM.QUANTITY_MIN' | transloco }}
             </mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Priorytet</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FORM.PRIORITY' | transloco }}</mat-label>
           <mat-select formControlName="priority" required>
-            <mat-option [value]="1">Niski</mat-option>
-            <mat-option [value]="2">Normalny</mat-option>
-            <mat-option [value]="3">Wysoki</mat-option>
-            <mat-option [value]="4">Krytyczny</mat-option>
+            <mat-option [value]="1">{{ 'ENUM.PRIORITY.LOW' | transloco }}</mat-option>
+            <mat-option [value]="2">{{ 'ENUM.PRIORITY.NORMAL' | transloco }}</mat-option>
+            <mat-option [value]="3">{{ 'ENUM.PRIORITY.HIGH' | transloco }}</mat-option>
+            <mat-option [value]="4">{{ 'ENUM.PRIORITY.CRITICAL' | transloco }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -100,13 +100,13 @@
       @if (isEdit) {
         <div class="form-row">
           <mat-form-field appearance="outline">
-            <mat-label>Status</mat-label>
+            <mat-label>{{ 'PRODUCTION_PLAN.FORM.STATUS' | transloco }}</mat-label>
             <mat-select formControlName="status">
-              <mat-option [value]="'draft'">Szkic</mat-option>
-              <mat-option [value]="'scheduled'">Zaplanowane</mat-option>
-              <mat-option [value]="'in_progress'">W trakcie</mat-option>
-              <mat-option [value]="'completed'">Zakończone</mat-option>
-              <mat-option [value]="'cancelled'">Anulowane</mat-option>
+              <mat-option [value]="'draft'">{{ 'ENUM.PLAN_STATUS.DRAFT' | transloco }}</mat-option>
+              <mat-option [value]="'scheduled'">{{ 'ENUM.PLAN_STATUS.SCHEDULED' | transloco }}</mat-option>
+              <mat-option [value]="'in_progress'">{{ 'ENUM.PLAN_STATUS.IN_PROGRESS' | transloco }}</mat-option>
+              <mat-option [value]="'completed'">{{ 'ENUM.PLAN_STATUS.COMPLETED' | transloco }}</mat-option>
+              <mat-option [value]="'cancelled'">{{ 'ENUM.PLAN_STATUS.CANCELLED' | transloco }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -114,7 +114,7 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Notatki</mat-label>
+          <mat-label>{{ 'PRODUCTION.FORM.NOTES' | transloco }}</mat-label>
           <textarea matInput formControlName="notes" rows="4"></textarea>
         </mat-form-field>
       </div>
@@ -122,11 +122,11 @@
       <div class="form-actions">
         <button mat-stroked-button type="button" (click)="onCancel()">
           <mat-icon>cancel</mat-icon>
-          Anuluj
+          {{ 'COMMON.CANCEL' | transloco }}
         </button>
         <button mat-raised-button color="primary" type="submit" [disabled]="loading">
           <mat-icon>{{ isEdit ? 'save' : 'add' }}</mat-icon>
-          {{ isEdit ? 'Zapisz' : 'Utwórz' }}
+          {{ (isEdit ? 'PRODUCTION.FORM.SAVE' : 'PRODUCTION.FORM.CREATE') | transloco }}
         </button>
       </div>
     </form>
