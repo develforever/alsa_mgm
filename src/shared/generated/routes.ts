@@ -372,45 +372,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetWorkstationsSchema": {
-        "dataType": "refObject",
-        "properties": {
-            "ALWStationID": {"dataType":"double","required":true},
-            "Name": {"dataType":"string","required":true},
-            "ShortName": {"dataType":"string","required":true},
-            "PCName": {"dataType":"string"},
-            "AutoStart": {"dataType":"boolean","required":true},
-            "CreatedAt": {"dataType":"datetime","required":true},
-            "UpdatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_GetWorkstationsSchema_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"ref":"GetWorkstationsSchema"},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_GetWorkstationsSchema_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetWorkstationsSchema"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_GetWorkstationsSchema_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetWorkstationsSchema_"},{"ref":"ApiResponseList_GetWorkstationsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GetWorkstationSchema": {
         "dataType": "refObject",
         "properties": {
@@ -425,6 +386,31 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetWorkstationSchema-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetWorkstationSchema"}},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_GetWorkstationSchema-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"GetWorkstationSchema"}},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_GetWorkstationSchema-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetWorkstationSchema-Array_"},{"ref":"ApiResponseList_GetWorkstationSchema-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_GetWorkstationSchema_": {
         "dataType": "refObject",
         "properties": {
@@ -435,29 +421,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_ALWStation_": {
+    "ApiResponseList_GetWorkstationSchema_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"ALWStation"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetWorkstationSchema"},"required":true},
             "error": {"ref":"ApiError"},
             "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALWStation_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALWStation"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_ALWStation_": {
+    "ApiResponse_GetWorkstationSchema_": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALWStation_"},{"ref":"ApiResponseList_ALWStation_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetWorkstationSchema_"},{"ref":"ApiResponseList_GetWorkstationSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PostWorkstationsSchema": {
@@ -482,43 +458,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetProductsSchema": {
-        "dataType": "refObject",
-        "properties": {
-            "ProductID": {"dataType":"double","required":true},
-            "Name": {"dataType":"string","required":true},
-            "Active": {"dataType":"boolean","required":true},
-            "CreatedAt": {"dataType":"datetime","required":true},
-            "UpdatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_GetProductsSchema_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"ref":"GetProductsSchema"},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_GetProductsSchema_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetProductsSchema"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_GetProductsSchema_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetProductsSchema_"},{"ref":"ApiResponseList_GetProductsSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GetProductSchema": {
         "dataType": "refObject",
         "properties": {
@@ -531,6 +470,31 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetProductSchema-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetProductSchema"}},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_GetProductSchema-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"GetProductSchema"}},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_GetProductSchema-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetProductSchema-Array_"},{"ref":"ApiResponseList_GetProductSchema-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_GetProductSchema_": {
         "dataType": "refObject",
         "properties": {
@@ -541,29 +505,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_Product_": {
+    "ApiResponseList_GetProductSchema_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"Product"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetProductSchema"},"required":true},
             "error": {"ref":"ApiError"},
             "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_Product_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"Product"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_Product_": {
+    "ApiResponse_GetProductSchema_": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_Product_"},{"ref":"ApiResponseList_Product_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetProductSchema_"},{"ref":"ApiResponseList_GetProductSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PostProductsSchema": {
@@ -584,44 +538,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetLinesSchema": {
-        "dataType": "refObject",
-        "properties": {
-            "ALAssLineID": {"dataType":"double","required":true},
-            "ProductID": {"dataType":"double","required":true},
-            "Name": {"dataType":"string","required":true},
-            "Status": {"dataType":"double","required":true},
-            "CreatedAt": {"dataType":"datetime","required":true},
-            "UpdatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_GetLinesSchema_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"ref":"GetLinesSchema"},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_GetLinesSchema_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetLinesSchema"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_GetLinesSchema_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetLinesSchema_"},{"ref":"ApiResponseList_GetLinesSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GetLineSchema": {
         "dataType": "refObject",
         "properties": {
@@ -635,6 +551,31 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseSingle_GetLineSchema-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetLineSchema"}},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponseList_GetLineSchema-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"GetLineSchema"}},"required":true},
+            "error": {"ref":"ApiError"},
+            "meta": {"ref":"ApiMeta"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResponse_GetLineSchema-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetLineSchema-Array_"},{"ref":"ApiResponseList_GetLineSchema-Array_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ApiResponseSingle_GetLineSchema_": {
         "dataType": "refObject",
         "properties": {
@@ -645,29 +586,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseSingle_ALAssLine_": {
+    "ApiResponseList_GetLineSchema_": {
         "dataType": "refObject",
         "properties": {
-            "data": {"ref":"ALAssLine"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"GetLineSchema"},"required":true},
             "error": {"ref":"ApiError"},
             "meta": {"ref":"ApiMeta"},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponseList_ALAssLine_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ALAssLine"},"required":true},
-            "error": {"ref":"ApiError"},
-            "meta": {"ref":"ApiMeta"},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResponse_ALAssLine_": {
+    "ApiResponse_GetLineSchema_": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_ALAssLine_"},{"ref":"ApiResponseList_ALAssLine_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"ref":"ApiResponseSingle_GetLineSchema_"},{"ref":"ApiResponseList_GetLineSchema_"},{"ref":"ApiResponseInfo"},{"ref":"ApiError"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PostLinesSchema": {
@@ -1553,27 +1484,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsWorkstationController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsWorkstationController_getAllWorkstations: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
                 filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/workstations',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
-            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.getAll)),
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.getAllWorkstations)),
 
-            async function WorkstationController_getAll(request: ExRequest, response: ExResponse, next: any) {
+            async function WorkstationController_getAllWorkstations(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_getAll, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_getAllWorkstations, request, response });
 
                 const controller = new WorkstationController();
 
               await templateService.apiHandler({
-                methodName: 'getAll',
+                methodName: 'getAllWorkstations',
                 controller,
                 response,
                 next,
@@ -1585,25 +1516,25 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsWorkstationController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsWorkstationController_getWorkstation: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.get('/api/workstations/:id',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
-            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.getOne)),
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.getWorkstation)),
 
-            async function WorkstationController_getOne(request: ExRequest, response: ExResponse, next: any) {
+            async function WorkstationController_getWorkstation(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_getOne, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_getWorkstation, request, response });
 
                 const controller = new WorkstationController();
 
               await templateService.apiHandler({
-                methodName: 'getOne',
+                methodName: 'getWorkstation',
                 controller,
                 response,
                 next,
@@ -1615,26 +1546,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsWorkstationController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsWorkstationController_createWorkstation: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"PostWorkstationsSchema"},
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/workstations',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
-            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.createWorkstation)),
 
-            async function WorkstationController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function WorkstationController_createWorkstation(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_createWorkstation, request, response });
 
                 const controller = new WorkstationController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createWorkstation',
                 controller,
                 response,
                 next,
@@ -1646,26 +1577,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsWorkstationController_update: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsWorkstationController_updateWorkstation: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
                 body: {"in":"body","name":"body","required":true,"ref":"PatchWorkstationsSchema"},
         };
         app.patch('/api/workstations/:id',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
-            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.update)),
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.updateWorkstation)),
 
-            async function WorkstationController_update(request: ExRequest, response: ExResponse, next: any) {
+            async function WorkstationController_updateWorkstation(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_update, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_updateWorkstation, request, response });
 
                 const controller = new WorkstationController();
 
               await templateService.apiHandler({
-                methodName: 'update',
+                methodName: 'updateWorkstation',
                 controller,
                 response,
                 next,
@@ -1677,25 +1608,25 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsWorkstationController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsWorkstationController_deleteWorkstation: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.delete('/api/workstations/:id',
             ...(fetchMiddlewares<RequestHandler>(WorkstationController)),
-            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.delete)),
+            ...(fetchMiddlewares<RequestHandler>(WorkstationController.prototype.deleteWorkstation)),
 
-            async function WorkstationController_delete(request: ExRequest, response: ExResponse, next: any) {
+            async function WorkstationController_deleteWorkstation(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_delete, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsWorkstationController_deleteWorkstation, request, response });
 
                 const controller = new WorkstationController();
 
               await templateService.apiHandler({
-                methodName: 'delete',
+                methodName: 'deleteWorkstation',
                 controller,
                 response,
                 next,
@@ -1707,27 +1638,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProductController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProductController_getAllProducts: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
                 filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/products',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),
-            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.getAll)),
+            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.getAllProducts)),
 
-            async function ProductController_getAll(request: ExRequest, response: ExResponse, next: any) {
+            async function ProductController_getAllProducts(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_getAll, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_getAllProducts, request, response });
 
                 const controller = new ProductController();
 
               await templateService.apiHandler({
-                methodName: 'getAll',
+                methodName: 'getAllProducts',
                 controller,
                 response,
                 next,
@@ -1739,25 +1670,25 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProductController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProductController_getProduct: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.get('/api/products/:id',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),
-            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.getOne)),
+            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.getProduct)),
 
-            async function ProductController_getOne(request: ExRequest, response: ExResponse, next: any) {
+            async function ProductController_getProduct(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_getOne, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_getProduct, request, response });
 
                 const controller = new ProductController();
 
               await templateService.apiHandler({
-                methodName: 'getOne',
+                methodName: 'getProduct',
                 controller,
                 response,
                 next,
@@ -1769,26 +1700,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProductController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProductController_createProduct: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"PostProductsSchema"},
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/products',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),
-            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.createProduct)),
 
-            async function ProductController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function ProductController_createProduct(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_createProduct, request, response });
 
                 const controller = new ProductController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createProduct',
                 controller,
                 response,
                 next,
@@ -1800,26 +1731,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProductController_update: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProductController_updateProduct: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
                 body: {"in":"body","name":"body","required":true,"ref":"PatchProductsSchema"},
         };
         app.patch('/api/products/:id',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),
-            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.update)),
+            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.updateProduct)),
 
-            async function ProductController_update(request: ExRequest, response: ExResponse, next: any) {
+            async function ProductController_updateProduct(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_update, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_updateProduct, request, response });
 
                 const controller = new ProductController();
 
               await templateService.apiHandler({
-                methodName: 'update',
+                methodName: 'updateProduct',
                 controller,
                 response,
                 next,
@@ -1831,25 +1762,25 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProductController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProductController_deleteProduct: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.delete('/api/products/:id',
             ...(fetchMiddlewares<RequestHandler>(ProductController)),
-            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.delete)),
+            ...(fetchMiddlewares<RequestHandler>(ProductController.prototype.deleteProduct)),
 
-            async function ProductController_delete(request: ExRequest, response: ExResponse, next: any) {
+            async function ProductController_deleteProduct(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_delete, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProductController_deleteProduct, request, response });
 
                 const controller = new ProductController();
 
               await templateService.apiHandler({
-                methodName: 'delete',
+                methodName: 'deleteProduct',
                 controller,
                 response,
                 next,
@@ -1861,27 +1792,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsLineController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsLineController_getAllLines: Record<string, TsoaRoute.ParameterSchema> = {
                 page: {"default":0,"in":"query","name":"page","dataType":"double"},
                 size: {"default":10,"in":"query","name":"size","dataType":"double"},
                 filter: {"in":"query","name":"filter","dataType":"string"},
         };
         app.get('/api/lines',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
-            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.getAll)),
+            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.getAllLines)),
 
-            async function LineController_getAll(request: ExRequest, response: ExResponse, next: any) {
+            async function LineController_getAllLines(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_getAll, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_getAllLines, request, response });
 
                 const controller = new LineController();
 
               await templateService.apiHandler({
-                methodName: 'getAll',
+                methodName: 'getAllLines',
                 controller,
                 response,
                 next,
@@ -1893,25 +1824,25 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsLineController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsLineController_getLine: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.get('/api/lines/:id',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
-            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.getOne)),
+            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.getLine)),
 
-            async function LineController_getOne(request: ExRequest, response: ExResponse, next: any) {
+            async function LineController_getLine(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_getOne, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_getLine, request, response });
 
                 const controller = new LineController();
 
               await templateService.apiHandler({
-                methodName: 'getOne',
+                methodName: 'getLine',
                 controller,
                 response,
                 next,
@@ -1923,26 +1854,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsLineController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsLineController_createLine: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"PostLinesSchema"},
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.post('/api/lines',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
-            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.createLine)),
 
-            async function LineController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function LineController_createLine(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_createLine, request, response });
 
                 const controller = new LineController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createLine',
                 controller,
                 response,
                 next,
@@ -1954,26 +1885,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsLineController_update: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsLineController_updateLine: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
                 body: {"in":"body","name":"body","required":true,"ref":"PatchLinesSchema"},
         };
         app.patch('/api/lines/:id',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
-            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.update)),
+            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.updateLine)),
 
-            async function LineController_update(request: ExRequest, response: ExResponse, next: any) {
+            async function LineController_updateLine(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_update, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_updateLine, request, response });
 
                 const controller = new LineController();
 
               await templateService.apiHandler({
-                methodName: 'update',
+                methodName: 'updateLine',
                 controller,
                 response,
                 next,
@@ -1985,25 +1916,25 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsLineController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsLineController_deleteLine: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.delete('/api/lines/:id',
             ...(fetchMiddlewares<RequestHandler>(LineController)),
-            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.delete)),
+            ...(fetchMiddlewares<RequestHandler>(LineController.prototype.deleteLine)),
 
-            async function LineController_delete(request: ExRequest, response: ExResponse, next: any) {
+            async function LineController_deleteLine(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_delete, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLineController_deleteLine, request, response });
 
                 const controller = new LineController();
 
               await templateService.apiHandler({
-                methodName: 'delete',
+                methodName: 'deleteLine',
                 controller,
                 response,
                 next,

@@ -8,15 +8,6 @@ export interface GetWorkstationSchema {
     UpdatedAt: Date;
 }
 
-export interface GetWorkstationsSchema {
-    ALWStationID: number;
-    Name: string;
-    ShortName: string;
-    PCName?: string;
-    AutoStart: boolean;
-    CreatedAt: Date;
-    UpdatedAt: Date;
-}
 
 export interface PostWorkstationsSchema {
     Name: string;

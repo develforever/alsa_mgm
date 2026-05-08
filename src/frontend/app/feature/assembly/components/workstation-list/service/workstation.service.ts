@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GetWorkstationsSchema, PatchWorkstationsSchema, PostWorkstationsSchema } from '../../../../../../../shared/api/workstation/schema';
+import { GetWorkstationSchema, PatchWorkstationsSchema, PostWorkstationsSchema } from '../../../../../../../shared/api/workstation/schema';
 import { ICrudService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AbstractCrudService } from '../../../../../services/crud.service';
@@ -7,8 +7,8 @@ import { AbstractCrudService } from '../../../../../services/crud.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DataWorkstationService extends AbstractCrudService<GetWorkstationsSchema, PostWorkstationsSchema, PatchWorkstationsSchema> implements ICrudService<GetWorkstationsSchema>,
-  ITableDataRowClickNavigationData<GetWorkstationsSchema>,
+export class DataWorkstationService extends AbstractCrudService<GetWorkstationSchema, PostWorkstationsSchema, PatchWorkstationsSchema> implements ICrudService<GetWorkstationSchema>,
+  ITableDataRowClickNavigationData<GetWorkstationSchema>,
   ITableDataRowAddNavigationData {
 
   constructor() {
@@ -39,7 +39,7 @@ export class DataWorkstationService extends AbstractCrudService<GetWorkstationsS
     });
   }
 
-  getSidebarItemRoute(row: GetWorkstationsSchema): unknown[] {
+  getSidebarItemRoute(row: GetWorkstationSchema): unknown[] {
     return ['selected', row.ALWStationID];
   }
 
@@ -58,7 +58,7 @@ export class DataWorkstationService extends AbstractCrudService<GetWorkstationsS
     };
   }
 
-  mapModelToForm(item: GetWorkstationsSchema): Record<string, unknown> {
+  mapModelToForm(item: GetWorkstationSchema): Record<string, unknown> {
     return {
       ...(item as unknown as Record<string, unknown>),
       AutoStart: !!item.AutoStart

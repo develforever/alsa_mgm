@@ -1,136 +1,90 @@
 import { AppDataSource } from "../../../../config/data-source";
-import { ApiError, ApiResponse, ApiResponseInfo, ApiResponseSingle } from "../../../../../shared/api/ApiResponse";
-import { Controller, Get, Route, Query, Tags, Post, Body, Patch, Delete, Request, Path } from "tsoa";
+import { Route, Tags, Get, Post, Patch, Delete, Query, Path, Body, Request } from "tsoa";
 import { ALWStation } from "../../../../entity/ALWStation";
+import { GetWorkstationSchema, PostWorkstationsSchema, PatchWorkstationsSchema } from "@shared/api/workstation/schema";
 import { ApiRequest } from "@shared/api/ApiRequest";
-import { GetWorkstationSchema, GetWorkstationsSchema, PatchWorkstationsSchema, PostWorkstationsSchema } from "@shared/api/workstation/schema";
-import { WorkstationMapper } from "./workstation/mapper";
-import { FindOptionsWhere, Like, FindManyOptions } from "typeorm";
-import { sanitizeLikeFilter } from "../../../../utils/filter.utils";
+import { BaseCrudController, CrudOptions } from "../../../BaseCrudController";
 
 const workstationRepo = AppDataSource.getRepository(ALWStation);
 
 @Route("api/workstations")
 @Tags("Workstations")
-export class WorkstationController extends Controller {
+export class WorkstationController extends BaseCrudController<ALWStation, PostWorkstationsSchema, PatchWorkstationsSchema, GetWorkstationSchema> {
+    
+    protected getRepository() {
+        return workstationRepo;
+    }
+
+    protected getOptions(): CrudOptions<ALWStation> {
+        return {
+            filterableColumns: ["Name", "ShortName"],
+            defaultSort: { column: "ALWStationID", order: "DESC" },
+            primaryKey: "ALWStationID",
+            entityName: "Workstation"
+        };
+    }
+
+    protected toResponseDto(entity: ALWStation): GetWorkstationSchema {
+        return {
+            ALWStationID: entity.ALWStationID,
+            Name: entity.Name,
+            ShortName: entity.ShortName,
+            PCName: entity.PCName,
+            AutoStart: entity.AutoStart,
+            CreatedAt: entity.createdAt,
+            UpdatedAt: entity.updatedAt,
+        };
+    }
+
+    protected toSingleResponseDto(entity: ALWStation): GetWorkstationSchema {
+        return this.toResponseDto(entity);
+    }
+
+    protected createEntity(dto: PostWorkstationsSchema): ALWStation {
+        return workstationRepo.create({
+            Name: dto.Name,
+            ShortName: dto.ShortName,
+            PCName: dto.PCName,
+            AutoStart: dto.AutoStart !== undefined ? dto.AutoStart : false
+        });
+    }
+
+    protected validateCreate(dto: PostWorkstationsSchema): string | null {
+        if (!dto.Name) {
+            return "Name is required";
+        }
+        if (!dto.ShortName) {
+            return "ShortName is required";
+        }
+        return null;
+    }
+
+    protected validateUpdate(): string | null {
+        return null;
+    }
 
     @Get("")
-    public async getAll(
-        @Query() page = 0,
-        @Query() size = 10,
-        @Query() filter?: string
-    ): Promise<ApiResponse<GetWorkstationsSchema>> {
-
-        const where: FindOptionsWhere<ALWStation> = {};
-
-        const sanitizedFilter = sanitizeLikeFilter(filter);
-        if (sanitizedFilter) {
-            where.Name = Like(`%${sanitizedFilter}%`);
-        }
-
-        const options: FindManyOptions<ALWStation> = {
-            skip: (page > 0 ? page - 1 : 0) * size,
-            take: size,
-            order: {
-                ALWStationID: "DESC"
-            },
-            where,
-        }
-
-        const items = await workstationRepo.find(options);
-        const total = await workstationRepo.count(options);
-        const output = WorkstationMapper.toGetWorkstationsSchema({
-            items,
-            total,
-            page,
-            size,
-        });
-
-        return output;
+    public async getAllWorkstations(@Query() page = 0, @Query() size = 10, @Query() filter?: string) {
+        return super.getAll(page, size, filter);
     }
 
     @Get("{id}")
-    public async getOne(
-        @Path() id: number
-    ): Promise<ApiResponseSingle<GetWorkstationSchema> | ApiError> {
-        const item = await workstationRepo.findOneBy({ ALWStationID: id });
-        if (!item) {
-            return {
-                message: "Workstation not found",
-                code: 404
-            };
-        }
-        return WorkstationMapper.toGetWorkstationSchema(item);
+    public async getWorkstation(@Path() id: number) {
+        return super.getOne(id);
     }
 
     @Post("")
-    public async create(
-        @Body() body: PostWorkstationsSchema,
-        @Request() req: ApiRequest
-    ): Promise<ApiResponse<ALWStation>> {
-
-        const { Name, ShortName, PCName, AutoStart } = body;
-        const user = req.user;
-
-        if (!Name) {
-            return {
-                message: "Name is required",
-                code: 400
-            };
-        }
-
-        if (!ShortName) {
-            return {
-                message: "ShortName is required",
-                code: 400
-            };
-        }
-
-        const newWorkstation = workstationRepo.create({ 
-            Name, 
-            ShortName, 
-            PCName, 
-            AutoStart: AutoStart ?? 0 
-        });
-
-        await workstationRepo.save(newWorkstation, {
-            data: { userEmail: user?.userEmail }
-        });
-        return { data: newWorkstation };
+    public async createWorkstation(@Body() body: PostWorkstationsSchema, @Request() req: ApiRequest) {
+        return super.create(body, req);
     }
 
     @Patch("{id}")
-    public async update(
-        @Path() id: number,
-        @Body() body: PatchWorkstationsSchema,
-    ): Promise<ApiResponse<ALWStation>> {
-
-        await workstationRepo.update(id, body);
-
-        const updatedWorkstation = await workstationRepo.findOneBy({ ALWStationID: id });
-
-        if (!updatedWorkstation) {
-            return {
-                message: "Workstation not found",
-                code: 404
-            };
-        }
-
-        return {
-            data: updatedWorkstation
-        };
+    public async updateWorkstation(@Path() id: number, @Body() body: PatchWorkstationsSchema) {
+        return super.update(id, body);
     }
 
     @Delete("{id}")
-    public async delete(
-        @Path() id: number
-    ): Promise<ApiResponseInfo> {
-
-        await workstationRepo.softDelete(id);
-
-        return {
-            message: "Workstation removed"
-        };
+    public async deleteWorkstation(@Path() id: number) {
+        return super.delete(id);
     }
-
 }

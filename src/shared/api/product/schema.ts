@@ -8,13 +8,6 @@ export interface GetProductSchema {
     UpdatedAt: Date;
 }
 
-export interface GetProductsSchema {
-    ProductID: number;
-    Name: string;
-    Active: boolean;
-    CreatedAt: Date;
-    UpdatedAt: Date;
-}
 
 export interface PostProductsSchema {
     Name: string;

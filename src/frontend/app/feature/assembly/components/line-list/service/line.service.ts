@@ -9,16 +9,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AbstractCrudService, FieldConfig } from '../../../../../services/crud.service';
 import { DataProductService } from '../../product-list/service/product.service';
 import { map } from 'rxjs';
-import { GetLinesSchema, PatchLinesSchema, PostLinesSchema } from '../../../../../../../shared/api/line/schema';
+import { GetLineSchema, PatchLinesSchema, PostLinesSchema } from '../../../../../../../shared/api/line/schema';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataAssemblyLineService
-  extends AbstractCrudService<GetLinesSchema, PostLinesSchema, PatchLinesSchema>
+  extends AbstractCrudService<GetLineSchema, PostLinesSchema, PatchLinesSchema>
   implements
-  ICrudService<GetLinesSchema>,
-  ITableDataRowClickNavigationData<GetLinesSchema>,
+  ICrudService<GetLineSchema>,
+  ITableDataRowClickNavigationData<GetLineSchema>,
   ITableDataRowAddNavigationData {
 
   private productService = inject(DataProductService);
@@ -88,14 +88,14 @@ export class DataAssemblyLineService
     };
   }
 
-  mapModelToForm(item: GetLinesSchema): Record<string, unknown> {
+  mapModelToForm(item: GetLineSchema): Record<string, unknown> {
     return {
       ...(item as unknown as Record<string, unknown>),
       Status: item.Status === 1
     };
   }
 
-  getSidebarItemRoute(row: GetLinesSchema): unknown[] {
+  getSidebarItemRoute(row: GetLineSchema): unknown[] {
     return ['selected', row.ALAssLineID];
   }
 

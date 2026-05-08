@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { GetProductsSchema, PatchProductsSchema, PostProductsSchema } from '../../../../../../../shared/api/product/schema';
+import { GetProductSchema, PatchProductsSchema, PostProductsSchema } from '../../../../../../../shared/api/product/schema';
 import { ICrudService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AbstractCrudService } from '../../../../../services/crud.service';
@@ -9,8 +9,8 @@ import { AbstractCrudService } from '../../../../../services/crud.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DataProductService extends AbstractCrudService<GetProductsSchema, PostProductsSchema, PatchProductsSchema> implements ICrudService<GetProductsSchema>,
-  ITableDataRowClickNavigationData<GetProductsSchema>,
+export class DataProductService extends AbstractCrudService<GetProductSchema, PostProductsSchema, PatchProductsSchema> implements ICrudService<GetProductSchema>,
+  ITableDataRowClickNavigationData<GetProductSchema>,
   ITableDataRowAddNavigationData {
 
   constructor() {
@@ -40,7 +40,7 @@ export class DataProductService extends AbstractCrudService<GetProductsSchema, P
     });
   }
 
-  getSidebarItemRoute(row: GetProductsSchema): unknown[] {
+  getSidebarItemRoute(row: GetProductSchema): unknown[] {
     return ['selected', row.ProductID];
   }
 
@@ -59,7 +59,7 @@ export class DataProductService extends AbstractCrudService<GetProductsSchema, P
     };
   }
 
-  mapModelToForm(item: GetProductsSchema): Record<string, unknown> {
+  mapModelToForm(item: GetProductSchema): Record<string, unknown> {
     return {
       ...(item as unknown as Record<string, unknown>),
       Active: !!item.Active
