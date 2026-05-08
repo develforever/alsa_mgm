@@ -9,3 +9,9 @@ mysql_data
 .env
 .env.local
 *.sqlite*
+.claude
+.claude-flow
+*.deb
+*.rpm
+.swarm
+*.db
