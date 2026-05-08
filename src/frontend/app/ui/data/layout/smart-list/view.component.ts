@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { SmartListService } from "./smart-list.service";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-view',
@@ -14,12 +15,14 @@ import { RouterLink } from "@angular/router";
         MatButtonModule,
         CommonModule,
         RouterLink,
+        TranslocoModule,
     ],
 })
 export class ViewComponent implements OnInit {
 
     private route = inject(ActivatedRoute);
     private smartListService = inject(SmartListService);
+    private transloco = inject(TranslocoService);
 
     item = signal<Record<string, any> | undefined>(undefined);
 
@@ -31,7 +34,7 @@ export class ViewComponent implements OnInit {
 
     formatValue(key: string, value: any): string {
         if (value === null || value === undefined) return '-';
-        if (typeof value === 'boolean') return value ? 'Tak' : 'Nie';
+        if (typeof value === 'boolean') return value ? this.transloco.translate('COMMON.YES') : this.transloco.translate('COMMON.NO');
         
         // Handle nested objects
         if (typeof value === 'object' && !Array.isArray(value)) {

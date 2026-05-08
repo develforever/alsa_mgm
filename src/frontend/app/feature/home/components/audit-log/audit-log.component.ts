@@ -17,6 +17,7 @@ import { AppUiDataTableComponent, TableFetchOptions } from '../../../../ui/data/
 import { DataAuditService, AuditLogFilter } from '../../../../services/data/audit.service';
 import { ContextMenuServiceImpl } from '../../../../ui/context-menu/context-menu.service';
 import { JsonPreviewDialogComponent, JsonPreviewDialogData } from '../../../../ui/context-menu/json-preview-dialog.component';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-home-audit-log-component',
@@ -35,6 +36,7 @@ import { JsonPreviewDialogComponent, JsonPreviewDialogData } from '../../../../u
     MatIconModule,
     MatChipsModule,
     AppUiDataTableComponent,
+    TranslocoModule
   ],
 })
 export class AuditLogComponent implements OnInit, OnDestroy {
@@ -42,6 +44,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private contextMenuService = inject(ContextMenuServiceImpl);
+  private transloco = inject(TranslocoService);
   private actionBusSubscription: Subscription | null = null;
 
   filterForm!: FormGroup;
@@ -85,7 +88,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         const row = event.context.data as Record<string, unknown> | undefined;
         const dialogData: JsonPreviewDialogData = {
-          title: 'Szczegóły wpisu logu',
+          title: this.transloco.translate('AUDIT.DIALOG_TITLE'),
           data: row
         };
         this.dialog.open(JsonPreviewDialogComponent, {
@@ -140,21 +143,21 @@ export class AuditLogComponent implements OnInit, OnDestroy {
     const formValue = this.filterForm.value;
     const filters: string[] = [];
 
-    if (formValue.entityName) filters.push(`Entity: ${formValue.entityName}`);
-    if (formValue.action) filters.push(`Action: ${formValue.action}`);
-    if (formValue.userEmail) filters.push(`User: ${formValue.userEmail}`);
-    if (formValue.dateFrom) filters.push(`From: ${this.formatDate(formValue.dateFrom)}`);
-    if (formValue.dateTo) filters.push(`To: ${this.formatDate(formValue.dateTo)}`);
+    if (formValue.entityName) filters.push(`${this.transloco.translate('AUDIT.FILTER_PREFIX_ENTITY')}: ${formValue.entityName}`);
+    if (formValue.action) filters.push(`${this.transloco.translate('AUDIT.FILTER_PREFIX_ACTION')}: ${formValue.action}`);
+    if (formValue.userEmail) filters.push(`${this.transloco.translate('AUDIT.FILTER_PREFIX_USER')}: ${formValue.userEmail}`);
+    if (formValue.dateFrom) filters.push(`${this.transloco.translate('AUDIT.FILTER_PREFIX_FROM')}: ${this.formatDate(formValue.dateFrom)}`);
+    if (formValue.dateTo) filters.push(`${this.transloco.translate('AUDIT.FILTER_PREFIX_TO')}: ${this.formatDate(formValue.dateTo)}`);
 
     this.activeFilters.set(filters);
   }
 
   removeFilter(filterStr: string): void {
-    if (filterStr.startsWith('Entity:')) this.filterForm.patchValue({ entityName: '' });
-    if (filterStr.startsWith('Action:')) this.filterForm.patchValue({ action: '' });
-    if (filterStr.startsWith('User:')) this.filterForm.patchValue({ userEmail: '' });
-    if (filterStr.startsWith('From:')) this.filterForm.patchValue({ dateFrom: null });
-    if (filterStr.startsWith('To:')) this.filterForm.patchValue({ dateTo: null });
+    if (filterStr.startsWith(this.transloco.translate('AUDIT.FILTER_PREFIX_ENTITY'))) this.filterForm.patchValue({ entityName: '' });
+    if (filterStr.startsWith(this.transloco.translate('AUDIT.FILTER_PREFIX_ACTION'))) this.filterForm.patchValue({ action: '' });
+    if (filterStr.startsWith(this.transloco.translate('AUDIT.FILTER_PREFIX_USER'))) this.filterForm.patchValue({ userEmail: '' });
+    if (filterStr.startsWith(this.transloco.translate('AUDIT.FILTER_PREFIX_FROM'))) this.filterForm.patchValue({ dateFrom: null });
+    if (filterStr.startsWith(this.transloco.translate('AUDIT.FILTER_PREFIX_TO'))) this.filterForm.patchValue({ dateTo: null });
 
     this.refresh$.next();
   }

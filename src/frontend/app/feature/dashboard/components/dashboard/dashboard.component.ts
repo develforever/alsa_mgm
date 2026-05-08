@@ -16,6 +16,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { DashboardService } from '../../services/dashboard.service';
 import { AuthService } from '../../../../services/auth.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,6 +33,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     WidgetHostComponent,
     MatSidenavModule,
     MatSlideToggleModule,
+    TranslocoModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],

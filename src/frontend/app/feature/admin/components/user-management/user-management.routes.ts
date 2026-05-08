@@ -6,7 +6,7 @@ export const getRoute = (): Route => {
     path: 'users',
     loadComponent: () => import('./user-management.component').then(m => m.UserManagementComponent),
     canActivate: [authGuard],
-    title: 'Zarządzanie użytkownikami',
+    title: 'MENU.USER_MANAGEMENT',
     data: {
       requiresAdmin: true
     }

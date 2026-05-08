@@ -147,8 +147,8 @@ const AUDIT_ENTITIES = ["Product", "ALAssLine", "ALWStation", "ALAssLineWStation
 function createUsers(count: number): Partial<User>[] {
     const roles = [UserRole.Admin, UserRole.Operator, UserRole.Operator, UserRole.Operator, UserRole.Viewer];
     const users: Partial<User>[] = [
-        { githubId: "admin-seed", username: "admin", displayName: "Admin User", email: "admin@transmar.dev", role: UserRole.Admin, isActive: true },
-        { githubId: "operator-seed", username: "operator", displayName: "Operator User", email: "operator@transmar.dev", role: UserRole.Operator, isActive: true },
+        { githubId: "admin-seed", username: "admin", displayName: "Admin User", email: "admin@example.dev", role: UserRole.Admin, isActive: true },
+        { githubId: "operator-seed", username: "operator", displayName: "Operator User", email: "operator@example.dev", role: UserRole.Operator, isActive: true },
     ];
     for (let i = users.length; i < count; i++) {
         const idx = i - 2;
@@ -156,7 +156,7 @@ function createUsers(count: number): Partial<User>[] {
             githubId: `user-seed-${idx}`,
             username: `user_${idx}`,
             displayName: `User ${idx}`,
-            email: `user${idx}@transmar.dev`,
+            email: `user${idx}@example.dev`,
             role: pick(roles),
             isActive: Math.random() > 0.1,
         });
@@ -304,7 +304,7 @@ function createAuditLogs(count: number): Partial<AuditLog>[] {
             entityName,
             entityId: String(rand(1, 50)),
             details: { field: "status", from: "draft", to: "active" },
-            userEmail: `user${rand(1, 10)}@transmar.dev`,
+            userEmail: `user${rand(1, 10)}@example.dev`,
             timestamp: randomDate(new Date(now.getTime() - 30 * 86400000), now),
         });
     }

@@ -11,20 +11,20 @@ import { createSidebarRoutes } from "../../ui/data/layout/smart-list/routes";
 export function getRoute(): Route {
     return {
         path: 'assembly',
-        title: "Assembly Management",
+        title: "MENU.ASSEMBLY_MANAGEMENT",
         canActivate: [authGuard],
         component: MainAssemblyComponent,
         data: {
             manuItem: {
-                label: 'Assembly',
+                label: 'MENU.ASSEMBLY',
                 link: '/assembly',
                 icon: 'precision_manufacturing',
                 menuItems: [
-                    { label: 'Dashboard', icon: 'dashboard', link: '/assembly' },
-                    { label: 'Produkty', icon: 'precision_manufacturing', link: '/assembly/products' },
-                    { label: 'Alokacje', icon: 'swap_horiz', link: '/assembly/allocations' },
-                    { label: 'Linie montażowe', icon: 'line_weight', link: '/assembly/lines' },
-                    { label: 'Stanowiska', icon: 'computer', link: '/assembly/workstations' }
+                    { label: 'MENU.DASHBOARD', icon: 'dashboard', link: '/assembly' },
+                    { label: 'MENU.PRODUCTS', icon: 'precision_manufacturing', link: '/assembly/products' },
+                    { label: 'MENU.ALLOCATIONS', icon: 'swap_horiz', link: '/assembly/allocations' },
+                    { label: 'MENU.LINES', icon: 'line_weight', link: '/assembly/lines' },
+                    { label: 'MENU.WORKSTATIONS', icon: 'computer', link: '/assembly/workstations' }
                 ]
             },
         },
@@ -33,28 +33,28 @@ export function getRoute(): Route {
                 path: "products",
                 component: ProductListComponent,
                 canActivate: [authGuard],
-                title: "Produkty",
+                title: "MENU.PRODUCTS",
                 children: [...createSidebarRoutes()]
             },
             {
                 path: "allocations",
                 component: AllocationViewComponent,
                 canActivate: [authGuard],
-                title: "Alokacje",
+                title: "MENU.ALLOCATIONS",
                 children: [...createSidebarRoutes()]
             },
             {
                 path: "lines",
                 component: LineListComponent,
                 canActivate: [authGuard],
-                title: "Linie montażowe",
+                title: "MENU.LINES",
                 children: [...createSidebarRoutes()]
             },
             {
                 path: "workstations",
                 component: WorkstationListComponent,
                 canActivate: [authGuard],
-                title: "Stanowiska",
+                title: "MENU.WORKSTATIONS",
                 children: [...createSidebarRoutes()]
             },
         ]

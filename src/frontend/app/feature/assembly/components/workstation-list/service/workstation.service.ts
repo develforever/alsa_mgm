@@ -3,6 +3,8 @@ import { GetWorkstationSchema, PatchWorkstationsSchema, PostWorkstationsSchema }
 import { ICrudService, ITableDataRowAddNavigationData, ITableDataRowClickNavigationData } from '../../../../../ui/data/layout/smart-list-layout.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AbstractCrudService } from '../../../../../services/crud.service';
+import { TranslocoService } from '@jsverse/transloco';
+import { inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,8 @@ import { AbstractCrudService } from '../../../../../services/crud.service';
 export class DataWorkstationService extends AbstractCrudService<GetWorkstationSchema, PostWorkstationsSchema, PatchWorkstationsSchema> implements ICrudService<GetWorkstationSchema>,
   ITableDataRowClickNavigationData<GetWorkstationSchema>,
   ITableDataRowAddNavigationData {
+
+  private transloco = inject(TranslocoService);
 
   constructor() {
     super('/workstations');
@@ -48,7 +52,7 @@ export class DataWorkstationService extends AbstractCrudService<GetWorkstationSc
   }
 
   getAddLabel(): string {
-    return 'Add Workstation';
+    return this.transloco.translate('ASSEMBLY.ADD_WORKSTATION');
   }
 
   mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {

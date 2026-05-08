@@ -10,6 +10,7 @@ import { AbstractCrudService, FieldConfig } from '../../../../../services/crud.s
 import { DataProductService } from '../../product-list/service/product.service';
 import { map } from 'rxjs';
 import { GetLineSchema, PatchLinesSchema, PostLinesSchema } from '../../../../../../../shared/api/line/schema';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class DataAssemblyLineService
   ITableDataRowAddNavigationData {
 
   private productService = inject(DataProductService);
+  private transloco = inject(TranslocoService);
 
   constructor() {
     super('/lines');
@@ -56,26 +58,26 @@ export class DataAssemblyLineService
       Name: {
         key: 'Name',
         type: 'text',
-        label: 'Nazwa Linii',
+        label: this.transloco.translate('ASSEMBLY.FORM.LINE_NAME'),
         validations: {
-          required: 'Nazwa linii produkcyjnej jest wymagana',
+          required: this.transloco.translate('ASSEMBLY.FORM.LINE_NAME_REQUIRED'),
         }
       },
       Status: {
         key: 'Status',
         type: 'toggle',
-        label: 'Status Aktywny',
+        label: this.transloco.translate('ASSEMBLY.FORM.LINE_STATUS'),
       },
       ProductID: {
         key: 'ProductID',
         type: 'relation',
-        label: 'Produkt',
+        label: this.transloco.translate('ASSEMBLY.FORM.LINE_PRODUCT'),
         fetchFn: (query) => this.productService.getAll(query).pipe(map(res => ('data' in res && Array.isArray(res.data)) ? res.data : [])),
         fetchByIdFn: (id) => this.productService.getOne(id).pipe(map(res => ('data' in res) ? res.data : null)),
         displayKey: 'Name',
         valueKey: 'ProductID',
         validations: {
-          required: 'Wybranie produktu jest obowiązkowe',
+          required: this.transloco.translate('ASSEMBLY.FORM.LINE_PRODUCT_REQUIRED'),
         }
       }
     };
@@ -104,6 +106,6 @@ export class DataAssemblyLineService
   }
 
   getAddLabel(): string {
-    return 'Add Line';
+    return this.transloco.translate('ASSEMBLY.ADD_LINE');
   }
 }

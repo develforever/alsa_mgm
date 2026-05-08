@@ -19,6 +19,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@
 import { ContextMenuServiceImpl } from '../context-menu/context-menu.service';
 import { ContextMenuTriggerService } from '../context-menu/context-menu-trigger.service';
 import { ContextMenuContext } from '../context-menu/models/context.model';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 export interface TableFetchOptions {
     page: number;
@@ -43,7 +44,8 @@ export type FlatFetchFn<T> = () => Observable<ApiResponse<T[]> | ApiResponseList
         MatSnackBarModule,
         MatIconModule,
         DatePipe,
-        MatButtonModule
+        MatButtonModule,
+        TranslocoModule
     ],
     styleUrls: ['./table.component.scss'],
 })
@@ -82,6 +84,7 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
     private snackBar = inject(MatSnackBar);
     private contextMenuService = inject(ContextMenuServiceImpl);
     private triggerService = inject(ContextMenuTriggerService);
+    private transloco = inject(TranslocoService);
 
     selection = new SelectionModel<T>(true, []);
     private cdr = inject(ChangeDetectorRef);
@@ -150,7 +153,8 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
 
                 return stream$.pipe(
                     catchError((err): Observable<ApiResponseList<T>> => {
-                        const errorMessage = err?.error?.message || err?.message || 'Wystąpił błąd podczas ładowania danych';
+                        const defaultError = this.transloco.translate('COMMON.DATA_LOAD_ERROR');
+                        const errorMessage = err?.error?.message || err?.message || defaultError;
                         const errorCode = err?.status || err?.error?.code || 500;
                         
                         // Emit error event for parent components
@@ -158,7 +162,9 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
                         
                         // Show snackbar notification
                         if (this.showErrorNotification) {
-                            this.snackBar.open(`Błąd: ${errorMessage}`, 'Zamknij', {
+                            const errLabel = this.transloco.translate('COMMON.ERROR');
+                            const closeLabel = this.transloco.translate('COMMON.CLOSE_ERROR');
+                            this.snackBar.open(`${errLabel}: ${errorMessage}`, closeLabel, {
                                 duration: 5000,
                                 panelClass: ['error-snackbar'],
                                 horizontalPosition: 'center',
@@ -184,7 +190,9 @@ export class AppUiDataTableComponent<T extends Record<string, any>> implements A
                 this.errorMessage = apiError.message;
                 
                 if (this.showErrorNotification) {
-                    this.snackBar.open(`Błąd API: ${apiError.message}`, 'Zamknij', {
+                    const errLabel = this.transloco.translate('COMMON.ERROR');
+                    const closeLabel = this.transloco.translate('COMMON.CLOSE_ERROR');
+                    this.snackBar.open(`${errLabel} API: ${apiError.message}`, closeLabel, {
                         duration: 5000,
                         panelClass: ['error-snackbar']
                     });

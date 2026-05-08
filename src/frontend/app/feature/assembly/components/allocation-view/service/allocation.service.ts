@@ -7,6 +7,7 @@ import { DataAssemblyLineService } from '../../line-list/service/line.service';
 import { DataWorkstationService } from '../../workstation-list/service/workstation.service';
 import { inject } from '@angular/core';
 import { map } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class DataAllocationService extends AbstractCrudService<GetAllocationsSch
 
   private lineService = inject(DataAssemblyLineService);
   private workstationService = inject(DataWorkstationService);
+  private transloco = inject(TranslocoService);
 
   constructor() {
     super('/allocations');
@@ -50,33 +52,33 @@ export class DataAllocationService extends AbstractCrudService<GetAllocationsSch
       ALAssLineID: {
         key: 'ALAssLineID',
         type: 'relation',
-        label: 'Linia Montażowa',
+        label: this.transloco.translate('ASSEMBLY.FORM.ALLOC_LINE'),
         fetchFn: (query) => this.lineService.getAll(query).pipe(map(res => ('data' in res && Array.isArray(res.data)) ? res.data : [])),
         fetchByIdFn: (id) => this.lineService.getOne(id).pipe(map(res => ('data' in res) ? res.data : null)),
         displayKey: 'Name',
         valueKey: 'ALAssLineID',
         validations: {
-          required: 'Wybranie linii montażowej jest obowiązkowe',
+          required: this.transloco.translate('ASSEMBLY.FORM.ALLOC_LINE_REQUIRED'),
         }
       },
       ALWStationID: {
         key: 'ALWStationID',
         type: 'relation',
-        label: 'Stanowisko Robocze',
+        label: this.transloco.translate('ASSEMBLY.FORM.ALLOC_STATION'),
         fetchFn: (query) => this.workstationService.getAll(query).pipe(map(res => ('data' in res && Array.isArray(res.data)) ? res.data : [])),
         fetchByIdFn: (id) => this.workstationService.getOne(id).pipe(map(res => ('data' in res) ? res.data : null)),
         displayKey: 'Name',
         valueKey: 'ALWStationID',
         validations: {
-          required: 'Wybranie stanowiska roboczego jest obowiązkowe',
+          required: this.transloco.translate('ASSEMBLY.FORM.ALLOC_STATION_REQUIRED'),
         }
       },
       Sort: {
         key: 'Sort',
         type: 'number',
-        label: 'Kolejność',
+        label: this.transloco.translate('ASSEMBLY.FORM.ALLOC_SORT'),
         validations: {
-          required: 'Kolejność jest wymagana',
+          required: this.transloco.translate('ASSEMBLY.FORM.ALLOC_SORT_REQUIRED'),
         }
       }
     };
@@ -91,7 +93,7 @@ export class DataAllocationService extends AbstractCrudService<GetAllocationsSch
   }
 
   getAddLabel(): string {
-    return 'Add Allocation';
+    return this.transloco.translate('ASSEMBLY.ADD_ALLOCATION');
   }
 
   mapFormToModel(value: Record<string, unknown>): Record<string, unknown> {

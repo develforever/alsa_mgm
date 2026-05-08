@@ -1,5 +1,5 @@
 <app-ui-data-layout-smart-list [dataService]="dataTableService">
     <ng-template appTableCellDef="AutoStart" let-row>
-        {{ row.AutoStart ? 'Tak' : 'Nie' }}
+        {{ row.AutoStart ? ('COMMON.YES' | transloco) : ('COMMON.NO' | transloco) }}
     </ng-template>
 </app-ui-data-layout-smart-list>

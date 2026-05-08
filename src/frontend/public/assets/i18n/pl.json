@@ -1,0 +1,261 @@
+{
+  "COMMON": {
+    "SAVE": "Zapisz",
+    "CANCEL": "Anuluj",
+    "DELETE": "Usuń",
+    "EDIT": "Edytuj",
+    "LOADING": "Ładowanie...",
+    "SEARCH": "Szukaj",
+    "APPLY": "Zastosuj",
+    "CLEAR": "Wyczyść",
+    "ALL": "Wszystkie",
+    "NEW": "Nowy",
+    "CLOSE": "Zamknij",
+    "YES": "Tak",
+    "NO": "Nie",
+    "DETAILS": "Szczegóły",
+    "ERROR": "Błąd",
+    "CLOSE_ERROR": "Zamknij",
+    "DATA_LOAD_ERROR": "Wystąpił błąd podczas ładowania danych"
+  },
+  "SMART_LIST": {
+    "SELECT_ITEM": "Wybierz element",
+    "SELECT_HINT": "Zaznacz coś z listy, aby zobaczyć szczegóły.",
+    "CONTEXT_EDIT": "Edytuj",
+    "CONTEXT_DELETE": "Usuń",
+    "CONTEXT_CONFIG_MENU": "Konfiguruj menu",
+    "DELETE_CONFIRM_TITLE": "Potwierdzenie usunięcia",
+    "DELETE_CONFIRM_CONTENT": "Czy na pewno chcesz usunąć ten element?"
+  },
+  "ASSEMBLY": {
+    "MANAGEMENT_TITLE": "Zarządzanie Assembly",
+    "ADD_PRODUCT": "Dodaj Produkt",
+    "ADD_LINE": "Dodaj Linię",
+    "ADD_WORKSTATION": "Dodaj Stanowisko",
+    "ADD_ALLOCATION": "Dodaj Alokację",
+    "FORM": {
+      "LINE_NAME": "Nazwa Linii",
+      "LINE_NAME_REQUIRED": "Nazwa linii produkcyjnej jest wymagana",
+      "LINE_STATUS": "Status Aktywny",
+      "LINE_PRODUCT": "Produkt",
+      "LINE_PRODUCT_REQUIRED": "Wybranie produktu jest obowiązkowe",
+      "ALLOC_LINE": "Linia Montażowa",
+      "ALLOC_LINE_REQUIRED": "Wybranie linii montażowej jest obowiązkowe",
+      "ALLOC_STATION": "Stanowisko Robocze",
+      "ALLOC_STATION_REQUIRED": "Wybranie stanowiska roboczego jest obowiązkowe",
+      "ALLOC_SORT": "Kolejność",
+      "ALLOC_SORT_REQUIRED": "Kolejność jest wymagana"
+    }
+  },
+  "AUTH": {
+    "LOGIN_TITLE": "Logowanie",
+    "LOGIN_SUBTITLE": "Zaloguj się, aby uzyskać dostęp do panelu",
+    "LOGIN_GITHUB": "Zaloguj z GitHub",
+    "LOGIN_DEV_MOCK": "[DEV] Logowanie Mock",
+    "LOGIN": "Zaloguj się",
+    "LOGOUT": "Wyloguj",
+    "CONFIRM_LOGOUT": "Czy na pewno chcesz się wylogować?"
+  },
+  "PRODUCTION_PLAN": {
+    "TITLE": "Plany produkcji",
+    "NEW_PLAN": "Nowy plan",
+    "FILTER_PRODUCT": "Produkt",
+    "FILTER_ASSEMBLY_LINE": "Linia montażowa",
+    "FILTER_STATUS": "Status",
+    "FILTER_DATE_FROM": "Data od",
+    "FILTER_DATE_TO": "Data do",
+    "CONFIRM_DELETE": "Czy na pewno chcesz usunąć plan #{{id}}?",
+    "FORM": {
+      "TITLE_NEW": "Nowy plan produkcji",
+      "TITLE_EDIT": "Edytuj plan produkcji",
+      "PRODUCT": "Produkt",
+      "PRODUCT_PLACEHOLDER": "Wybierz produkt",
+      "PRODUCT_REQUIRED": "Produkt jest wymagany",
+      "LINE": "Linia montażowa",
+      "LINE_PLACEHOLDER": "Wybierz linię",
+      "LINE_REQUIRED": "Linia montażowa jest wymagana",
+      "START_DATE": "Data rozpoczęcia",
+      "START_DATE_REQUIRED": "Data rozpoczęcia jest wymagana",
+      "END_DATE": "Data zakończenia",
+      "END_DATE_REQUIRED": "Data zakończenia jest wymagana",
+      "QUANTITY": "Ilość planowana",
+      "QUANTITY_REQUIRED": "Ilość jest wymagana",
+      "QUANTITY_MIN": "Ilość musi być większa od 0",
+      "PRIORITY": "Priorytet",
+      "STATUS": "Status",
+      "NOTES": "Notatki",
+      "SAVE": "Zapisz",
+      "CREATE": "Utwórz"
+    },
+    "MESSAGES": {
+      "LOAD_PRODUCTS_ERROR": "Błąd podczas ładowania produktów",
+      "LOAD_LINES_ERROR": "Błąd podczas ładowania linii montażowych",
+      "LOAD_PLAN_ERROR": "Błąd podczas ładowania planu",
+      "UPDATE_SUCCESS": "Plan zaktualizowany pomyślnie",
+      "UPDATE_ERROR": "Błąd podczas aktualizacji planu",
+      "CREATE_SUCCESS": "Plan utworzony pomyślnie",
+      "CREATE_ERROR": "Błąd podczas tworzenia planu"
+    }
+  },
+  "AUDIT": {
+    "FILTER_TITLE": "Filtry logów audytu",
+    "ENTITY": "Encja",
+    "ACTION": "Akcja",
+    "USER_EMAIL": "Użytkownik (email)",
+    "DATE_FROM": "Data od",
+    "DATE_TO": "Data do",
+    "DIALOG_TITLE": "Szczegóły wpisu logu",
+    "FILTER_PREFIX_ENTITY": "Encja",
+    "FILTER_PREFIX_ACTION": "Akcja",
+    "FILTER_PREFIX_USER": "Użytkownik",
+    "FILTER_PREFIX_FROM": "Od",
+    "FILTER_PREFIX_TO": "Do"
+  },
+  "USER_MANAGEMENT": {
+    "FILTER_TITLE": "Filtry użytkowników",
+    "ROLE": "Rola",
+    "STATUS_ACTIVE": "Aktywni",
+    "STATUS_INACTIVE": "Nieaktywni",
+    "ACTIVE_FILTERS": "Aktywne filtry:",
+    "SET_AS_ADMIN": "Ustaw jako Admin",
+    "SET_AS_OPERATOR": "Ustaw jako Operator",
+    "SET_AS_VIEWER": "Ustaw jako Viewer",
+    "DELETE_USER": "Usuń użytkownika",
+    "CONFIRM_DELETE": "Czy na pewno chcesz usunąć użytkownika {{username}}?"
+  },
+  "ENUM": {
+    "PLAN_STATUS": {
+      "DRAFT": "Szkic",
+      "SCHEDULED": "Zaplanowane",
+      "IN_PROGRESS": "W trakcie",
+      "COMPLETED": "Zakończone",
+      "CANCELLED": "Anulowane"
+    },
+    "PRIORITY": {
+      "LOW": "Niski",
+      "NORMAL": "Normalny",
+      "HIGH": "Wysoki",
+      "CRITICAL": "Krytyczny"
+    },
+    "ROLE": {
+      "ADMIN": "Administrator",
+      "OPERATOR": "Operator",
+      "VIEWER": "Obserwator"
+    }
+  },
+  "API": {
+    "ERROR_INVALID_PRODUCTION_STATUS": "Nieprawidłowa zmiana statusu: z {{from}} na {{to}}."
+  },
+  "MENU": {
+    "HOME": "Główna",
+    "ADMIN": "Admin",
+    "CONTEXT_MENU_REGISTRY": "Context Menu Registry",
+    "AUDIT_LOGS": "Logi audytu",
+    "USER_MANAGEMENT": "Zarządzanie użytkownikami",
+    "DASHBOARD": "Dashboard",
+    "ASSEMBLY": "Assembly",
+    "ASSEMBLY_MANAGEMENT": "Zarządzanie Assembly",
+    "PRODUCTS": "Produkty",
+    "ALLOCATIONS": "Alokacje",
+    "LINES": "Linie montażowe",
+    "WORKSTATIONS": "Stanowiska",
+    "PRODUCTION_PLANS": "Plany produkcji",
+    "NEW_PRODUCTION_PLAN": "Nowy plan produkcji",
+    "EDIT_PRODUCTION_PLAN": "Edycja planu produkcji"
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Elementów na stronę:",
+    "NEXT_PAGE": "Następna strona",
+    "PREVIOUS_PAGE": "Poprzednia strona",
+    "FIRST_PAGE": "Pierwsza strona",
+    "LAST_PAGE": "Ostatnia strona",
+    "RANGE_LABEL": "{{start}} – {{end}} z {{length}}"
+  },
+  "TABLE_HEADERS": {
+    "NAME": "Nazwa",
+    "SHORTNAME": "Krótka nazwa",
+    "PCNAME": "Nazwa PC",
+    "AUTOSTART": "Autostart",
+    "CREATEDAT": "Utworzono",
+    "UPDATEDAT": "Zaktualizowano",
+    "ALWSTATIONID": "ID Stanowiska",
+    "PRODUCTID": "ID Produktu",
+    "LINEID": "ID Linii",
+    "ALLOCATIONID": "ID Alokacji",
+    "ACTIONS": "Akcje",
+    "SORTORDER": "Kolejność",
+    "STATIONNAME": "Stanowisko",
+    "LINENAME": "Linia",
+    "PRODUCTNAME": "Produkt",
+    "AVATARURL": "Avatar",
+    "USERNAME": "Nazwa użytkownika",
+    "EMAIL": "Email",
+    "ROLE": "Rola",
+    "ISACTIVE": "Aktywny",
+    "LASTLOGINAT": "Ostatnie logowanie",
+    "TIMESTAMP": "Znacznik czasu",
+    "USEREMAIL": "Email użytkownika",
+    "ACTION": "Akcja",
+    "ENTITYNAME": "Nazwa encji",
+    "DETAILS": "Szczegóły",
+    "ID": "ID",
+    "PRODUCT": "Produkt",
+    "ASSEMBLYLINE": "Linia montażowa",
+    "PLANNEDSTARTDATE": "Planowany start",
+    "PLANNEDENDDATE": "Planowany koniec",
+    "PLANNEDQUANTITY": "Ilość",
+    "STATUS": "Status",
+    "PRIORITY": "Priorytet"
+  },
+  "DEV_TOOL": {
+    "TITLE": "ContextMenu Registry - Narzędzie Deweloperskie",
+    "REFRESH": "Odśwież",
+    "CATEGORIES": "Kategorii",
+    "TOTAL_ACTIONS": "Całkowita liczba akcji",
+    "FILTER_LABEL": "Filtruj po typie kontekstu",
+    "FILTER_PLACEHOLDER": "np. table-row, audit-log-row...",
+    "ACTIONS_COUNT": "{{count}} akcji"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard",
+    "EDIT": "Edytuj",
+    "SAVE": "Zapisz",
+    "TOGGLE_SIDENAV": "Pokaż widgety",
+    "RESET_LAYOUT": "Ustawienia domyślne",
+    "AVAILABLE_WIDGETS": "Dostępne Widgety",
+    "MOVING_WIDGET": "Przenoszenie widgetu..."
+  },
+  "WIDGETS": {
+    "RECENT_PRODUCTS": {
+      "TITLE": "Ostatnie produkty",
+      "DESC": "Ostatnio dodane produkty",
+      "ERROR": "Błąd podczas pobierania produktów.",
+      "DATE": "Data:",
+      "EMPTY": "Brak produktów"
+    },
+    "STATS": {
+      "TITLE": "Statystyki systemu",
+      "DESC": "Wyświetla podstawowe statystyki produktów, linii i stanowisk",
+      "PRODUCTS": "Produkty",
+      "ACTIVE": "aktywnych",
+      "ASSEMBLY_LINES": "Linie montażowe",
+      "LOCKED": "zablokowanych",
+      "WORKSTATIONS": "Stanowiska",
+      "AUTO_START": "z auto-startem",
+      "ALLOCATIONS": "Alokacje",
+      "ALLOCATIONS_DESC": "Przypisania WS → Linie",
+      "RECENT_ACTIVITY": "Ostatnia aktywność (audit)",
+      "H24": "24h",
+      "D7": "7 dni",
+      "D30": "30 dni"
+    },
+    "LINE_STATUS": {
+      "TITLE": "Status linii montażowych",
+      "DESC": "Wyświetla rozkład statusów linii montażowych (aktywne, zablokowane, zamknięte)",
+      "ACTIVE": "Aktywne",
+      "LOCKED": "Zablokowane",
+      "CLOSED": "Zamknięte",
+      "NO_DATA": "Brak danych o liniach montażowych"
+    }
+  }
+}

@@ -2,11 +2,11 @@
   <mat-card-header>
     <mat-card-title>
       <mat-icon>calendar_month</mat-icon>
-      Plany produkcji
+      {{ 'PRODUCTION_PLAN.TITLE' | transloco }}
     </mat-card-title>
     <button mat-raised-button color="primary" [routerLink]="['/production-plans/new']">
       <mat-icon>add</mat-icon>
-      Nowy plan
+      {{ 'PRODUCTION_PLAN.NEW_PLAN' | transloco }}
     </button>
   </mat-card-header>
 
@@ -15,42 +15,42 @@
     <div class="filters-section">
       <form [formGroup]="filterForm" class="filters-form">
         <mat-form-field appearance="outline">
-          <mat-label>Produkt</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FILTER_PRODUCT' | transloco }}</mat-label>
           <mat-select formControlName="productId">
-            <mat-option value="">Wszystkie</mat-option>
+            <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
             <!-- Product options will be populated dynamically -->
           </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Linia montażowa</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FILTER_ASSEMBLY_LINE' | transloco }}</mat-label>
           <mat-select formControlName="assemblyLineId">
-            <mat-option value="">Wszystkie</mat-option>
+            <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
             <!-- Assembly line options will be populated dynamically -->
           </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FILTER_STATUS' | transloco }}</mat-label>
           <mat-select formControlName="status">
-            <mat-option value="">Wszystkie</mat-option>
-            <mat-option [value]="planStatus.Draft">Szkic</mat-option>
-            <mat-option [value]="planStatus.Scheduled">Zaplanowane</mat-option>
-            <mat-option [value]="planStatus.InProgress">W trakcie</mat-option>
-            <mat-option [value]="planStatus.Completed">Zakończone</mat-option>
-            <mat-option [value]="planStatus.Cancelled">Anulowane</mat-option>
+            <mat-option value="">{{ 'COMMON.ALL' | transloco }}</mat-option>
+            <mat-option [value]="planStatus.Draft">{{ 'ENUM.PLAN_STATUS.DRAFT' | transloco }}</mat-option>
+            <mat-option [value]="planStatus.Scheduled">{{ 'ENUM.PLAN_STATUS.SCHEDULED' | transloco }}</mat-option>
+            <mat-option [value]="planStatus.InProgress">{{ 'ENUM.PLAN_STATUS.IN_PROGRESS' | transloco }}</mat-option>
+            <mat-option [value]="planStatus.Completed">{{ 'ENUM.PLAN_STATUS.COMPLETED' | transloco }}</mat-option>
+            <mat-option [value]="planStatus.Cancelled">{{ 'ENUM.PLAN_STATUS.CANCELLED' | transloco }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Data od</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FILTER_DATE_FROM' | transloco }}</mat-label>
           <input matInput [matDatepicker]="startPicker" formControlName="startDateFrom">
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
           <mat-datepicker #startPicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Data do</mat-label>
+          <mat-label>{{ 'PRODUCTION_PLAN.FILTER_DATE_TO' | transloco }}</mat-label>
           <input matInput [matDatepicker]="endPicker" formControlName="startDateTo">
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
           <mat-datepicker #endPicker></mat-datepicker>
@@ -59,26 +59,30 @@
         <div class="filter-actions">
           <button mat-stroked-button (click)="applyFilters()">
             <mat-icon>search</mat-icon>
-            Szukaj
+            {{ 'COMMON.SEARCH' | transloco }}
           </button>
           <button mat-stroked-button (click)="clearFilters()">
             <mat-icon>clear</mat-icon>
-            Wyczyść
+            {{ 'COMMON.CLEAR' | transloco }}
           </button>
         </div>
       </form>
 
       <!-- Active filters chips -->
-      <div class="active-filters" *ngIf="activeFilters().length > 0">
-        <mat-chip-listbox>
-          <mat-chip *ngFor="let filter of activeFilters()" (removed)="removeFilter(filter)">
-            {{ filter }}
-            <button matChipRemove>
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip>
-        </mat-chip-listbox>
-      </div>
+      @if (activeFilters().length > 0) {
+        <div class="active-filters">
+          <mat-chip-listbox>
+            @for (filter of activeFilters(); track filter) {
+              <mat-chip (removed)="removeFilter(filter)">
+                {{ filter }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            }
+          </mat-chip-listbox>
+        </div>
+      }
     </div>
 
     <!-- Data Table -->
@@ -90,14 +94,14 @@
       
       <!-- Product Column -->
       <ng-template appTableCellDef="product" let-row>
-        <span *ngIf="row.product">{{ row.product.Name }}</span>
-        <span *ngIf="!row.product">-</span>
+        @if (row.product) { <span>{{ row.product.Name }}</span> }
+        @else { <span>-</span> }
       </ng-template>
 
       <!-- Assembly Line Column -->
       <ng-template appTableCellDef="assemblyLine" let-row>
-        <span *ngIf="row.assemblyLine">{{ row.assemblyLine.Name }}</span>
-        <span *ngIf="!row.assemblyLine">-</span>
+        @if (row.assemblyLine) { <span>{{ row.assemblyLine.Name }}</span> }
+        @else { <span>-</span> }
       </ng-template>
 
       <!-- Planned Start Date Column -->
@@ -132,11 +136,11 @@
         <mat-menu #menu="matMenu">
           <button mat-menu-item [routerLink]="['/production-plans', row.id]">
             <mat-icon>edit</mat-icon>
-            <span>Edytuj</span>
+            <span>{{ 'COMMON.EDIT' | transloco }}</span>
           </button>
           <button mat-menu-item (click)="deletePlan(row)">
             <mat-icon>delete</mat-icon>
-            <span>Usuń</span>
+            <span>{{ 'COMMON.DELETE' | transloco }}</span>
           </button>
         </mat-menu>
       </ng-template>

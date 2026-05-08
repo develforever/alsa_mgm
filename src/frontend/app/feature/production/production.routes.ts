@@ -7,11 +7,11 @@ export const getRoute = (): Route => {
   return {
     path: "production-plans",
     canActivate: [authGuard],
-    title: "Plany produkcji",
+    title: "MENU.PRODUCTION_PLANS",
     data: {
       requiresAuth: true,
       manuItem: {
-        label: "Plany produkcji",
+        label: "MENU.PRODUCTION_PLANS",
         icon: "calendar_month",
         link: "/production-plans",
         menuItems: [],
@@ -25,12 +25,12 @@ export const getRoute = (): Route => {
       {
         path: "new",
         component: ProductionPlanFormComponent,
-        title: "Nowy plan produkcji",
+        title: "MENU.NEW_PRODUCTION_PLAN",
       },
       {
         path: ":id",
         component: ProductionPlanFormComponent,
-        title: "Edycja planu produkcji",
+        title: "MENU.EDIT_PRODUCTION_PLAN",
       },
     ],
   };

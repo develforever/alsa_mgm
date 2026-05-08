@@ -3,12 +3,12 @@
 
     <a mat-button class="menu-item" routerLink="/">
         <mat-icon>home</mat-icon>
-        Home
+        {{ 'MENU.HOME' | transloco }}
     </a>
     @if(authService.hasRole('admin')){
     <a mat-button [matMenuTriggerFor]="adminMenu" class="menu-item">
         <mat-icon>admin_panel_settings</mat-icon>
-        Admin
+        {{ 'MENU.ADMIN' | transloco }}
         <mat-icon>expand_more</mat-icon>
     </a>
     }
@@ -16,7 +16,7 @@
     <mat-menu #adminMenu="matMenu">
         <a mat-menu-item [routerLink]="'dev/context-menu-registry'">
             <mat-icon>settings</mat-icon>
-            <span>Context Menu Registry</span>
+            <span>{{ 'MENU.CONTEXT_MENU_REGISTRY' | transloco }}</span>
         </a>
     </mat-menu>
 
@@ -24,7 +24,7 @@
     @if (item.menuItems && item.menuItems.length > 0) {
     <button mat-button [matMenuTriggerFor]="subMenu" class="menu-item">
         <mat-icon>{{ item.icon }}</mat-icon>
-        {{ item.label }}
+        {{ item.label | transloco }}
         <mat-icon>expand_more</mat-icon>
     </button>
 
@@ -32,14 +32,14 @@
         @for (subItem of item.menuItems; track subItem.label) {
         <a mat-menu-item [routerLink]="subItem.link">
             <mat-icon>{{ subItem.icon }}</mat-icon>
-            <span>{{ subItem.label }}</span>
+            <span>{{ subItem.label | transloco }}</span>
         </a>
         }
     </mat-menu>
     } @else {
     <a mat-button [routerLink]="item.link" class="menu-item" routerLinkActive="active">
         <mat-icon>{{ item.icon }}</mat-icon>
-        {{ item.label }}
+        {{ item.label | transloco }}
     </a>
     }
     }

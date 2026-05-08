@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DataProductService } from '../../../assembly/components/product-list/service/product.service';
 import { IDashboardWidget } from '../../services/dashboard.service';
 
@@ -17,13 +18,13 @@ interface WidgetProduct {
 @Component({
   selector: 'app-recent-products-widget',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule, TranslocoModule],
   template: `
     <mat-card class="widget-card" style="padding-bottom: 14px;">
       <mat-card-header class="widget-header">
         <mat-icon mat-card-avatar color="primary">inventory_2</mat-icon>
-        <mat-card-title>Recent Products</mat-card-title>
-        <mat-card-subtitle>Ostatnio dodane produkty</mat-card-subtitle>
+        <mat-card-title>{{ 'WIDGETS.RECENT_PRODUCTS.TITLE' | transloco }}</mat-card-title>
+        <mat-card-subtitle>{{ 'WIDGETS.RECENT_PRODUCTS.DESC' | transloco }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="widget-content">
         @if (loading()) {
@@ -32,7 +33,7 @@ interface WidgetProduct {
           </div>
         } @else if (error()) {
           <div class="widget-error">
-            Błąd podczas pobierania produktów.
+            {{ 'WIDGETS.RECENT_PRODUCTS.ERROR' | transloco }}
           </div>
         } @else {
           <mat-list>
@@ -40,11 +41,11 @@ interface WidgetProduct {
               <mat-list-item>
                 <mat-icon matListItemIcon>view_in_ar</mat-icon>
                 <div matListItemTitle>{{ product.Name }}</div>
-                <div matListItemLine>Data: {{ product.CreatedAt | date:'short' }}</div>
+                <div matListItemLine>{{ 'WIDGETS.RECENT_PRODUCTS.DATE' | transloco }} {{ product.CreatedAt | date:'short' }}</div>
               </mat-list-item>
             }
             @if (products().length === 0) {
-               <div class="widget-empty">Brak produktów</div>
+               <div class="widget-empty">{{ 'WIDGETS.RECENT_PRODUCTS.EMPTY' | transloco }}</div>
             }
           </mat-list>
         }
@@ -108,9 +109,9 @@ export class RecentProductsWidgetComponent implements IDashboardWidget {
   }
 
   static metadata: import('../../services/dashboard.service').WidgetMetadata = {
-    label: 'Recent Products',
+    label: 'WIDGETS.RECENT_PRODUCTS.TITLE',
     icon: 'inventory_2',
-    description: 'Ostatnio dodane produkty'
+    description: 'WIDGETS.RECENT_PRODUCTS.DESC'
   };
 
   static getDefaultConfig(): Record<string, unknown> {

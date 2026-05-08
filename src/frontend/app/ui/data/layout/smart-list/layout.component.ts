@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 import { MatCardHeader } from "@angular/material/card";
 import { MatCardContent } from "@angular/material/card";
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-ui-data-layout-smart-list-layout',
@@ -12,7 +13,7 @@ import { MatCardContent } from "@angular/material/card";
     host: {
         class: 'flex flex-gap-1'
     },
-    imports: [RouterOutlet, CommonModule, MatCardModule, MatCardHeader, MatCardContent],
+    imports: [RouterOutlet, CommonModule, MatCardModule, MatCardHeader, MatCardContent, TranslocoModule],
 })
 export class LayoutComponent {
 
